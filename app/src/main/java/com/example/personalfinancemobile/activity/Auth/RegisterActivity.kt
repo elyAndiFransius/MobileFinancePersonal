@@ -26,9 +26,9 @@ class RegisterActivity : AppCompatActivity() {
         val editTextPassword = findViewById<EditText>(R.id.editTextPassword)
         val editTextConfirmPassword = findViewById<EditText>(R.id.editTextConfirmPassword)
         val buttonRegister = findViewById<Button>(R.id.buttonRegister)
-        val tv_sign_up = findViewById<TextView>(R.id.tv_sign_up)
+        val tv_sign_in = findViewById<TextView>(R.id.tv_sign_in)
 
-        tv_sign_up.setOnClickListener {
+        tv_sign_in.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
 

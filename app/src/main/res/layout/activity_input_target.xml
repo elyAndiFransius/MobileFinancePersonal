@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.target.InputTargetActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/vw_url_image"
+        android:layout_width="389dp"
+        android:layout_height="202dp"
+        android:background="@drawable/background_rounded_target"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <!--Icon Back-->
+        <ImageView
+            android:id="@+id/id_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_back" />
+        <!-- Gambar header -->
+        <ImageView
+            android:id="@+id/textViewUrl"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_margin="40dp"
+            android:layout_marginTop="26dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/elemnt_berhasil" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Container Form -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/form_container"
+        android:layout_width="374dp"
+        android:layout_height="553dp"
+        android:layout_margin="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vw_url_image">
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Spending Plan"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Text -->
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Come on, start recording your fundraising \n progress to keep track of your goals!"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView1" />
+
+
+        <!-- Input Text -->
+        <EditText
+            android:id="@+id/id_gol"
+            android:layout_width="336dp"
+            android:layout_height="47dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/edit_text_bg_primary"
+            android:hint="Gol"
+            android:paddingStart="16dp"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView2" />
+
+        <!-- Input Amount-->
+        <EditText
+            android:id="@+id/id_amount"
+            android:layout_width="336dp"
+            android:layout_height="47dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/edit_text_bg_primary"
+            android:hint="Target Amount"
+            android:inputType="numberDecimal"
+            android:paddingStart="16dp"
+            android:textColor="@color/primary"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/id_gol" />
+        <!-- Input Text -->
+        <EditText
+            android:id="@+id/id_belance"
+            android:layout_width="336dp"
+            android:layout_height="47dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/edit_text_bg_primary"
+            android:hint="Current Amount"
+            android:inputType="date"
+            android:paddingStart="16dp"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/id_amount" />
+
+
+        <EditText
+            android:id="@+id/id_start"
+            android:layout_width="336dp"
+            android:layout_height="47dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/edit_text_bg_primary"
+            android:hint="Start Date"
+            android:inputType="numberDecimal"
+            android:paddingStart="16dp"
+            android:textColor="@color/primary"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/id_belance" />
+        <!-- Input Text -->
+        <EditText
+            android:id="@+id/id_end"
+            android:layout_width="336dp"
+            android:layout_height="47dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/edit_text_bg_primary"
+            android:hint="End Date"
+            android:inputType="date"
+            android:paddingStart="16dp"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/id_start" />
+
+        <!-- Input Amount-->
+
+
+        <!-- Bottom  -->
+        <EditText
+            android:id="@+id/id_file"
+            android:layout_width="336dp"
+            android:layout_height="47dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/edit_text_bg_primary"
+            android:hint="File"
+            android:inputType="numberDecimal"
+            android:paddingStart="16dp"
+            android:textColor="@color/primary"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.484"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/id_end" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/id_btn_save"
+            android:layout_width="336dp"
+            android:layout_height="57dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_ripple_dark"
+            android:padding="12dp"
+            android:text="Save"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.484"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/id_file" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
