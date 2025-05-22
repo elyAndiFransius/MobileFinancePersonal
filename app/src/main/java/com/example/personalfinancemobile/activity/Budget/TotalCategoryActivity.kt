@@ -13,6 +13,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
+import com.example.personalfinancemobile.app.data.model.Budget
+import com.example.personalfinancemobile.app.data.model.Priode
+import com.example.personalfinancemobile.app.data.network.APIServices
+import com.example.personalfinancemobile.app.data.network.RetrofitInstance
 import com.example.personalfinancemobile.app.ui.adapter.Category
 
 class TotalCategoryActivity : AppCompatActivity() {
@@ -20,17 +24,19 @@ class TotalCategoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_total_category)
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        // Ambil data dari activy Category
+        val pemasukkan = intent.getIntExtra("pemasukkan", 0)
+        val priode = intent.getSerializableExtra("priode") as? Priode
 
-        val parcelableArray = intent.getParcelableArrayExtra("selected_categories")
+        // Ambil data dari activy Category
+        val parcelableArray = intent.getParcelableArrayExtra("Select_category")
         val selectedCategories = parcelableArray?.filterIsInstance<Category>()
-//        val btnNext = findViewById<Button>(R.id.btnNext)
-
+        val btnNext = findViewById<Button>(R.id.btnSave)
 
         var categoryAllocation = mapOf(
             "Transport" to 20,
@@ -42,8 +48,7 @@ class TotalCategoryActivity : AppCompatActivity() {
         )
 
         val container = findViewById<LinearLayout>(R.id.categoryContainer)
-
-        val totalBudget = 1_000_000
+        val totalBudget = pemasukkan
 
         selectedCategories?.forEach { category ->
             val persen = categoryAllocation[category.name] ?: 0
@@ -62,16 +67,20 @@ class TotalCategoryActivity : AppCompatActivity() {
             val txtName = itemView.findViewById<TextView>(R.id.txtCategoryName)
             val imgIcon = itemView.findViewById<ImageView>(R.id.imgCategory)
 
-
             txtName.text = "${category.name} - Rp $allocation (${persen}%)"
             imgIcon.setImageResource(category.image)
 
             container.addView(itemView)
         }
+
+//        val budget = Budget(selectedCategories)
+//        val BudgetService = RetrofitInstance.instance.create(APIServices::class.java)
+//
+//        BudgetService.createBudget()
             //  Untuk mengarakan kedalam activity TotalCategory
-//            btnNext.setOnClickListener{
-//                val intent = Intent(this, TotalCategoryPersenActivity::class.java)
-//                startActivity(intent)
-//        }
+            btnNext.setOnClickListener{
+                val intent = Intent(this, TotalCategoryPersenActivity::class.java)
+                startActivity(intent)
+        }
     }
 }

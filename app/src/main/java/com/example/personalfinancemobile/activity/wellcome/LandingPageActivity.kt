@@ -26,7 +26,7 @@ class LandingPageActivity : AppCompatActivity() {
         val get_start = findViewById<Button>(R.id.btn_start)
 
         get_start.setOnClickListener{
-            val intent = Intent(this, CategoriActivity::class.java)
+            val intent = Intent(this, BudgedSchedulingActivity::class.java)
             startActivity(intent)
         }
     }

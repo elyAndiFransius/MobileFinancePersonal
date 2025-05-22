@@ -31,7 +31,7 @@
 
     <!-- Ikon plus -->
     <ImageView
-        android:id="@+id/btnAdd"
+        android:id="@+id/id_add"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:src="@drawable/ic_add"

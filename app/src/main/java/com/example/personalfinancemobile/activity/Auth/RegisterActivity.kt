@@ -39,15 +39,11 @@ class RegisterActivity : AppCompatActivity() {
             val email = editTextEmail.text.toString()
             val password = editTextPassword.text.toString()
             val confirmPassword = editTextConfirmPassword.text.toString()
-
-
-
             // Optional: Validasi sederhana
             if (password != confirmPassword) {
                 Toast.makeText(this, "Password dan konfirmasi tidak sama", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-
             val user = User(name, email, password, confirmPassword)
 
             val userService = RetrofitInstance.instance.create(APIServices::class.java)

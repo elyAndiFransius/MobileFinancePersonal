@@ -10,6 +10,6 @@ interface APIServices {
     @POST("register")
     fun registerUser(@Body user: User): Call<User>
 
-    @POST("create")
+    @POST("budgets")
     fun createBudget(@Body budget: Budget ): Call<Budget>
 }
