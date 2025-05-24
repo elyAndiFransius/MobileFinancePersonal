@@ -1,10 +1,10 @@
 package com.example.personalfinancemobile.app.data.model
 enum class Priode {
-    HARIAN,
-    MINGGUAN,
-    BULANAN,
-    TAHUNAN,
-    CUSTOM
+    Harian,
+    Mingguan,
+    Bulanan,
+    Tahunan,
+    Custom
 }
 
 data class Budget(

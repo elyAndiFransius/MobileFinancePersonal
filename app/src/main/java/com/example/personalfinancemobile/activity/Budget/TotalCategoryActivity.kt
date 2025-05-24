@@ -2,7 +2,9 @@ package com.example.personalfinancemobile.activity.Budget
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -33,6 +35,14 @@ class TotalCategoryActivity : AppCompatActivity() {
         val pemasukkan = intent.getIntExtra("pemasukkan", 0)
         val priode = intent.getSerializableExtra("priode") as? Priode
 
+        // Untuk menampilkan kalimat pedukung untuk persentation pengeluaran
+        val textView2 = findViewById<TextView>(R.id.textView2)
+        priode?.let {
+            val pemasulanJumalah = "Rp %,d".format(pemasukkan).replace(',', '.')
+            val text = "This is a relevant presentation of <br> he <b>${it.name}</b> budget, which amounts <br> to <b>$pemasulanJumalah</b>."
+            textView2.text = Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY)
+        }
+
         // Ambil data dari activy Category
         val parcelableArray = intent.getParcelableArrayExtra("Select_category")
         val selectedCategories = parcelableArray?.filterIsInstance<Category>()
@@ -52,7 +62,6 @@ class TotalCategoryActivity : AppCompatActivity() {
 
         selectedCategories?.forEach { category ->
             val persen = categoryAllocation[category.name] ?: 0
-            val allocation = totalBudget * persen / 100
 
             val itemView = LayoutInflater.from(this)
                 .inflate(R.layout.item_kategori, null)
@@ -66,21 +75,21 @@ class TotalCategoryActivity : AppCompatActivity() {
 
             val txtName = itemView.findViewById<TextView>(R.id.txtCategoryName)
             val imgIcon = itemView.findViewById<ImageView>(R.id.imgCategory)
+            val btnAdd = itemView.findViewById<ImageView>(R.id.id_add)
 
-            txtName.text = "${category.name} - Rp $allocation (${persen}%)"
+            txtName.text = "${category.name}  (${persen}%)"
             imgIcon.setImageResource(category.image)
+            btnAdd.visibility = View.GONE
 
             container.addView(itemView)
-        }
 
-//        val budget = Budget(selectedCategories)
-//        val BudgetService = RetrofitInstance.instance.create(APIServices::class.java)
-//
-//        BudgetService.createBudget()
             //  Untuk mengarakan kedalam activity TotalCategory
-            btnNext.setOnClickListener{
+            btnNext.setOnClickListener {
                 val intent = Intent(this, TotalCategoryPersenActivity::class.java)
+                intent.putExtra("Kategory", selectedCategories.toTypedArray())
+                intent.putExtra("Jumlah", totalBudget)
                 startActivity(intent)
+            }
         }
     }
 }

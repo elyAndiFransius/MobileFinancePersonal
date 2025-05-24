@@ -39,7 +39,7 @@ class RegisterActivity : AppCompatActivity() {
             val email = editTextEmail.text.toString()
             val password = editTextPassword.text.toString()
             val confirmPassword = editTextConfirmPassword.text.toString()
-            // Optional: Validasi sederhana
+            // Optional: Validasi
             if (password != confirmPassword) {
                 Toast.makeText(this, "Password dan konfirmasi tidak sama", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener

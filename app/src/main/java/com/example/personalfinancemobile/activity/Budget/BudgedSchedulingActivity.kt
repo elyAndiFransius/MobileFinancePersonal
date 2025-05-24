@@ -30,6 +30,7 @@ class BudgedSchedulingActivity : AppCompatActivity() {
         val priodeOptions = listOf("Harian", "Mingguan", "Bulanan", "Tahunan", "Custom")
         val autoComplate = findViewById<AutoCompleteTextView>(R.id.id_priode)
 
+
         btnNext.setOnClickListener {
             val pemasukkanStr = jumlah.text.toString()
             val priodeStr = autoComplate.text.toString()
@@ -38,12 +39,12 @@ class BudgedSchedulingActivity : AppCompatActivity() {
                 val pemasukkan = pemasukkanStr.toInt()
 
                 val priode = when (priodeStr) {
-                    "Harian" -> Priode.HARIAN
-                    "Mingguan" -> Priode.MINGGUAN
-                    "Bulanan" -> Priode.BULANAN
-                    "Tahunan" -> Priode.TAHUNAN
-                    "Custom" -> Priode.CUSTOM
-                    else -> Priode.BULANAN  // Jika tidak di antara di atas maka akan di kembalikan ke default Bulanan
+                    "Harian" -> Priode.Harian
+                    "Mingguan" -> Priode.Mingguan
+                    "Bulanan" -> Priode.Bulanan
+                    "Tahunan" -> Priode.Tahunan
+                    "Custom" -> Priode.Custom
+                    else -> Priode.Bulanan  // Jika tidak di antara di atas maka akan di kembalikan ke default Bulanan
                 }
                 val intent = Intent(this, CategoriActivity::class.java)
                 intent.putExtra("pemasukkan", pemasukkan)
