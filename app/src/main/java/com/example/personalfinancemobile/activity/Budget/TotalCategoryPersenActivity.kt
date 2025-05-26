@@ -15,12 +15,15 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
 import com.example.personalfinancemobile.app.data.model.Budget
+import com.example.personalfinancemobile.app.data.model.BudgetRequest
+import com.example.personalfinancemobile.app.data.model.CategoryRequest
 import com.example.personalfinancemobile.app.data.model.Priode
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
 import com.example.personalfinancemobile.app.ui.adapter.Category
-import dalvik.system.ZipPathValidator.Callback
+import com.example.personalfinancemobile.app.data.model.Category as ModelCategory
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 
 
@@ -47,23 +50,24 @@ class TotalCategoryPersenActivity : AppCompatActivity() {
             "Miscellaneous" to 5
         )
 
-        val BudgetService = RetrofitInstance.instance.create(APIServices::class.java)
-        val budgetsToSend = mutableListOf<Budget>()
+
+        val budgetsToSend = mutableListOf<CategoryRequest>()
 
         val container = findViewById<LinearLayout>(R.id.categoryContainer)
         val totalBudget = pemasukkan
 
         selectedCategories?.forEach { category ->
             val persen = categoryAllocation[category.name] ?: 0
-            val allocation = totalBudget * persen / 100
+            val jumlah = totalBudget * persen / 100
+
+            categoryRequests.add(
+                CategoryRequest(
+                    name = category.name,
+                    jumlah = jumlah
+                )
+            )
 
             // Tambahkan ke daftar Budge
-            val budget = Budget(
-                pemasukkan = pemasukkan,
-                priode = Priode.Bulanan, // ini default nya bulanan
-                categoryId = category.id
-            )
-            budgetsToSend.add(budget)
 
             val itemView = LayoutInflater.from(this)
                 .inflate(R.layout.item_kategori, null)
@@ -79,16 +83,37 @@ class TotalCategoryPersenActivity : AppCompatActivity() {
             val imgIcon = itemView.findViewById<ImageView>(R.id.imgCategory)
             val bntAdd = itemView.findViewById<ImageView>(R.id.id_add)
 
-            txtName.text = "${category.name}  \t Rp.${allocation}"
+            txtName.text = "${category.name}  \t Rp.${jumlah}"
             imgIcon.setImageResource(category.image)
             bntAdd.visibility = View.GONE
             container.addView(itemView)
+
+            val categryModel = ModelCategory(
+                categoryId = category.id,
+                name = category.name,
+                jumlah = jumlah
+            )
+
+            val budget = Budget(
+                pemasukkan = pemasukkan,
+                priode = Priode.Bulanan, // ini default nya bulanan
+                categoryId = categryModel.categoryId
+
+            )
+            budgetsToSend.add(budget)
         }
+        val budgetToSend = BudgetRequest (
+            pemasukkan = pemasukan,
+            priode = "bulanan",
+            category = categoryRequests
+        )
+
 
         // kirim ke server
-        BudgetService.createBudget(budgetsToSend).equeue(object : Callback<Budget> {
-            override fun onResponese(call: Call<Budget>, response: Response<Budget>) {
-                if (response.isSuccessful && response.body() != null) {
+        val BudgetService = RetrofitInstance.instance.create(APIServices::class.java)
+        BudgetService.createBudget(budgetsToSend).enqueue(object : Callback<List<Budget>> {
+            override fun onResponse(call: Call<List<Budget>>, response: Response<List<Budget>>) {
+                if (response.isSuccessful  && response.body() != null) {
                     Toast.makeText(this@TotalCategoryPersenActivity, "Mantap sudah di rekap!!", Toast.LENGTH_SHORT).show()
                 } else {
                     val errorBody = response.errorBody()?.string()
@@ -97,7 +122,7 @@ class TotalCategoryPersenActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<Budget>, t: Throwable) {
+            override fun onFailure(call: Call<List<Budget>>, t: Throwable) {
                 Toast.makeText(this@TotalCategoryPersenActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
                 Log.e("BudgetError", "Throwable: ${t.message}")
             }
