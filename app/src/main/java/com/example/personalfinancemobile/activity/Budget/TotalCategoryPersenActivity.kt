@@ -21,6 +21,7 @@ import com.example.personalfinancemobile.app.data.model.Priode
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
 import com.example.personalfinancemobile.app.ui.adapter.Category
+import okhttp3.ResponseBody
 import com.example.personalfinancemobile.app.data.model.Category as ModelCategory
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,6 +38,7 @@ class TotalCategoryPersenActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        val priode = intent.getStringExtra("priode") ?: "harian"
         val pemasukkan = intent.getIntExtra("Jumlah", 0)
         val parcelableArray = intent.getParcelableArrayExtra("Kategory")
         val selectedCategories = parcelableArray?.filterIsInstance<Category>()
@@ -50,15 +52,16 @@ class TotalCategoryPersenActivity : AppCompatActivity() {
             "Miscellaneous" to 5
         )
 
-
-        val budgetsToSend = mutableListOf<CategoryRequest>()
+        val categoryRequests = mutableListOf<CategoryRequest>()
 
         val container = findViewById<LinearLayout>(R.id.categoryContainer)
         val totalBudget = pemasukkan
+        val priodee = priode
 
         selectedCategories?.forEach { category ->
             val persen = categoryAllocation[category.name] ?: 0
             val jumlah = totalBudget * persen / 100
+
 
             categoryRequests.add(
                 CategoryRequest(
@@ -66,9 +69,7 @@ class TotalCategoryPersenActivity : AppCompatActivity() {
                     jumlah = jumlah
                 )
             )
-
             // Tambahkan ke daftar Budge
-
             val itemView = LayoutInflater.from(this)
                 .inflate(R.layout.item_kategori, null)
 
@@ -88,32 +89,18 @@ class TotalCategoryPersenActivity : AppCompatActivity() {
             bntAdd.visibility = View.GONE
             container.addView(itemView)
 
-            val categryModel = ModelCategory(
-                categoryId = category.id,
-                name = category.name,
-                jumlah = jumlah
-            )
-
-            val budget = Budget(
-                pemasukkan = pemasukkan,
-                priode = Priode.Bulanan, // ini default nya bulanan
-                categoryId = categryModel.categoryId
-
-            )
-            budgetsToSend.add(budget)
         }
-        val budgetToSend = BudgetRequest (
-            pemasukkan = pemasukan,
-            priode = "bulanan",
-            category = categoryRequests
+        val budgetToSend = BudgetRequest(
+            pemasukkan = pemasukkan,
+            priode = priode,
+            categories = categoryRequests
         )
-
 
         // kirim ke server
         val BudgetService = RetrofitInstance.instance.create(APIServices::class.java)
-        BudgetService.createBudget(budgetsToSend).enqueue(object : Callback<List<Budget>> {
-            override fun onResponse(call: Call<List<Budget>>, response: Response<List<Budget>>) {
-                if (response.isSuccessful  && response.body() != null) {
+        BudgetService.createBudgetRequest(budgetToSend).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
                     Toast.makeText(this@TotalCategoryPersenActivity, "Mantap sudah di rekap!!", Toast.LENGTH_SHORT).show()
                 } else {
                     val errorBody = response.errorBody()?.string()
@@ -122,7 +109,7 @@ class TotalCategoryPersenActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<List<Budget>>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Toast.makeText(this@TotalCategoryPersenActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
                 Log.e("BudgetError", "Throwable: ${t.message}")
             }

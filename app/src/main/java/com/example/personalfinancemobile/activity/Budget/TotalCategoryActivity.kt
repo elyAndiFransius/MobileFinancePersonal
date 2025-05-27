@@ -87,6 +87,7 @@ class TotalCategoryActivity : AppCompatActivity() {
             btnNext.setOnClickListener {
                 val intent = Intent(this, TotalCategoryPersenActivity::class.java)
                 intent.putExtra("Kategory", selectedCategories.toTypedArray())
+                intent.putExtra("priode", priode ?: "harian")
                 intent.putExtra("Jumlah", totalBudget)
                 startActivity(intent)
             }
