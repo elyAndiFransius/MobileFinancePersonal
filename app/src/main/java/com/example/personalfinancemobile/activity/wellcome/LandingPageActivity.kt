@@ -11,6 +11,7 @@ import com.example.personalfinancemobile.R
 import com.example.personalfinancemobile.activity.Auth.RegisterActivity
 import com.example.personalfinancemobile.activity.Budget.BudgedSchedulingActivity
 import com.example.personalfinancemobile.activity.Budget.CategoriActivity
+import com.example.personalfinancemobile.activity.target.InputTargetActivity
 
 class LandingPageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +27,7 @@ class LandingPageActivity : AppCompatActivity() {
         val get_start = findViewById<Button>(R.id.btn_start)
 
         get_start.setOnClickListener{
-            val intent = Intent(this, BudgedSchedulingActivity::class.java)
+            val intent = Intent(this, InputTargetActivity::class.java)
             startActivity(intent)
         }
     }

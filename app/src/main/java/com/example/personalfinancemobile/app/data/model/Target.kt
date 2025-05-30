@@ -1,0 +1,12 @@
+package com.example.personalfinancemobile.app.data.model
+
+import java.util.Date
+
+data class Target(
+    val gol: String,
+    val targetAmount: Int,
+    val currentAmount: Int,
+    val startDate: Date,
+    val endDate: Date,
+    val file: String,
+    )
