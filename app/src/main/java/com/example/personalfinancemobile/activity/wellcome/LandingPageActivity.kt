@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
+import com.example.personalfinancemobile.activity.Auth.LoginActivity
 import com.example.personalfinancemobile.activity.Auth.RegisterActivity
 import com.example.personalfinancemobile.activity.Budget.BudgedSchedulingActivity
 import com.example.personalfinancemobile.activity.Budget.CategoriActivity
@@ -24,10 +25,12 @@ class LandingPageActivity : AppCompatActivity() {
             insets
         }
 
+
+
         val get_start = findViewById<Button>(R.id.btn_start)
 
         get_start.setOnClickListener{
-            val intent = Intent(this, InputTargetActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
     }

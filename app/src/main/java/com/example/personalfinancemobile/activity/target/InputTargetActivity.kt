@@ -1,5 +1,7 @@
+// Package tempat activity ini berada
 package com.example.personalfinancemobile.activity.target
 
+// Import semua library yang dibutuhkan
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
@@ -19,18 +21,23 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import okhttp3.ResponseBody
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-import com.example.personalfinancemobile.app.data.model.Target as ModelTarget
+import com.example.personalfinancemobile.app.data.model.Target as ModelTarget // Aliasing nama class biar tidak bentrok
 
 class InputTargetActivity : AppCompatActivity() {
 
     private val PICK_FILE_REQUEST_CODE = 1001
+
     private lateinit var fileEditText: EditText
     private lateinit var btn_save: Button
     private lateinit var gol: EditText
@@ -51,7 +58,6 @@ class InputTargetActivity : AppCompatActivity() {
             insets
         }
 
-        // Inisialisasi view
         btn_save = findViewById(R.id.id_btn_save)
         gol = findViewById(R.id.id_gol)
         targetAmount = findViewById(R.id.id_amount)
@@ -60,43 +66,34 @@ class InputTargetActivity : AppCompatActivity() {
         endDate = findViewById(R.id.id_end)
         fileEditText = findViewById(R.id.id_file)
 
-        // Format tanggal
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
-        // Klik date picker untuk StartDate
         startDate.setOnClickListener {
             val calendar = Calendar.getInstance()
-            val datePicker = DatePickerDialog(
-                this,
-                { _, year, month, dayOfMonth ->
-                    val selectedDate = Calendar.getInstance()
-                    selectedDate.set(year, month, dayOfMonth)
-                    startDate.setText(dateFormat.format(selectedDate.time))
-                },
+            DatePickerDialog(this, { _, year, month, dayOfMonth ->
+                val selectedDate = Calendar.getInstance()
+                selectedDate.set(year, month, dayOfMonth)
+                startDate.setText(dateFormat.format(selectedDate.time))
+            },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH)
-            )
-            datePicker.show()
+            ).show()
         }
 
-        // Klik date picker untuk EndDate
         endDate.setOnClickListener {
-            val kalender = Calendar.getInstance()
-            val datePicker = DatePickerDialog(
-                this,
-                { _, year, month, dayOfMonth ->
-                    val  selectedDate = Calendar.getInstance()
-                        selectedDate.set(year, month, dayOfMonth)
-                        endDate.setText(dateFormat.format(selectedDate.time))
-                },
-                kalender.get(Calendar.YEAR),
-                kalender.get(Calendar.MONTH),
-                kalender.get(Calendar.DAY_OF_MONTH)
-            )
-            datePicker.show()
+            val calendar = Calendar.getInstance()
+            DatePickerDialog(this, { _, year, month, dayOfMonth ->
+                val selectedDate = Calendar.getInstance()
+                selectedDate.set(year, month, dayOfMonth)
+                endDate.setText(dateFormat.format(selectedDate.time))
+            },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            ).show()
         }
-        // Klik upload file
+
         fileEditText.setOnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.type = "*/*"
@@ -104,14 +101,12 @@ class InputTargetActivity : AppCompatActivity() {
             startActivityForResult(Intent.createChooser(intent, "Pilih File"), PICK_FILE_REQUEST_CODE)
         }
 
-        // Klik tombol simpan
         btn_save.setOnClickListener {
             val golString = gol.text.toString()
             val targetAmountString = targetAmount.text.toString()
             val currentAmountString = currentAmount.text.toString()
             val startDateString = startDate.text.toString()
             val endDateString = endDate.text.toString()
-            val fileString = fileEditText.text.toString()
 
             val targetAmountInt = targetAmountString.toIntOrNull()
             val currentAmountInt = currentAmountString.toIntOrNull()
@@ -128,57 +123,71 @@ class InputTargetActivity : AppCompatActivity() {
                 null
             }
 
-            if (targetAmountInt != null && currentAmountInt != null && startDateParsed != null && endDateParsed != null) {
-                val targetToSend = ModelTarget(
-                    gol = golString,
-                    targetAmount = targetAmountInt,
-                    currentAmount = currentAmountInt,
-                    startDate = startDateParsed,
-                    endDate = endDateParsed,
-                    file = fileString
-                )
+            fun createPartFromString(value: String): RequestBody {
+                return value.toRequestBody("text/plain".toMediaTypeOrNull())
+            }
 
-                // TODO: Kirim targetToSend ke server atau simpan ke database
-                val targetService = RetrofitInstance.instance.create(APIServices::class.java)
-                targetService.createTarget(targetToSend).enqueue(object : Callback<ResponseBody> {
-                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>){
+            if (targetAmountInt != null && currentAmountInt != null && startDateParsed != null && endDateParsed != null) {
+                val golPart = createPartFromString(golString)
+                val targetAmountPart = createPartFromString(targetAmountInt.toString())
+                val currentAmountPart = createPartFromString(currentAmountInt.toString())
+                val startDatePart = createPartFromString(startDateString)
+                val endDatePart = createPartFromString(endDateString)
+
+                var filePart: MultipartBody.Part? = null
+                selectedFileUri?.let { uri ->
+                    val inputStream = contentResolver.openInputStream(uri)
+                    val fileBytes = inputStream?.readBytes()
+                    val fileName = getFileNameFromUri(this, uri)
+
+                    val requestFile = fileBytes?.toRequestBody(
+                        contentResolver.getType(uri)?.toMediaTypeOrNull()
+                    ) ?: run {
+                        Toast.makeText(this, "Gagal membaca file", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
+
+                    filePart = MultipartBody.Part.createFormData("file", fileName, requestFile)
+                }
+
+                val apiService = RetrofitInstance.getInstance(this).create(APIServices::class.java)
+                apiService.createTarget(
+                    golPart, targetAmountPart, currentAmountPart, startDatePart, endDatePart, filePart
+                ).enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                         if (response.isSuccessful) {
-                            Toast.makeText(this@InputTargetActivity, "Target anda berhasil di tambahkan", Toast.LENGTH_SHORT).show()
-                        }else{
+                            Toast.makeText(this@InputTargetActivity, "Target anda berhasil ditambahkan", Toast.LENGTH_SHORT).show()
+                        } else {
                             val errorBody = response.errorBody()?.string()
-                            Log.e("TargetError", "Target gagal di buat: $errorBody ")
+                            Log.e("TargetError", "Target gagal dibuat: $errorBody")
                             Toast.makeText(this@InputTargetActivity, "Coba lagi", Toast.LENGTH_SHORT).show()
                         }
-                }
+                    }
+
                     override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                         Toast.makeText(this@InputTargetActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
                         Log.e("TargetError", "Throwable: ${t.message}")
                     }
                 })
-
-
             } else {
-                // TODO: Membuat Menu Konfirmasi agar semua inputan di isi
+                Toast.makeText(this@InputTargetActivity, "Mohon isi semua inputan!", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    // Fungsi untuk mengambil hasil file dari galeri
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == PICK_FILE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val uri = data?.data
             if (uri != null) {
+                selectedFileUri = uri
                 val fileName = getFileNameFromUri(this, uri)
                 fileEditText.setText(fileName)
             }
-            selectedFileUri = uri
-
         }
     }
 
-    // Fungsi utilitas untuk mengambil nama file dari URI
     private fun getFileNameFromUri(context: Context, uri: Uri): String {
         var result: String? = null
         if (uri.scheme == "content") {

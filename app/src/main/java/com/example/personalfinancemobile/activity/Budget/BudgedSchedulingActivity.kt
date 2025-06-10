@@ -5,12 +5,16 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
+import com.example.personalfinancemobile.activity.Auth.LoginActivity
 import com.example.personalfinancemobile.app.data.model.Budget
 import com.example.personalfinancemobile.app.data.model.Category
 import com.example.personalfinancemobile.app.data.model.Priode
@@ -29,6 +33,11 @@ class BudgedSchedulingActivity : AppCompatActivity() {
         val jumlah = findViewById<EditText>(R.id.id_belance)
         val priodeOptions = listOf("Harian", "Mingguan", "Bulanan", "Tahunan", "Custom")
         val autoComplate = findViewById<AutoCompleteTextView>(R.id.id_priode)
+        val id_back = findViewById<ImageView>(R.id.id_back)
+
+        id_back.setOnClickListener {
+            showLogoutConfirmationDialog()
+        }
 
 
         btnNext.setOnClickListener {
@@ -68,5 +77,36 @@ class BudgedSchedulingActivity : AppCompatActivity() {
 
             }
 
+    }
+
+    private fun showLogoutConfirmationDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Konfirmasi Logout")
+        builder.setMessage("Apakah Anda yakin ingin keluar dari aplikasi?")
+
+
+        builder.setPositiveButton("Ya, Keluar") { dialog, _ ->
+            dialog.dismiss()
+
+            // Tampilkan pesan logout
+            Toast.makeText(this, "Sedang logout...", Toast.LENGTH_SHORT).show()
+
+            // Panggil method logout
+            LoginActivity.logout(this)
+        }
+
+        builder.setNegativeButton("Batal") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        // Agar dialog tidak bisa di-dismiss dengan tap di luar
+        builder.setCancelable(false)
+
+        val dialog = builder.create()
+        dialog.show()
+
+        // Styling tombol (opsional)
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(resources.getColor(R.color.red))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(resources.getColor(R.color.gray))
     }
 }

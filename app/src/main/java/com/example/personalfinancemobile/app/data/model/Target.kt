@@ -1,5 +1,6 @@
 package com.example.personalfinancemobile.app.data.model
 
+import androidx.core.app.NotificationCompat.MessagingStyle.Message
 import java.util.Date
 
 data class Target(
@@ -10,3 +11,9 @@ data class Target(
     val endDate: Date,
     val file: String,
     )
+
+data class TargetResponse(
+    val success: Boolean,
+    val message: String,
+    val data: List<Target>
+)

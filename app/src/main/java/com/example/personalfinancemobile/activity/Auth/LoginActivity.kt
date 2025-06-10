@@ -1,13 +1,28 @@
 package com.example.personalfinancemobile.activity.Auth
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
+import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
+import com.example.personalfinancemobile.activity.Budget.BudgedSchedulingActivity
+import com.example.personalfinancemobile.activity.MainActivity
+import com.example.personalfinancemobile.app.data.model.Auth.Constants
+import com.example.personalfinancemobile.app.data.model.Auth.loginRequest
+import com.example.personalfinancemobile.app.data.model.Auth.loginResponse
+import com.example.personalfinancemobile.app.data.network.APIServices
+import com.example.personalfinancemobile.app.data.network.RetrofitInstance
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,11 +35,141 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
-        val tv_sign_in = findViewById<TextView>(R.id.tv_sign_up)
+        // Cek apakah user sudah login sebelumnya
+        val sharePref: SharedPreferences = getSharedPreferences(Constants.SHARED_PREF_NAME, MODE_PRIVATE)
 
-        tv_sign_in.setOnClickListener{
-            val intent = Intent(this, RegisterActivity::class.java)
+        // Gunakan key yang konsisten dan cek token yang valid
+        val savedToken = sharePref.getString(Constants.TOKEN_KEY, null)
+        val isLoggedIn = sharePref.getBoolean("isLoggedIn", false)
+
+        // Jika user sudah login dan token tersedia, langsung ke main activity
+        if (isLoggedIn && !savedToken.isNullOrEmpty()) {
+            Log.d("LoginActivity", "User sudah login sebelumnya, token: $savedToken")
+            navigateToMainActivity()
+            return
+        }
+
+        // Setup UI components
+        val login = findViewById<Button>(R.id.btn_login)
+        val register = findViewById<TextView>(R.id.tv_sign_up)
+
+        register.setOnClickListener {
+            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
             startActivity(intent)
+        }
+
+        login.setOnClickListener {
+            performLogin()
+        }
+    }
+
+    private fun performLogin() {
+        val email = findViewById<EditText>(R.id.editTextEmail)
+        val password = findViewById<EditText>(R.id.editTextPassword)
+
+        val emailString = email.text.toString().trim()
+        val passwordString = password.text.toString().trim()
+
+        // Validasi input
+        if (emailString.isEmpty() || passwordString.isEmpty()) {
+            Toast.makeText(this@LoginActivity, "Email dan Password tidak boleh kosong", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Validasi format email
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailString).matches()) {
+            Toast.makeText(this@LoginActivity, "Format email tidak valid", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val request = loginRequest(emailString, passwordString)
+
+        // Disable button saat proses login
+        val loginButton = findViewById<Button>(R.id.btn_login)
+        loginButton.isEnabled = false
+        loginButton.text = "Loading..."
+
+        // API Call
+        val userService = RetrofitInstance.getInstance(this).create(APIServices::class.java)
+        userService.login(request).enqueue(object : Callback<loginResponse> {
+            override fun onResponse(call: Call<loginResponse>, response: Response<loginResponse>) {
+                // Re-enable button
+                loginButton.isEnabled = true
+                loginButton.text = "Login"
+
+                if (response.isSuccessful) {
+                    val loginResponse = response.body()
+                    val token = loginResponse?.access_token
+
+                    if (!token.isNullOrEmpty()) {
+                        // Simpan token dan status login
+                        saveLoginData(token)
+
+                        Toast.makeText(this@LoginActivity, "Berhasil Login", Toast.LENGTH_SHORT).show()
+                        Log.d("LoginActivity", "Login berhasil, token disimpan")
+
+                        navigateToMainActivity()
+                    } else {
+                        Log.e("LoginActivity", "Token kosong dari response")
+                        Toast.makeText(this@LoginActivity, "Token tidak valid", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    val errorMessage = when (response.code()) {
+                        401 -> "Email atau password salah"
+                        404 -> "User tidak ditemukan"
+                        500 -> "Server error, coba lagi nanti"
+                        else -> "Login gagal (${response.code()})"
+                    }
+                    Toast.makeText(this@LoginActivity, errorMessage, Toast.LENGTH_SHORT).show()
+                    Log.e("LoginActivity", "Login gagal: ${response.code()} - ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<loginResponse>, t: Throwable) {
+                // Re-enable button
+                loginButton.isEnabled = true
+                loginButton.text = "Login"
+
+                Toast.makeText(this@LoginActivity, "Koneksi bermasalah: ${t.message}", Toast.LENGTH_SHORT).show()
+                Log.e("LoginActivity", "Network error: ${t.message}")
+            }
+        })
+    }
+
+    private fun saveLoginData(token: String) {
+        val sharePref = getSharedPreferences(Constants.SHARED_PREF_NAME, MODE_PRIVATE)
+        val editor = sharePref.edit()
+
+        // Simpan token dan status login
+        editor.putString(Constants.TOKEN_KEY, token)
+        editor.putBoolean("isLoggedIn", true)
+
+        // Opsional: simpan timestamp login untuk validasi expiry
+        editor.putLong("loginTimestamp", System.currentTimeMillis())
+
+        editor.apply() // Gunakan apply() untuk async, commit() untuk sync
+
+        Log.d("LoginActivity", "Token dan status login berhasil disimpan: $token")
+    }
+
+    private fun navigateToMainActivity() {
+        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+        startActivity(intent)
+        finish() // Tutup LoginActivity agar user tidak bisa kembali dengan tombol back
+    }
+
+    // Method untuk logout (panggil dari activity lain jika diperlukan)
+    companion object {
+        fun logout(context: android.content.Context) {
+            val sharePref = context.getSharedPreferences(Constants.SHARED_PREF_NAME, android.content.Context.MODE_PRIVATE)
+            val editor = sharePref.edit()
+            editor.clear() // Hapus semua data
+            editor.apply()
+
+            // Navigate ke login activity
+            val intent = Intent(context, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            context.startActivity(intent)
         }
     }
 }

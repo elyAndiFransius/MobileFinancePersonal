@@ -62,7 +62,6 @@ class TotalCategoryPersenActivity : AppCompatActivity() {
             val persen = categoryAllocation[category.name] ?: 0
             val jumlah = totalBudget * persen / 100
 
-
             categoryRequests.add(
                 CategoryRequest(
                     name = category.name,
@@ -97,7 +96,7 @@ class TotalCategoryPersenActivity : AppCompatActivity() {
         )
 
         // kirim ke server
-        val BudgetService = RetrofitInstance.instance.create(APIServices::class.java)
+        val BudgetService = RetrofitInstance.getInstance(this).create(APIServices::class.java)
         BudgetService.createBudgetRequest(budgetToSend).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {

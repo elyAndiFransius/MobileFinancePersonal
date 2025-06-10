@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.personalfinancemobile.R
+import com.example.personalfinancemobile.activity.target.InputTargetActivity
 import com.example.personalfinancemobile.app.data.model.User
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
@@ -46,11 +47,15 @@ class RegisterActivity : AppCompatActivity() {
             }
             val user = User(name, email, password, confirmPassword)
 
-            val userService = RetrofitInstance.instance.create(APIServices::class.java)
+            val userService = RetrofitInstance.getInstance(this).create(APIServices::class.java)
             userService.registerUser(user).enqueue(object : Callback<User> {
                 override fun onResponse(call: Call<User>, response: Response<User>) {
                     if (response.isSuccessful && response.body() != null) {
                         Toast.makeText(this@RegisterActivity, "Register berhasil!", Toast.LENGTH_SHORT).show()
+
+                        val inten = Intent(this@RegisterActivity, LoginActivity::class.java)
+                        startActivity(inten)
+                        finish()
                     } else {
                         val errorBody = response.errorBody()?.string()
                         Log.e("RegisterError", "Gagal Register: $errorBody")
