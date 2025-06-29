@@ -11,18 +11,19 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/vw_url_image"
-        android:layout_width="400dp"
-        android:layout_height="300dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@drawable/background_rounded_target">
         <!-- Gambar header -->
             <ImageView
-                android:id="@+id/textViewUrl"
+                android:id="@+id/ImgViewUrl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="40dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -34,11 +35,12 @@
     <!-- Container Form -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/form_container"
-        android:layout_width="366dp"
-        android:layout_height="461dp"
-        android:layout_margin="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:padding="30dp"
         android:background="@drawable/rounded_background"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -236,8 +238,8 @@
         <!-- Bottom  -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/id_btn_back"
-            android:layout_width="336dp"
-            android:layout_height="57dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_marginTop="40dp"
             android:background="@drawable/button_ripple_white"
             android:padding="12dp"
@@ -253,8 +255,8 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/id_btn_record"
-            android:layout_width="336dp"
-            android:layout_height="57dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:background="@drawable/button_ripple_dark"
             android:padding="12dp"

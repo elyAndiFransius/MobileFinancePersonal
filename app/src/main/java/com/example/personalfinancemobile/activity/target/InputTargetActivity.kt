@@ -11,7 +11,6 @@ import android.os.Bundle
 import android.provider.OpenableColumns
 import android.util.Log
 import android.widget.Button
-import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -21,6 +20,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
+import com.example.personalfinancemobile.utils.SessionManager
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -32,7 +32,6 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-import com.example.personalfinancemobile.app.data.model.Target as ModelTarget // Aliasing nama class biar tidak bentrok
 
 class InputTargetActivity : AppCompatActivity() {
 
@@ -149,14 +148,16 @@ class InputTargetActivity : AppCompatActivity() {
 
                     filePart = MultipartBody.Part.createFormData("file", fileName, requestFile)
                 }
-
+                val sessionManager = SessionManager(this)
                 val apiService = RetrofitInstance.getInstance(this).create(APIServices::class.java)
+                val token = sessionManager.fetchAuthToken()
                 apiService.createTarget(
-                    golPart, targetAmountPart, currentAmountPart, startDatePart, endDatePart, filePart
+                    golPart, targetAmountPart, currentAmountPart, startDatePart, endDatePart, filePart, "Bearer $token"
                 ).enqueue(object : Callback<ResponseBody> {
                     override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                         if (response.isSuccessful) {
                             Toast.makeText(this@InputTargetActivity, "Target anda berhasil ditambahkan", Toast.LENGTH_SHORT).show()
+                            navigateToMainActivity()
                         } else {
                             val errorBody = response.errorBody()?.string()
                             Log.e("TargetError", "Target gagal dibuat: $errorBody")
@@ -206,5 +207,9 @@ class InputTargetActivity : AppCompatActivity() {
             }
         }
         return result ?: "unknown_file"
+    }
+    private fun navigateToMainActivity() {
+        val intent = Intent(this@InputTargetActivity, MainTargetActivity::class.java)
+        startActivity(intent)
     }
 }

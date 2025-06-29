@@ -20,11 +20,14 @@ import com.example.personalfinancemobile.app.data.model.Auth.loginRequest
 import com.example.personalfinancemobile.app.data.model.Auth.loginResponse
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
+import com.example.personalfinancemobile.utils.SessionManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
+    private lateinit var sessionManager: SessionManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -35,16 +38,16 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
+        sessionManager = SessionManager(this)
         // Cek apakah user sudah login sebelumnya
-        val sharePref: SharedPreferences = getSharedPreferences(Constants.SHARED_PREF_NAME, MODE_PRIVATE)
+        // val sharePref: SharedPreferences = getSharedPreferences(Constants.SHARED_PREF_NAME, MODE_PRIVATE)
 
         // Gunakan key yang konsisten dan cek token yang valid
-        val savedToken = sharePref.getString(Constants.TOKEN_KEY, null)
-        val isLoggedIn = sharePref.getBoolean("isLoggedIn", false)
+        // val savedToken = sharePref.getString(Constants.TOKEN_KEY, null)
+        // val isLoggedIn = sharePref.getBoolean("isLoggedIn", false)
 
         // Jika user sudah login dan token tersedia, langsung ke main activity
-        if (isLoggedIn && !savedToken.isNullOrEmpty()) {
-            Log.d("LoginActivity", "User sudah login sebelumnya, token: $savedToken")
+        if (sessionManager.isLoggedIn()) {
             navigateToMainActivity()
             return
         }
@@ -101,10 +104,16 @@ class LoginActivity : AppCompatActivity() {
                     val loginResponse = response.body()
                     val token = loginResponse?.access_token
 
-                    if (!token.isNullOrEmpty()) {
-                        // Simpan token dan status login
-                        saveLoginData(token)
+                    if (!token.isNullOrEmpty() && loginResponse?.user != null) {
 
+                        val user = loginResponse.user
+                        // Simpan token dan status login
+                        saveLoginData(
+                            token,
+                            user.id.toString(),
+                            user.name ?: "",
+                            user.email ?: ""
+                        )
                         Toast.makeText(this@LoginActivity, "Berhasil Login", Toast.LENGTH_SHORT).show()
                         Log.d("LoginActivity", "Login berhasil, token disimpan")
 
@@ -136,20 +145,14 @@ class LoginActivity : AppCompatActivity() {
         })
     }
 
-    private fun saveLoginData(token: String) {
-        val sharePref = getSharedPreferences(Constants.SHARED_PREF_NAME, MODE_PRIVATE)
-        val editor = sharePref.edit()
+    private fun saveLoginData(token: String, userId: String, userName: String, userEmail : String) {
+        val sessionManager = SessionManager(this)
 
-        // Simpan token dan status login
-        editor.putString(Constants.TOKEN_KEY, token)
-        editor.putBoolean("isLoggedIn", true)
+        sessionManager.saveAuthToken(token)
+        sessionManager.saveUserData(userId, userName, userEmail)
 
-        // Opsional: simpan timestamp login untuk validasi expiry
-        editor.putLong("loginTimestamp", System.currentTimeMillis())
 
-        editor.apply() // Gunakan apply() untuk async, commit() untuk sync
-
-        Log.d("LoginActivity", "Token dan status login berhasil disimpan: $token")
+        Log.d("LoginActivity", "Token dan status login berhasil disimpan: $token, $userId, $userEmail")
     }
 
     private fun navigateToMainActivity() {

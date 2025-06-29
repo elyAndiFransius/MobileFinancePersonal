@@ -21,6 +21,7 @@ import com.example.personalfinancemobile.app.data.model.Priode
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
 import com.example.personalfinancemobile.app.ui.adapter.Category
+import com.example.personalfinancemobile.utils.SessionManager
 import okhttp3.ResponseBody
 import com.example.personalfinancemobile.app.data.model.Category as ModelCategory
 import retrofit2.Call
@@ -89,15 +90,16 @@ class TotalCategoryPersenActivity : AppCompatActivity() {
             container.addView(itemView)
 
         }
+        val sessionManager = SessionManager(this)
+        val token = sessionManager.fetchAuthToken()
         val budgetToSend = BudgetRequest(
             pemasukkan = pemasukkan,
             priode = priode,
             categories = categoryRequests
         )
-
         // kirim ke server
         val BudgetService = RetrofitInstance.getInstance(this).create(APIServices::class.java)
-        BudgetService.createBudgetRequest(budgetToSend).enqueue(object : Callback<ResponseBody> {
+        BudgetService.createBudgetRequest(budgetToSend, "Bearer $token").enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     Toast.makeText(this@TotalCategoryPersenActivity, "Mantap sudah di rekap!!", Toast.LENGTH_SHORT).show()

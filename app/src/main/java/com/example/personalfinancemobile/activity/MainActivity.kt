@@ -10,8 +10,11 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
 import com.example.personalfinancemobile.activity.Budget.BudgedSchedulingActivity
+import com.example.personalfinancemobile.activity.Transaksi.MainActivity as Transaksi
 import com.example.personalfinancemobile.activity.Budget.CategoriActivity
 import com.example.personalfinancemobile.activity.target.AddProgresTargetActivity
+import com.example.personalfinancemobile.activity.target.InputTargetActivity
+import com.example.personalfinancemobile.activity.target.MainTargetActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,11 +62,11 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
     private fun records(){
-        val intent = Intent(this@MainActivity, CategoriActivity::class.java)
+        val intent = Intent(this@MainActivity, Transaksi::class.java)
         startActivity(intent)
     }
     private fun spanding(){
-        val intent = Intent(this@MainActivity, AddProgresTargetActivity::class.java)
+        val intent = Intent(this@MainActivity, MainTargetActivity::class.java)
         startActivity(intent)
 
     }

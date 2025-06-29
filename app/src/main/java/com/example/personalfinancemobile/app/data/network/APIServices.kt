@@ -29,7 +29,10 @@ interface APIServices {
     fun login(@Body request: loginRequest): Call<loginResponse>
 
     @POST("budgets")
-    fun createBudgetRequest(@Body budget: BudgetRequest): Call<ResponseBody>
+    fun createBudgetRequest(
+        @Body budget: BudgetRequest,
+        @Header("Authorization") token: String
+    ): Call<ResponseBody>
 
     @Multipart
     @POST("targets")
@@ -39,7 +42,8 @@ interface APIServices {
         @Part("currentAmount") currentAmount: RequestBody,
         @Part("startDate") startDate: RequestBody,
         @Part("endDate") endDate: RequestBody,
-        @Part file: MultipartBody.Part? // bisa null
+        @Part file: MultipartBody.Part?, // bisa null
+        @Header("Authorization") token: String
     ): Call<ResponseBody>
 
     @GET("targets")
