@@ -41,7 +41,7 @@ class TransactionAdapter (
         holder.tvAmount.setTextColor(
             ContextCompat.getColor(
                 holder.itemView.context,
-                if (isIncome) R.color.text_buttom else R.color.red
+                if (isIncome) R.color.blue else R.color.red
             )
         )
         Log.d("TransactionAdapter", "Bind item: ${item.descripsi} - ${item.jumlah}")

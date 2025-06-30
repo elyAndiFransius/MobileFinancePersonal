@@ -9,6 +9,7 @@ import com.example.personalfinancemobile.app.data.model.BudgetRequest
 import com.example.personalfinancemobile.app.data.model.Target
 import com.example.personalfinancemobile.app.data.model.TargetResponse
 import com.example.personalfinancemobile.app.data.model.TransactionModel
+import com.example.personalfinancemobile.app.data.model.TransactionResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import com.example.personalfinancemobile.app.data.model.Target as TargetModel
@@ -72,7 +73,7 @@ interface APIServices {
     @GET("transaksi/index")
     fun indexTransaction(
         @Header("Authorization") token: String
-    ): Call<List<TransactionModel>>
+    ): Call<TransactionResponse>
 
 
 }

@@ -16,8 +16,6 @@ import androidx.core.view.ViewCompat
 import java.text.SimpleDateFormat
 import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
-import com.example.personalfinancemobile.app.data.model.BudgetRequest
-import com.example.personalfinancemobile.app.data.model.TransactionModel
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
 import java.util.Calendar
@@ -27,11 +25,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import java.util.Locale
-import kotlin.String
 
 class AddTransactionActivity : AppCompatActivity() {
     private var  selectedCategoryId: Int? = null
@@ -55,6 +49,7 @@ class AddTransactionActivity : AppCompatActivity() {
         // Untuk masukkan Type Transaction
         val types = listOf("Income", "Expense")
 
+        // val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, types)
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, types)
         type.setAdapter(adapter)
 
