@@ -6,7 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
-        private const val BASE_URL = "http://192.168.105.204:8000/api/" // untuk emulator Android akses localhost
+        private const val BASE_URL = "http://192.168.225.204:8000/api/" // untuk emulator Android akses localhost
 
     fun getInstance(context: Context): Retrofit {
         val client = OkHttpClient.Builder()

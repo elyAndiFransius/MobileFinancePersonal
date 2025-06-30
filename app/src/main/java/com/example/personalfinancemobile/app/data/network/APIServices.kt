@@ -8,12 +8,15 @@ import com.example.personalfinancemobile.app.data.model.Budget
 import com.example.personalfinancemobile.app.data.model.BudgetRequest
 import com.example.personalfinancemobile.app.data.model.Target
 import com.example.personalfinancemobile.app.data.model.TargetResponse
+import com.example.personalfinancemobile.app.data.model.TransactionModel
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import com.example.personalfinancemobile.app.data.model.Target as TargetModel
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
@@ -21,19 +24,22 @@ import retrofit2.http.POST
 import retrofit2.http.Part
 
 interface APIServices {
+
+    // Authentifikasi
     @POST("register")
     fun registerUser(@Body user: User): Call<User>
-
 
     @POST("login")
     fun login(@Body request: loginRequest): Call<loginResponse>
 
+    // Budget
     @POST("budgets")
     fun createBudgetRequest(
         @Body budget: BudgetRequest,
         @Header("Authorization") token: String
     ): Call<ResponseBody>
 
+    // Target
     @Multipart
     @POST("targets")
     fun createTarget(
@@ -50,5 +56,23 @@ interface APIServices {
     fun getTarget(
         @Header("Authorization") token:String
     ): Call<TargetResponse>
+
+    //Transaction
+    @FormUrlEncoded
+    @POST("transaksi")
+    fun createTransaction(
+        @Field("categories_id") categoryFieldString: String,
+        @Field("jenis") jenisString: String,
+        @Field("descripsi") descString: String,
+        @Field("jumlah") jumlahString: String,
+        @Field("date") dateString: String,
+        @Header("Authorization") token: String
+    ): Call<ResponseBody>
+
+    @GET("transaksi/index")
+    fun indexTransaction(
+        @Header("Authorization") token: String
+    ): Call<List<TransactionModel>>
+
 
 }

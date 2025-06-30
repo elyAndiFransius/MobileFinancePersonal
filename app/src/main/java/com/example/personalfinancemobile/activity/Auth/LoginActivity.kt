@@ -1,5 +1,6 @@
 package com.example.personalfinancemobile.activity.Auth
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -163,11 +164,9 @@ class LoginActivity : AppCompatActivity() {
 
     // Method untuk logout (panggil dari activity lain jika diperlukan)
     companion object {
-        fun logout(context: android.content.Context) {
-            val sharePref = context.getSharedPreferences(Constants.SHARED_PREF_NAME, android.content.Context.MODE_PRIVATE)
-            val editor = sharePref.edit()
-            editor.clear() // Hapus semua data
-            editor.apply()
+        fun logout(context: Context) {
+            val sessionManager = SessionManager(context)
+            sessionManager.logout()
 
             // Navigate ke login activity
             val intent = Intent(context, LoginActivity::class.java)

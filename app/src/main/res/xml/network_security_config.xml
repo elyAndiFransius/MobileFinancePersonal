@@ -2,6 +2,6 @@
 <network-security-config>
     <!-- Mengizinkan koneksi HTTP ke server tertentu -->
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">192.168.105.204</domain> <!-- Ganti dengan IP server lokal Anda -->
+        <domain includeSubdomains="true">192.168.225.204</domain> <!-- Ganti dengan IP server lokal Anda -->
     </domain-config>
 </network-security-config>
