@@ -17,6 +17,12 @@
         android:theme="@style/Theme.PersonalFinanceMobile"
         tools:targetApi="31">
         <activity
+            android:name=".activity.Budget.ListBudgetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.Budget.MainBudgetingActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.Transaksi.CategoryListActivity"
             android:exported="false" />
         <activity
@@ -29,11 +35,11 @@
             android:name=".activity.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.Budget.TotalCategoryPersenActivity"
+            android:name=".activity.Budget.CategoryTotalActivity"
             android:exported="false"
             android:theme="@style/Theme.PersonalFinanceMobile" />
         <activity
-            android:name=".activity.Budget.TotalCategoryActivity"
+            android:name=".activity.Budget.CategoryPersentasiActivity"
             android:exported="false" />
         <activity
             android:name=".activity.Budget.CategoriActivity"

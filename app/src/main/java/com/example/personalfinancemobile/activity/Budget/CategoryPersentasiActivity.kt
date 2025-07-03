@@ -11,21 +11,17 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
-import com.example.personalfinancemobile.app.data.model.Budget
 import com.example.personalfinancemobile.app.data.model.Priode
-import com.example.personalfinancemobile.app.data.network.APIServices
-import com.example.personalfinancemobile.app.data.network.RetrofitInstance
 import com.example.personalfinancemobile.app.ui.adapter.Category
 
-class TotalCategoryActivity : AppCompatActivity() {
+class CategoryPersentasiActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_total_category)
+        setContentView(R.layout.activity_category_persentasi)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -46,7 +42,7 @@ class TotalCategoryActivity : AppCompatActivity() {
         // Ambil data dari activy Category
         val parcelableArray = intent.getParcelableArrayExtra("Select_category")
         val selectedCategories = parcelableArray?.filterIsInstance<Category>()
-        val btnNext = findViewById<Button>(R.id.btnSave)
+        val btnSave = findViewById<Button>(R.id.btnSave)
 
         var categoryAllocation = mapOf(
             "Transport" to 20,
@@ -57,7 +53,9 @@ class TotalCategoryActivity : AppCompatActivity() {
             "Miscellaneous" to 5
         )
 
+        // Untuk memanggil categoryContainer untuk menampilkan Pop-up Category
         val container = findViewById<LinearLayout>(R.id.categoryContainer)
+
         val totalBudget = pemasukkan
 
         selectedCategories?.forEach { category ->
@@ -83,9 +81,9 @@ class TotalCategoryActivity : AppCompatActivity() {
 
             container.addView(itemView)
 
-            //  Untuk mengarakan kedalam activity TotalCategory
-            btnNext.setOnClickListener {
-                val intent = Intent(this, TotalCategoryPersenActivity::class.java)
+            //  Untuk menggarakan dan menggirim Data kedalam activity TotalCategory
+            btnSave.setOnClickListener {
+                val intent = Intent(this, CategoryTotalActivity::class.java)
                 intent.putExtra("Kategory", selectedCategories.toTypedArray())
                 intent.putExtra("priode", priode ?: "harian")
                 intent.putExtra("Jumlah", totalBudget)

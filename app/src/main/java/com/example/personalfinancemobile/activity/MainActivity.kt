@@ -12,6 +12,7 @@ import com.example.personalfinancemobile.R
 import com.example.personalfinancemobile.activity.Budget.BudgedSchedulingActivity
 import com.example.personalfinancemobile.activity.Transaksi.MainActivity as Transaksi
 import com.example.personalfinancemobile.activity.Budget.CategoriActivity
+import com.example.personalfinancemobile.activity.Budget.MainBudgetingActivity
 import com.example.personalfinancemobile.activity.target.AddProgresTargetActivity
 import com.example.personalfinancemobile.activity.target.InputTargetActivity
 import com.example.personalfinancemobile.activity.target.MainTargetActivity
@@ -58,7 +59,7 @@ class MainActivity : AppCompatActivity() {
 
     }
     private fun budget(){
-        val intent= Intent(this@MainActivity, BudgedSchedulingActivity::class.java)
+        val intent= Intent(this@MainActivity, MainBudgetingActivity::class.java)
         startActivity(intent)
     }
     private fun records(){

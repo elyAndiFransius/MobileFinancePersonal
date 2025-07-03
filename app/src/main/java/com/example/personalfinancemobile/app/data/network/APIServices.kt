@@ -1,6 +1,7 @@
 package com.example.personalfinancemobile.app.data.network
 
 import android.telecom.CallScreeningService.CallResponse
+import com.example.personalfinancemobile.app.data.model.BudgetingResponse
 import com.example.personalfinancemobile.app.data.model.Auth.loginRequest
 import com.example.personalfinancemobile.app.data.model.Auth.loginResponse
 import com.example.personalfinancemobile.app.data.model.User
@@ -34,11 +35,16 @@ interface APIServices {
     fun login(@Body request: loginRequest): Call<loginResponse>
 
     // Budget
-    @POST("budgets")
+    @POST("budgets/create")
     fun createBudgetRequest(
         @Body budget: BudgetRequest,
         @Header("Authorization") token: String
     ): Call<ResponseBody>
+
+    @GET("budgets")
+    fun budgetingIndex(
+        @Header("Authorization") token: String
+    ): Call<BudgetingResponse>
 
     // Target
     @Multipart

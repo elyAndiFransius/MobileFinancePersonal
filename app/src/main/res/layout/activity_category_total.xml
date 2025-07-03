@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary2"
-    tools:context=".activity.Budget.TotalCategoryActivity">
+    tools:context=".activity.Budget.CategoryTotalActivity">
+
     <ImageView
         android:id="@+id/id_back"
         android:layout_width="wrap_content"
@@ -33,12 +34,11 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:layout_marginStart="40dp"
+        android:layout_marginTop="4dp"
         android:fontFamily="@font/poppins_medium"
-        android:text="Kalimat di ambil langsung dari activity"
+        android:text="Hopefully, it can be realized this way. \n"
         android:textSize="15sp"
-        app:layout_constraintHorizontal_bias="0.376"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView1" />
 
@@ -60,20 +60,20 @@
         android:id="@+id/btnSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
         android:layout_marginTop="60dp"
-        android:layout_marginEnd="35dp"
         android:background="@drawable/button_ripple_dark"
-        android:text="Set"
+        android:text="Save"
         android:textAllCaps="false"
         android:textColor="#FFF"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/categoryContainer" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/reset_id"
+        android:id="@+id/btnReset"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
@@ -88,4 +88,5 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnSave" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

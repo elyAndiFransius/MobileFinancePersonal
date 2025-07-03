@@ -17,10 +17,7 @@ import com.example.personalfinancemobile.R
 import com.example.personalfinancemobile.app.data.model.Priode
 import com.example.personalfinancemobile.app.ui.adapter.Category
 import com.example.personalfinancemobile.app.ui.adapter.CategoryAdapter
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.personalfinancemobile.app.data.model.Budget
-import java.util.Locale
 
 
 class CategoriActivity : AppCompatActivity() {
@@ -105,7 +102,7 @@ class CategoriActivity : AppCompatActivity() {
             container.addView(itemView)
         }
         dialogView.findViewById<Button>(R.id.btnNext).setOnClickListener{
-            val intent = Intent(this, TotalCategoryActivity::class.java)
+            val intent = Intent(this, CategoryPersentasiActivity::class.java)
             intent.putExtra("pemasukkan", pemasukkan)
             intent.putExtra("priode", priode)
             intent.putExtra("Select_category", selectedCategories.toTypedArray())
