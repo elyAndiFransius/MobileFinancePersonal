@@ -1,14 +1,17 @@
 package com.example.personalfinancemobile.activity.Budget
 
+import android.content.Intent
 import android.os.Bundle
 import retrofit2.Call
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
+import com.example.personalfinancemobile.activity.MainActivity
 import com.example.personalfinancemobile.activity.Transaksi.IncomeFragment
 import com.example.personalfinancemobile.app.data.model.BudgetRequest
 import com.example.personalfinancemobile.app.data.model.BudgetingResponse
@@ -33,6 +36,12 @@ class ListBudgetActivity : AppCompatActivity() {
             insets
         }
         IndexBudget()
+        val btnBack = findViewById<AppCompatButton>(R.id.btnBack)
+        val btnReset = findViewById<AppCompatButton>(R.id.btnReset)
+
+        btnBack.setOnClickListener {
+            Home()
+        }
     }
     private fun IndexBudget() {
         val sessionManager = SessionManager(this)
@@ -62,6 +71,12 @@ class ListBudgetActivity : AppCompatActivity() {
                 Toast.makeText(this@ListBudgetActivity, "Coba lagi nati", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+    private fun Home() {
+        val intent = Intent(this@ListBudgetActivity, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        startActivity(intent)
+        finish()
     }
 
 }

@@ -4,17 +4,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
-import com.example.personalfinancemobile.activity.Budget.BudgedSchedulingActivity
+import com.example.personalfinancemobile.activity.Auth.LoginActivity
 import com.example.personalfinancemobile.activity.Transaksi.MainActivity as Transaksi
-import com.example.personalfinancemobile.activity.Budget.CategoriActivity
 import com.example.personalfinancemobile.activity.Budget.MainBudgetingActivity
-import com.example.personalfinancemobile.activity.target.AddProgresTargetActivity
-import com.example.personalfinancemobile.activity.target.InputTargetActivity
+import com.example.personalfinancemobile.activity.target.HomeTargetActivity
 import com.example.personalfinancemobile.activity.target.MainTargetActivity
 
 class MainActivity : AppCompatActivity() {
@@ -34,6 +34,12 @@ class MainActivity : AppCompatActivity() {
         val tx_budget = findViewById<TextView>(R.id.tx_budget)
         val tx_record = findViewById<TextView>(R.id.tx_record)
         val tx_spanding = findViewById<TextView>(R.id.tx_spending)
+
+        val account = findViewById<ImageView>(R.id.account)
+
+        account.setOnClickListener {
+            showLogoutConfirmationDialog()
+        }
 
         //untuk tombol budget
         budget.setOnClickListener{
@@ -70,6 +76,36 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this@MainActivity, MainTargetActivity::class.java)
         startActivity(intent)
 
+    }
+    private fun showLogoutConfirmationDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Konfirmasi Logout")
+        builder.setMessage("Apakah Anda yakin ingin keluar dari aplikasi?")
+
+
+        builder.setPositiveButton("Ya, Keluar") { dialog, _ ->
+            dialog.dismiss()
+
+            // Tampilkan pesan logout
+            Toast.makeText(this, "Sedang logout...", Toast.LENGTH_SHORT).show()
+
+            // Panggil method logout
+            LoginActivity.logout(this)
+        }
+
+        builder.setNegativeButton("Batal") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        // Agar dialog tidak bisa di-dismiss dengan tap di luar
+        builder.setCancelable(false)
+
+        val dialog = builder.create()
+        dialog.show()
+
+        // Styling tombol (opsional)
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(resources.getColor(R.color.red))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(resources.getColor(R.color.gray))
     }
 
 }

@@ -23,7 +23,9 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Part
+import retrofit2.http.Path
 
 interface APIServices {
 
@@ -46,9 +48,22 @@ interface APIServices {
         @Header("Authorization") token: String
     ): Call<BudgetingResponse>
 
+
+    @PUT("budgets/update/{budget}")
+    fun updateBudgeting(
+        @Path("budget") id: Int,
+        @Body budget: BudgetRequest,
+        @Header("Authorization") token: String
+    ): Call<ResponseBody>
+
     // Target
+    @GET("targets")
+    fun getTarget(
+        @Header("Authorization") token:String
+    ): Call<TargetResponse>
+
     @Multipart
-    @POST("targets")
+    @POST("targets/store")
     fun createTarget(
         @Part("gol") gol: RequestBody,
         @Part("targetAmount") targetAmount: RequestBody,
@@ -59,14 +74,10 @@ interface APIServices {
         @Header("Authorization") token: String
     ): Call<ResponseBody>
 
-    @GET("targets")
-    fun getTarget(
-        @Header("Authorization") token:String
-    ): Call<TargetResponse>
 
     //Transaction
     @FormUrlEncoded
-    @POST("transaksi")
+    @POST("transaksi/store")
     fun createTransaction(
         @Field("categories_id") categoryFieldString: String,
         @Field("jenis") jenisString: String,
@@ -76,7 +87,7 @@ interface APIServices {
         @Header("Authorization") token: String
     ): Call<ResponseBody>
 
-    @GET("transaksi/index")
+    @GET("transaksi")
     fun indexTransaction(
         @Header("Authorization") token: String
     ): Call<TransactionResponse>
