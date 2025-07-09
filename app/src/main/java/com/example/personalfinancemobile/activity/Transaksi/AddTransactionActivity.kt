@@ -92,7 +92,7 @@ class AddTransactionActivity : AppCompatActivity() {
             val categoryId = selectedCategoryId
 
             if (jenisString.isBlank()  ||  descString.isBlank()  || jumlahString.isBlank() ||  dateString.isBlank() ) {
-                Toast.makeText(this@AddTransactionActivity, "Mohon isi semua Inputan", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@AddTransactionActivity, "Mohon isi semua inputan", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 

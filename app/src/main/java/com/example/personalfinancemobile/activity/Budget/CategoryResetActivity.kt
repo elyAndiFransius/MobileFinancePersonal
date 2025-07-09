@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -15,25 +15,25 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
-import com.example.personalfinancemobile.activity.Budget.CategoryResetActivity
+import com.example.personalfinancemobile.activity.Budget.CategoryTotalActivity
+import com.example.personalfinancemobile.activity.MainActivity as Home
 import com.example.personalfinancemobile.app.data.model.BudgetRequest
+import com.example.personalfinancemobile.app.ui.adapter.Category
 import com.example.personalfinancemobile.app.data.model.CategoryRequest
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
 import com.example.personalfinancemobile.app.data.repository.CategoryProvider
-import com.example.personalfinancemobile.app.ui.adapter.Category
 import com.example.personalfinancemobile.utils.SessionManager
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
-class CategoryTotalActivity : AppCompatActivity() {
+class CategoryResetActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_category_total)
+        setContentView(R.layout.activity_category_reset)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -45,20 +45,18 @@ class CategoryTotalActivity : AppCompatActivity() {
         val recommended = CategoryProvider.getRecomendedAllocation()
         val pemasukkan = intent.getIntExtra("jumlah", 0)
 
-
-        // pisahakan kategori berdasarlakan rekomeded dan inputan user
-
+        // Pisakan ketegori berdasarkan apakah list rekomendasi
         val (recommendedCategories, userDefindCategories) = selectedCategories.orEmpty().partition {
             recommended.containsKey(it.name)
         }
 
         //  Hitung total persentasi kategori dari provider
         val userPersen = recommendedCategories.sumOf { recommended[it.name] ?: 0 }
-        val remainingPersen = 100 - userPersen
+        val remainingPersent = 100 - userPersen
 
         // Hitung total persentasi kategori yang di inputkan oleh user
-        val eddPersen = if (userDefindCategories.isNotEmpty()) {
-            remainingPersen / userDefindCategories.size
+        val addPersen = if (userDefindCategories.isNotEmpty()) {
+            remainingPersent / userDefindCategories.size
         } else 0
 
         // gabungkan kedua kategori
@@ -69,67 +67,67 @@ class CategoryTotalActivity : AppCompatActivity() {
         }
 
         userDefindCategories.forEach {
-            categoryAllocation[it.name] = eddPersen
+            categoryAllocation[it.name] = addPersen
         }
 
-        val container = findViewById<LinearLayout>(R.id.categoryContainer)
-        val categoryRequests = mutableListOf<CategoryRequest>()
         val totalBudget = pemasukkan
-
+        val contrain = findViewById<LinearLayout>(R.id.categoryContainer)
         val btnSave = findViewById<AppCompatButton>(R.id.btnSave)
-        val btnReset = findViewById<AppCompatButton>(R.id.btnReset)
+        val inputFields = mutableListOf<Pair<String, EditText>>() // nama kategori dan input jumlah
 
-        // Untuk mereset Budget
-        btnReset.setOnClickListener {
-            val intent = Intent(this@CategoryTotalActivity, BudgedSchedulingActivity::class.java)
-            startActivity(intent)
-        }
 
-        // Untuk Menampilkan Total Semua Kategory yang di pilih
-        selectedCategories?.forEach { category ->
-            // Untuk melakukan opreasi pemabagian
+        selectedCategories?.forEach {  category ->
             val persen = categoryAllocation[category.name] ?: 0
             val totalCategori = totalBudget * persen / 100
 
-            categoryRequests.add(
-                CategoryRequest(
-                    name = category.name,
-                    jumlah = totalCategori
-                )
-            )
 
-            // Tambahkan ke daftar Budged
-            val itemView = LayoutInflater.from(this)
-                .inflate(R.layout.total_jumlah_kategori, null)
+            val  itemView = LayoutInflater.from(this)
+                .inflate(R.layout.input_jumlah_kategori, null)
+
 
             val params = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            params.bottomMargin = 10
+            params.bottomMargin = 16
             itemView.layoutParams = params
 
-            val txtName = itemView.findViewById<TextView>(R.id.txtCategoryName)
-            val imgIcon = itemView.findViewById<ImageView>(R.id.imgCategory)
-            val jumlah = itemView.findViewById<TextView>(R.id.id_jumlah)
+            val txtCategoryName = itemView.findViewById<TextView>(R.id.txtCategoryName)
+            val id_jumlah = itemView.findViewById<EditText>(R.id.id_jumlah)
+            val imgIcon  = itemView.findViewById<ImageView>(R.id.imgCategory)
 
-            // Untuk menampilkan category dan jumlah kedalam Tampilan
-            txtName.text = "${category.name}"
-            jumlah.text = "${totalCategori}"
+            txtCategoryName.text = "${category.name}"
             imgIcon.setImageResource(category.image)
-            container.addView(itemView)
+            id_jumlah.hint = "${totalCategori}"
+            contrain.addView(itemView)
+
+            inputFields.add(Pair(category.name, id_jumlah))
 
         }
+
         val sessionManager = SessionManager(this)
         val token = sessionManager.fetchAuthToken()
         // Untuk menampung Request yang di inputkan user
-        val budgetToSend = BudgetRequest(
-            pemasukkan = pemasukkan,
-            priode = priode,
-            categories = categoryRequests
-        )
+
         // Untuk Memasukan semua data yang ada di dalam list BudgetTosend
         btnSave.setOnClickListener {
+            val categoryRequests = mutableListOf<CategoryRequest>()
+
+            inputFields.forEach { (name, editText) ->
+                val inputText = editText.text.toString()
+                val jumlah = if (inputText.isNotEmpty()) {
+                    inputText.toIntOrNull() ?: 0 // Kalau user isi tapi bukan angka, pakai 0
+                } else {
+                    editText.hint.toString().toIntOrNull() ?: 0
+                }
+                categoryRequests.add(CategoryRequest(name, jumlah))
+            }
+            val budgetToSend = BudgetRequest(
+                pemasukkan = pemasukkan,
+                priode = priode,
+                categories = categoryRequests
+            )
+
             val BudgetService = RetrofitInstance.getInstance(this).create(APIServices::class.java)
             BudgetService.createBudgetRequest(budgetToSend, "Bearer $token").enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
@@ -138,19 +136,19 @@ class CategoryTotalActivity : AppCompatActivity() {
                     } else {
                         val errorBody = response.errorBody()?.string()
                         Log.e("BudgetError", "Wah gagal bro: $errorBody")
-                        Toast.makeText(this@CategoryTotalActivity, "yah, gagal di rekap: $errorBody", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@CategoryResetActivity, "yah, gagal di rekap: $errorBody", Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Toast.makeText(this@CategoryTotalActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CategoryResetActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
                     Log.e("BudgetError", "Throwable: ${t.message}")
                 }
             })
         }
     }
     private fun Berhasil() {
-        val intent = Intent(this@CategoryTotalActivity, BerhasilBudgetingActivity::class.java)
+        val intent = Intent(this@CategoryResetActivity, BerhasilBudgetingActivity::class.java)
         startActivity(intent)
         finish()
     }

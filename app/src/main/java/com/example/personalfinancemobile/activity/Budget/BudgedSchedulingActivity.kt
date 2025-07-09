@@ -31,7 +31,7 @@ class BudgedSchedulingActivity : AppCompatActivity() {
         }
         val btnNext = findViewById<AppCompatButton>(R.id.id_btn_Set)
         val jumlah = findViewById<EditText>(R.id.id_belance)
-        val priodeOptions = listOf("Harian", "Mingguan", "Bulanan", "Tahunan", "Custom")
+        val priodeOptions = listOf("Harian", "Mingguan", "Bulanan", "Tahunan")
         val autoComplate = findViewById<AutoCompleteTextView>(R.id.id_priode)
         val id_back = findViewById<ImageView>(R.id.id_back)
 
@@ -52,7 +52,6 @@ class BudgedSchedulingActivity : AppCompatActivity() {
                     "Mingguan" -> Priode.Mingguan
                     "Bulanan" -> Priode.Bulanan
                     "Tahunan" -> Priode.Tahunan
-                    "Custom" -> Priode.Custom
                     else -> Priode.Bulanan  // Jika tidak di antara di atas maka akan di kembalikan ke default Bulanan
                 }
                 val intent = Intent(this, CategoriActivity::class.java)
@@ -68,15 +67,6 @@ class BudgedSchedulingActivity : AppCompatActivity() {
         autoComplate.setOnClickListener {
             autoComplate.showDropDown()
         }
-        // Untuk Custom priode
-        autoComplate.setOnItemClickListener { parent, view, position, id ->
-            val selected = parent.getItemAtPosition(position).toString()
-                if (selected == "Custom") {
-                    // TODO: Tampilkan DatePicker atau dialog untuk input custom priode
-                }
-
-            }
-
     }
 
     private fun showLogoutConfirmationDialog() {

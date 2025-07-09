@@ -74,6 +74,15 @@ interface APIServices {
         @Header("Authorization") token: String
     ): Call<ResponseBody>
 
+    // Deposit
+    @Multipart
+    @POST("targets/addprogress")
+    fun createDeposit(
+        @Part ("date") date: RequestBody,
+        @Part("deposit") deposit: RequestBody,
+        @Header("Authorization") token: String
+    ): Call<ResponseBody>
+
 
     //Transaction
     @FormUrlEncoded

@@ -13,19 +13,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.personalfinancemobile.R
 import com.example.personalfinancemobile.app.ui.adapter.Category
 
-// Ini class adapter untuk RecyclerView
-// Adapter ini digunakan untuk menampilkan daftar kategori
-class CategoryAdapter(private val categories: List<Category>) :
-    RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
+class CategoryAdapter(private val categories: List<Category>, private val onAddCategoryAdapter: () ->Unit) :
+    RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
     // Ini untuk menyimpan item mana saja yang sedang dipilih user
     private var selectedPosition = mutableSetOf<Int>()
 
-    // ViewHolder = tempat menampung komponen dari 1 item
+
     class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val txtName: TextView = itemView.findViewById(R.id.txtCategoryName) // Nama kategori
         val imageView: ImageView = itemView.findViewById(R.id.imgCategory) // Gambar kategori
-        val container: View = itemView.findViewById(R.id.layoutKategori)    // Layout luar, untuk ganti background
+        val container: View = itemView.findViewById(R.id.layoutKategoriView)    // Layout luar, untuk ganti background
     }
 
     // Membuat tampilan untuk setiap item
@@ -36,26 +34,32 @@ class CategoryAdapter(private val categories: List<Category>) :
 
     // Mengisi data ke tampilan item
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        val category = categories[position] // Ambil data berdasarkan posisi
-        holder.txtName.text = category.name // Set nama kategori
-        holder.imageView.setImageResource(category.image) // Set gambar kategori
+        val category = categories[position]
+        holder.txtName.text = category.name
+        holder.imageView.setImageResource(category.image)
 
-        // Jika item ini sedang dipilih, ganti background-nya
+        if (category.id == -1) {
+            holder.container.setBackgroundResource(R.drawable.input_ripple_primary)
+            holder.itemView.setOnClickListener {
+                onAddCategoryAdapter()
+            }
+            return
+        }
+
         if (selectedPosition.contains(position)) {
             holder.container.setBackgroundResource(R.drawable.input_ripple_white) // Jika dipilih, background putih
-        } else {
+        }else {
             holder.container.setBackgroundResource(R.drawable.input_ripple_primary) // Jika tidak, background biru
         }
 
         // Saat item diklik
         holder.itemView.setOnClickListener {
             if (selectedPosition.contains(position)) {
-                selectedPosition.remove(position) // Kalau sebelumnya dipilih, hapus dari daftar pilihan
+                selectedPosition.remove(position)
             } else {
-                selectedPosition.add(position) // Kalau belum dipilih, tambahkan ke daftar pilihan
+                selectedPosition.add(position)
             }
-
-            notifyItemChanged(position) // Refresh tampilan item ini agar background-nya ikut berubah
+            notifyItemChanged(position)
         }
     }
 
@@ -66,4 +70,11 @@ class CategoryAdapter(private val categories: List<Category>) :
     fun getSelectedCategories(): List<Category> {
         return selectedPosition.map { categories[it] } // Ambil data dari posisi yang disimpan
     }
+
+    fun selectedPosition(position: Int) {
+        selectedPosition.add(position)
+        notifyItemChanged(position)
+    }
+
+
 }

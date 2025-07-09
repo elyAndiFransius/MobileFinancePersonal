@@ -34,7 +34,6 @@ class CategoryFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
 
-
         // Ambil data dari arguments
         val categoryList = arguments?.getParcelableArrayList<CategoryRequest>("categories") ?: emptyList()
         adapter = CategoryDisplayAdapter(categoryList)

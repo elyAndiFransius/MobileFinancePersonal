@@ -1,11 +1,13 @@
 package com.example.personalfinancemobile.activity.target
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
@@ -34,6 +36,12 @@ class HomeTargetActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+
+        val btnRecord = findViewById<AppCompatButton>(R.id.btnRecord)
+
+        btnRecord.setOnClickListener {
+            AddProgresTargetActivity()
         }
 
         // Inisialisasi SessionManager
@@ -93,17 +101,9 @@ class HomeTargetActivity : AppCompatActivity() {
                             sessionManager.logout()
                             finish()
                         }
-                        403 -> {
-                            Toast.makeText(this@HomeTargetActivity,
-                                "Akses ditolak", Toast.LENGTH_SHORT).show()
-                        }
                         404 -> {
                             Toast.makeText(this@HomeTargetActivity,
                                 "Data tidak ditemukan", Toast.LENGTH_SHORT).show()
-                        }
-                        500 -> {
-                            Toast.makeText(this@HomeTargetActivity,
-                                "Server error, coba lagi nanti", Toast.LENGTH_SHORT).show()
                         }
                         else -> {
                             Toast.makeText(this@HomeTargetActivity,
@@ -127,5 +127,8 @@ class HomeTargetActivity : AppCompatActivity() {
             inputDate.toString() // fallback
         }
     }
-
+    private fun AddProgresTargetActivity() {
+        val intent = Intent(this@HomeTargetActivity, AddProgresTargetActivity::class.java)
+        startActivity(intent)
+    }
 }

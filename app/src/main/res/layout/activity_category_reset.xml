@@ -5,8 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary2"
-    tools:context=".activity.Budget.CategoryPersentasiActivity">
+    tools:context=".activity.Budget.CategoryResetActivity">
+
     <ImageView
         android:id="@+id/id_back"
         android:layout_width="wrap_content"
@@ -24,7 +24,7 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="128dp"
         android:fontFamily="@font/poppins_bold"
-        android:text="Category by percentage."
+        android:text="Your current budget."
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -33,12 +33,11 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:layout_marginStart="40dp"
+        android:layout_marginTop="4dp"
         android:fontFamily="@font/poppins_medium"
-        android:text="Kalimat di ambil langsung dari activity"
+        android:text="Hopefully, it can be realized this way. \n"
         android:textSize="15sp"
-        app:layout_constraintHorizontal_bias="0.376"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView1" />
 
@@ -63,35 +62,17 @@
         android:id="@+id/btnSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
         android:background="@drawable/button_ripple_dark"
-        android:text="Simpan"
+        android:text="Save"
         android:layout_marginBottom="10dp"
         android:textAllCaps="false"
         android:textColor="#FFF"
-        app:layout_constraintBottom_toTopOf="@+id/btnReset"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnReset"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Atur ulang"
-        android:textColor="@color/black"
-        android:textAllCaps="false"
-        android:fontFamily="@font/poppins_semibold"
-        android:background="@drawable/button_ripple_white"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

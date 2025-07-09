@@ -80,6 +80,8 @@
             android:layout_marginEnd="40dp"
             android:background="@drawable/edit_text_bg_primary"
             android:hint="Date"
+            android:clickable="true"
+            android:focusable="false"
             android:inputType="date"
             android:textSize="15sp"
             android:paddingStart="16dp"
@@ -90,7 +92,7 @@
 
         <!-- Input Amount-->
         <EditText
-            android:id="@+id/id_amount"
+            android:id="@+id/id_deposit"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:padding="13dp"
@@ -109,30 +111,12 @@
 
         <!-- Bottom  -->
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/id_btn_back"
+            android:id="@+id/btnSave"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
             android:layout_marginTop="47dp"
-            android:background="@drawable/button_ripple_white"
-            android:padding="15dp"
-            android:text="Back"
-            android:textAllCaps="false"
-            android:textColor="@color/primary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.492"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/id_amount" />
-        <!-- Bottom  -->
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/id_btn_save"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginTop="10dp"
             android:background="@drawable/button_ripple_dark"
             android:padding="15dp"
             android:text="Save"
@@ -141,8 +125,27 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.492"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/id_btn_back"
+            app:layout_constraintTop_toBottomOf="@id/id_deposit"
             tools:layout_editor_absoluteY="406dp" />
+
+        <!-- Bottom  -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/id_btn_back"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_ripple_white"
+            android:padding="15dp"
+            android:text="Back"
+            android:textAllCaps="false"
+            android:textColor="@color/primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.492"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnSave" />
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,5 @@
-// Package tempat activity ini berada
 package com.example.personalfinancemobile.activity.target
 
-// Import semua library yang dibutuhkan
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
@@ -106,7 +104,6 @@ class InputTargetActivity : AppCompatActivity() {
             val currentAmountString = currentAmount.text.toString()
             val startDateString = startDate.text.toString()
             val endDateString = endDate.text.toString()
-
             val targetAmountInt = targetAmountString.toIntOrNull()
             val currentAmountInt = currentAmountString.toIntOrNull()
 
@@ -134,7 +131,20 @@ class InputTargetActivity : AppCompatActivity() {
                 val endDatePart = createPartFromString(endDateString)
 
                 var filePart: MultipartBody.Part? = null
+
                 selectedFileUri?.let { uri ->
+
+                    // penggecekan untuk melihat format yang kirimkan
+                    val mimeType = contentResolver.getType(uri)
+                    if (mimeType != null && mimeType.startsWith("image/")) {
+                        // Ini gambar, resezi dulu
+                    } else {
+                        Toast.makeText(this@InputTargetActivity, "Silahkan pilih file berupa gambar", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
+
+
+
                     val inputStream = contentResolver.openInputStream(uri)
                     val fileBytes = inputStream?.readBytes()
                     val fileName = getFileNameFromUri(this, uri)

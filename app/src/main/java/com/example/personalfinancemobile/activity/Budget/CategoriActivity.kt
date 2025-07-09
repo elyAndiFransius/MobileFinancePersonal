@@ -2,6 +2,7 @@ package com.example.personalfinancemobile.activity.Budget
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -9,6 +10,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -18,21 +21,22 @@ import com.example.personalfinancemobile.app.data.model.Priode
 import com.example.personalfinancemobile.app.ui.adapter.Category
 import com.example.personalfinancemobile.app.ui.adapter.CategoryAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.personalfinancemobile.app.data.repository.CategoryProvider
+import com.example.personalfinancemobile.app.data.repository.CategoryProvider.getDefaultCategories
+
 
 
 class CategoriActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: CategoryAdapter
+    private lateinit var addCategoryLauncher: ActivityResultLauncher<Intent>
 
-    // Ini adalah daftar kategori anggaran yang akan ditampilkan
-    private val categories = mutableListOf(
-        Category(1,"Transport", R.drawable.ic_tranport),
-        Category(2,"Food", R.drawable.ic_food),
-        Category(3,"Entertain", R.drawable.ic_entrain),
-        Category(4,"Clothes", R.drawable.ic_clothes),
-        Category(5,"Savings", R.drawable.ic_saving),
-        Category(6,"Miscellaneous", R.drawable.ic_miscellaneous),
-    )
+
+    // Buat map nama kategori (lowercase) ke icon resource ID
+    val categories = CategoryProvider.getDefaultCategories().toMutableList()
+
+
+
     private var pemasukkan: Int = 0
     private var priode: Priode? = null
 
@@ -49,13 +53,31 @@ class CategoriActivity : AppCompatActivity() {
         pemasukkan = intent.getIntExtra("pemasukkan", 0)
         priode = intent.getSerializableExtra("priode") as? Priode
 
-
         recyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = CategoryAdapter(categories)
-        recyclerView.adapter = adapter
-
         val btnSave = findViewById<Button>(R.id.id_btnSave)
+
+        addCategoryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val data = result.data
+                val name = data?.getStringExtra("kategori_nama") // gunakan key yang benar
+                if (!name.isNullOrEmpty()) {
+                    val icon = R.drawable.ic_miscellaneous
+                    val insertIndex = categories.size - 1
+                    categories.add(insertIndex, Category(categories.size + 1, name, icon))
+                    adapter.notifyItemInserted(insertIndex)
+                    adapter.selectedPosition(insertIndex)
+                }
+            }
+        }
+        // Tambahkan list dari categories untuk inputan kategori baru (Tapi tidak langsung ke provider)
+        categories.add(Category(-1, "Tambah Kategori Baru", R.drawable.ic_transaction))
+
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        adapter = CategoryAdapter(categories) {
+            val intent = Intent(this@CategoriActivity, FormKategoriBaruActivity::class.java)
+            addCategoryLauncher.launch(intent)
+        }
+        recyclerView.adapter = adapter
 
         btnSave.setOnClickListener {
             val selected = adapter.getSelectedCategories()
@@ -117,9 +139,7 @@ class CategoriActivity : AppCompatActivity() {
         dialog.window?.setBackgroundDrawable(
             android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT)
         )
-
     }
-
 }
 
 

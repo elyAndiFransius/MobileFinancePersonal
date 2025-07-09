@@ -11,10 +11,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
 import com.example.personalfinancemobile.app.data.model.Priode
+import com.example.personalfinancemobile.app.data.repository.CategoryProvider
 import com.example.personalfinancemobile.app.ui.adapter.Category
 
 class CategoryPersentasiActivity : AppCompatActivity() {
@@ -43,19 +45,36 @@ class CategoryPersentasiActivity : AppCompatActivity() {
         val parcelableArray = intent.getParcelableArrayExtra("Select_category")
         val selectedCategories = parcelableArray?.filterIsInstance<Category>()
         val btnSave = findViewById<Button>(R.id.btnSave)
+        val btnReset = findViewById<AppCompatButton>(R.id.btnReset)
+        val recommended = CategoryProvider.getRecomendedAllocation()
 
-        var categoryAllocation = mapOf(
-            "Transport" to 20,
-            "Food" to 30,
-            "Entertain" to 30,
-            "Clothes" to 10,
-            "Savings" to 5,
-            "Miscellaneous" to 5
-        )
+        // Pisahkan kategori berdasarkan apakah list rekomendasi
+        val (recommendedCategories, userDefindCategories) = selectedCategories.orEmpty().partition {
+            recommended.containsKey(it.name)
+        }
+
+        // Hitung total persentasi yang sudah di pakai rekomendasi
+        val usedPersen = recommendedCategories.sumOf { recommended[it.name] ?: 0}
+        val remainingPersent = 100 - usedPersen
+
+        // Hitung total persentasi yang categori di inputkan oleh user
+        val additionalPercent  = if (userDefindCategories.isNotEmpty()) {
+            remainingPersent / userDefindCategories.size
+        } else 0
+
+        // gabungkan kedua kateogri
+        val categoryAllocation = mutableMapOf<String, Int>()
+
+        recommendedCategories.forEach {
+            categoryAllocation[it.name] = recommended[it.name] ?: 0
+        }
+
+        userDefindCategories.forEach {
+            categoryAllocation[it.name] = additionalPercent
+        }
 
         // Untuk memanggil categoryContainer untuk menampilkan Pop-up Category
         val container = findViewById<LinearLayout>(R.id.categoryContainer)
-
         val totalBudget = pemasukkan
 
         selectedCategories?.forEach { category ->
@@ -86,7 +105,14 @@ class CategoryPersentasiActivity : AppCompatActivity() {
                 val intent = Intent(this, CategoryTotalActivity::class.java)
                 intent.putExtra("Kategory", selectedCategories.toTypedArray())
                 intent.putExtra("priode", priode ?: "harian")
-                intent.putExtra("Jumlah", totalBudget)
+                intent.putExtra("jumlah",totalBudget)
+                startActivity(intent)
+            }
+            btnReset.setOnClickListener {
+                val intent = Intent(this, CategoryResetActivity::class.java)
+                intent.putExtra("Kategory", selectedCategories.toTypedArray())
+                intent.putExtra("priode", priode ?: "harian")
+                intent.putExtra("jumlah",totalBudget)
                 startActivity(intent)
             }
         }

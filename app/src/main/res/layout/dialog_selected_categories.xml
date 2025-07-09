@@ -19,13 +19,19 @@
         android:textColor="@color/black"
         android:layout_marginBottom="16dp"/>
 
-    <LinearLayout
-        android:id="@+id/categoryContainer"
+
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:orientation="vertical"
-        android:layout_marginVertical="20dp"/>
+        android:layout_height="200dp">
+        <LinearLayout
+            android:id="@+id/categoryContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:orientation="vertical"
+            android:layout_marginVertical="20dp"/>
+    </ScrollView>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnNext"

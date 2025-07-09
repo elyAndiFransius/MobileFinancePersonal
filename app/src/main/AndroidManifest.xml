@@ -17,6 +17,15 @@
         android:theme="@style/Theme.PersonalFinanceMobile"
         tools:targetApi="31">
         <activity
+            android:name=".activity.Budget.BerhasilBudgetingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.Budget.CategoryResetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.Budget.FormKategoriBaruActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.target.MainTargetActivity"
             android:exported="false" />
         <activity
