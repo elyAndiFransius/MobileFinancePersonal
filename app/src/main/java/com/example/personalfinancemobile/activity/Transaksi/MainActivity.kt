@@ -1,7 +1,12 @@
 package com.example.personalfinancemobile.activity.Transaksi
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
+import android.icu.util.Calendar
 import android.os.Bundle
+import android.os.Message
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -10,15 +15,15 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
+import com.example.personalfinancemobile.app.Notif.NotificationReceiver
 import com.example.personalfinancemobile.app.data.model.TransactionModel
 import com.example.personalfinancemobile.app.data.model.TransactionResponse
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
-import com.example.personalfinancemobile.utils.SessionManager
+import com.example.personalfinancemobile.app.ui.utils.NotificationHelper
+import com.example.personalfinancemobile.app.ui.utils.SessionManager
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.Locale
-import okhttp3.ResponseBody
 import retrofit2.Call
 
 
@@ -106,3 +111,24 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

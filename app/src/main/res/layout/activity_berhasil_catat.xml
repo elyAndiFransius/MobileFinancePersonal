@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary2"
-    tools:context=".activity.target.BerhasilMencatatProgresActivity">
-
+    tools:context=".activity.Transaksi.BerhasilCatatActivity">
     <TextView
         android:id="@+id/textView9"
         android:layout_width="match_parent"
@@ -16,7 +15,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginEnd="20dp"
         android:fontFamily="@font/poppins_bold"
-        android:text="Wah, Mantap! Satu Langkah Menuju Target!"
+        android:text="Sip! Catatan Transaksi Berhasil Ditambahkan"
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +29,9 @@
         android:layout_marginEnd="20dp"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/poppins_semibold"
-        android:text=" Perjalanan besar selalu dimulai dari satu langkah. Terus bergerak, karena setiap progres sekecil apa pun membawa kita lebih dekat ke tujuan."
+        android:text=" Terus jaga konsistensi! Semakin rutin mencatat, semakin jelas arah keuanganmu.
+
+"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
@@ -84,5 +85,3 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-

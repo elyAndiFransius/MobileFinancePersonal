@@ -18,7 +18,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
-import com.example.personalfinancemobile.utils.SessionManager
+import com.example.personalfinancemobile.app.ui.utils.SessionManager
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody

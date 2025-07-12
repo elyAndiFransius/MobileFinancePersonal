@@ -9,11 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
-import com.example.personalfinancemobile.activity.Budget.MainBudgetingActivity
 import com.example.personalfinancemobile.app.data.model.TargetResponse
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
-import com.example.personalfinancemobile.utils.SessionManager
+import com.example.personalfinancemobile.app.ui.utils.SessionManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

@@ -36,7 +36,6 @@ class CategoriActivity : AppCompatActivity() {
     val categories = CategoryProvider.getDefaultCategories().toMutableList()
 
 
-
     private var pemasukkan: Int = 0
     private var priode: Priode? = null
 

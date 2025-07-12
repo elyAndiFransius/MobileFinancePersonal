@@ -1,6 +1,7 @@
 package com.example.personalfinancemobile.activity.target
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import java.util.Calendar
 import android.os.Bundle
 import android.util.Log
@@ -17,14 +18,13 @@ import com.example.personalfinancemobile.R
 import com.example.personalfinancemobile.app.data.model.TargetResponse
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
-import com.example.personalfinancemobile.utils.SessionManager
+import com.example.personalfinancemobile.app.ui.utils.SessionManager
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.text.toIntOrNull
 import okhttp3.RequestBody
-import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -45,7 +45,15 @@ class AddProgresTargetActivity : AppCompatActivity() {
         val date = findViewById<EditText>(R.id.id_date)
         val deposit = findViewById<EditText>(R.id.id_deposit)
         val btnSave = findViewById<AppCompatButton>(R.id.btnSave)
+        val btnBack = findViewById<AppCompatButton>(R.id.btnBack)
 
+
+        // Kembali ke activy sebelumnya
+        btnBack.setOnClickListener {
+            val intent = Intent(this@AddProgresTargetActivity, HomeTargetActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         // Menampilkan Image yang ada di server
         showImage()
@@ -73,7 +81,6 @@ class AddProgresTargetActivity : AppCompatActivity() {
             val depositString = deposit.text.toString()
 
             val depositInt = depositString.toIntOrNull()
-
             val dateParsed = try {
                 dateFormat.parse(dateString)
             } catch (e: Exception) {
@@ -99,6 +106,10 @@ class AddProgresTargetActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         Toast.makeText(this@AddProgresTargetActivity, "Deposit berhasil di tambahkkan",
                             Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@AddProgresTargetActivity,
+                            BerhasilMencatatProgresActivity::class.java)
+                        startActivity(intent)
+                        finish()
                     } else {
                         val errorBody = response.errorBody()?.string()
                         Log.e("AddProgressTargetError","Deposti gagal di tambahkan: $errorBody")

@@ -10,8 +10,17 @@ data class BudgetRequest(
     val priode: String,
     val categories: List<CategoryRequest>
 )
+
+
 @Parcelize
 data class CategoryRequest(
     val name: String,
     val jumlah: Int
 ) : Parcelable
+
+data class BudgetResponse(
+    val id: Int,
+    val pemasukkan: Int,
+    val priode: String,
+    val categories: List<CategoryRequest>
+)

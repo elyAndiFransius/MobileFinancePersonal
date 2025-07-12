@@ -1,4 +1,4 @@
-package com.example.personalfinancemobile.utils
+package com.example.personalfinancemobile.app.ui.utils
 
 import android.content.Context
 import android.content.SharedPreferences

@@ -17,6 +17,7 @@ import com.example.personalfinancemobile.app.data.model.Target as TargetModel
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -53,6 +54,12 @@ interface APIServices {
     fun updateBudgeting(
         @Path("budget") id: Int,
         @Body budget: BudgetRequest,
+        @Header("Authorization") token: String
+    ): Call<ResponseBody>
+
+    @DELETE("budgets/delete/{budget}")
+    fun deleteBudgeting(
+        @Path("budget") id: Int,
         @Header("Authorization") token: String
     ): Call<ResponseBody>
 

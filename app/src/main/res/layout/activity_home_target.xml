@@ -253,7 +253,7 @@
             tools:layout_editor_absoluteY="406dp" />
         <!-- Bottom  -->
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/id_btn_back"
+            android:id="@+id/btnReset"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"

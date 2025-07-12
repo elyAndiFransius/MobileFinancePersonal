@@ -9,8 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.personalfinancemobile.app.data.model.BudgetingResponse
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
-import com.example.personalfinancemobile.app.ui.adapter.Category
-import com.example.personalfinancemobile.utils.SessionManager
+import com.example.personalfinancemobile.app.ui.utils.SessionManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

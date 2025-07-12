@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -15,14 +14,13 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
-import com.example.personalfinancemobile.activity.Budget.CategoryResetActivity
 import com.example.personalfinancemobile.app.data.model.BudgetRequest
 import com.example.personalfinancemobile.app.data.model.CategoryRequest
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
 import com.example.personalfinancemobile.app.data.repository.CategoryProvider
 import com.example.personalfinancemobile.app.ui.adapter.Category
-import com.example.personalfinancemobile.utils.SessionManager
+import com.example.personalfinancemobile.app.ui.utils.SessionManager
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback

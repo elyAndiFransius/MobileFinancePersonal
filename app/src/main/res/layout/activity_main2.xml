@@ -47,8 +47,8 @@
             android:layout_marginStart="50dp"
             android:layout_marginTop="70dp"
             android:padding="5dp"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintEnd_toEndOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/logo_kecil" />
 
@@ -63,8 +63,8 @@
             android:text="Hello,"
             android:textColor="@color/white"
             android:textSize="8sp"
-            app:layout_constraintStart_toStartOf="@+id/guidelinee"
             app:layout_constraintEnd_toEndOf="@+id/guidelinee"
+            app:layout_constraintStart_toStartOf="@+id/guidelinee"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -87,48 +87,48 @@
             android:layout_marginTop="70dp"
             android:layout_marginEnd="30dp"
             android:padding="1dp"
-            app:layout_constraintStart_toStartOf="@+id/guidelineee"
             app:layout_constraintEnd_toEndOf="@+id/guidelineee"
+            app:layout_constraintStart_toStartOf="@+id/guidelineee"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_account" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/costarain1"
-                android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/costarain1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="100dp"
+            android:background="@drawable/edit_text_bg_primary"
+            android:padding="7dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView12">
+
+            <TextView
+                android:id="@+id/Rp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edit_text_bg_primary"
-                android:layout_marginStart="80dp"
-                android:layout_marginEnd="100dp"
-                android:layout_marginTop="5dp"
-                android:padding="7dp"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Rp."
+                android:textColor="@color/primary"
+                android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView12">
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/Rp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="Rp."
-                    android:layout_marginStart="10dp"
-                    android:textColor="@color/primary"
-                    android:textSize="12sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/balance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="1000"
-                    android:textColor="@color/primary"
-                    android:textSize="12sp"
-                    android:layout_marginStart="3dp"
-                    app:layout_constraintStart_toEndOf="@+id/Rp"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="1000"
+                android:textColor="@color/primary"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/Rp"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -264,6 +264,15 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <Button
+        android:id="@+id/btnNotif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="63dp"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

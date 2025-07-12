@@ -2,7 +2,6 @@ package com.example.personalfinancemobile.activity.Auth
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -14,14 +13,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
-import com.example.personalfinancemobile.activity.Budget.BudgedSchedulingActivity
 import com.example.personalfinancemobile.activity.MainActivity
-import com.example.personalfinancemobile.app.data.model.Auth.Constants
 import com.example.personalfinancemobile.app.data.model.Auth.loginRequest
 import com.example.personalfinancemobile.app.data.model.Auth.loginResponse
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
-import com.example.personalfinancemobile.utils.SessionManager
+import com.example.personalfinancemobile.app.ui.utils.SessionManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
