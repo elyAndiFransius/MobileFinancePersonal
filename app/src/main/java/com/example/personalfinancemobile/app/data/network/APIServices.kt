@@ -7,6 +7,9 @@ import com.example.personalfinancemobile.app.data.model.Auth.loginResponse
 import com.example.personalfinancemobile.app.data.model.User
 import com.example.personalfinancemobile.app.data.model.Budget
 import com.example.personalfinancemobile.app.data.model.BudgetRequest
+import com.example.personalfinancemobile.app.data.model.CategoryResponse
+import com.example.personalfinancemobile.app.data.model.DepositResponse
+import com.example.personalfinancemobile.app.data.model.ServerCategory
 import com.example.personalfinancemobile.app.data.model.Target
 import com.example.personalfinancemobile.app.data.model.TargetResponse
 import com.example.personalfinancemobile.app.data.model.TransactionModel
@@ -63,11 +66,18 @@ interface APIServices {
         @Header("Authorization") token: String
     ): Call<ResponseBody>
 
-    // Target
+
     @GET("targets")
     fun getTarget(
         @Header("Authorization") token:String
     ): Call<TargetResponse>
+
+    // Target
+    @DELETE("targets/destory/{target}")
+    fun deleteTarget(
+        @Path("target") id: Int,
+        @Header("Authorization") token: String
+    ): Call<ResponseBody>
 
     @Multipart
     @POST("targets/store")
@@ -81,12 +91,33 @@ interface APIServices {
         @Header("Authorization") token: String
     ): Call<ResponseBody>
 
+
+    @GET("deposit")
+    fun indexDeposit(
+        @Header("Authorization") token : String
+    ):  Call<DepositResponse>
+
     // Deposit
     @Multipart
-    @POST("targets/addprogress")
+    @POST("deposit/store")
     fun createDeposit(
         @Part ("date") date: RequestBody,
         @Part("deposit") deposit: RequestBody,
+        @Header("Authorization") token: String
+    ): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @PUT("deposit/update/{deposit}")
+    fun updateDeposit(
+        @Path("deposit") id: Int,
+        @Field("date") date: String,
+        @Field("deposit") deposit: Int,
+        @Header("Authorization") token: String
+    ): Call<ResponseBody>
+
+    @DELETE("deposit/delete/{deposit}")
+    fun deletedepo(
+        @Path("deposit") id: Int,
         @Header("Authorization") token: String
     ): Call<ResponseBody>
 
@@ -107,6 +138,12 @@ interface APIServices {
     fun indexTransaction(
         @Header("Authorization") token: String
     ): Call<TransactionResponse>
+
+    // untuk menampilkan kategories saja
+    @GET("categories")
+    fun getCategories(
+        @Header("Authorization") token : String
+    ):  Call<CategoryResponse>
 
 
 }

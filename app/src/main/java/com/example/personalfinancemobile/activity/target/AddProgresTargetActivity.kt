@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.personalfinancemobile.R
+import com.example.personalfinancemobile.activity.Deposit.DepoMainActivity
+import com.example.personalfinancemobile.app.data.model.ServerDeposit
 import com.example.personalfinancemobile.app.data.model.TargetResponse
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
@@ -32,6 +35,8 @@ import retrofit2.Response
 
 
 class AddProgresTargetActivity : AppCompatActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -41,11 +46,26 @@ class AddProgresTargetActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
         val date = findViewById<EditText>(R.id.id_date)
         val deposit = findViewById<EditText>(R.id.id_deposit)
+
+        val mode = intent.getStringExtra("mode") // "edit" atau null
+        val depositData = intent.getSerializableExtra("deposit") as? ServerDeposit
+
+        if (mode == "edit" && depositData != null) {
+            date.setText(depositData.date)
+            deposit.setText(depositData.deposit.toString())
+        }
+
+
         val btnSave = findViewById<AppCompatButton>(R.id.btnSave)
         val btnBack = findViewById<AppCompatButton>(R.id.btnBack)
+        val depo = findViewById<TextView>(R.id.textView2)
+
+        depo.setOnClickListener {
+            val intent = Intent(this@AddProgresTargetActivity, DepoMainActivity::class.java)
+            startActivity(intent)
+        }
 
 
         // Kembali ke activy sebelumnya
@@ -75,54 +95,73 @@ class AddProgresTargetActivity : AppCompatActivity() {
             ).show()
         }
 
+
+
         // Simpan progres target
-        btnSave.setOnClickListener{
+        btnSave.setOnClickListener {
             val dateString =  date.text.toString()
             val depositString = deposit.text.toString()
-
-            val depositInt = depositString.toIntOrNull()
-            val dateParsed = try {
-                dateFormat.parse(dateString)
-            } catch (e: Exception) {
-                null
-            }
+            val depositInt = depositString.toIntOrNull() ?: 0
 
             fun createPartFormString(value: String): RequestBody {
                 return  value.toRequestBody("text/plain".toMediaTypeOrNull())
             }
+
             val datePart = createPartFormString(dateString)
             val depositPart = createPartFormString(depositInt.toString())
-
-
             val sessionManager = SessionManager(this)
             val token = sessionManager.fetchAuthToken()
 
             val apiServices = RetrofitInstance.getInstance(this).create(APIServices::class.java)
-            apiServices.createDeposit( datePart, depositPart, "Bearer $token").enqueue(object : Callback<ResponseBody>{
-                override fun onResponse(
-                    call: Call<ResponseBody>,
-                    response: Response<ResponseBody>
-                ) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(this@AddProgresTargetActivity, "Deposit berhasil di tambahkkan",
-                            Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this@AddProgresTargetActivity,
-                            BerhasilMencatatProgresActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    } else {
-                        val errorBody = response.errorBody()?.string()
-                        Log.e("AddProgressTargetError","Deposti gagal di tambahkan: $errorBody")
-                        Toast.makeText(this@AddProgresTargetActivity, "Coba lagi", Toast.LENGTH_SHORT).show()
-                    }
-                }
 
-                override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
-                    Toast.makeText(this@AddProgresTargetActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
-                    Log.e("DepositError", "Throwable: ${t.message}")
-                }
-            } )
+            if (mode == "edit" && depositData != null) {
+                // 🔧 Gantilah sesuai endpoint edit deposit kamu
+                apiServices.updateDeposit(
+                    depositData.id,
+                    dateString,
+                    depositInt,
+                    "Bearer $token"
+                ).enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(this@AddProgresTargetActivity, "Berhasil diubah", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this@AddProgresTargetActivity, BerhasilMencatatProgresActivity::class.java))
+                            finish()
+                        } else {
+                            val errorBody = response.errorBody()?.string()
+                            Log.e("DepoUpdateError", "Depo Update gagal dibuat: $errorBody")
+                            Toast.makeText(this@AddProgresTargetActivity, "Gagal mengubah", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        Toast.makeText(this@AddProgresTargetActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                    }
+                })
+
+            } else {
+                // ✅ Tambah data (logika asli)
+                apiServices.createDeposit(
+                    datePart, depositPart, "Bearer $token"
+                ).enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(this@AddProgresTargetActivity, "Deposit berhasil ditambahkan", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this@AddProgresTargetActivity, BerhasilMencatatProgresActivity::class.java))
+                            finish()
+                        } else {
+                            val errorBody = response.errorBody()?.string()
+                            Log.e("AddProgressTargetError","Deposit gagal: $errorBody")
+                            Toast.makeText(this@AddProgresTargetActivity, "Gagal: $errorBody", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                        Toast.makeText(this@AddProgresTargetActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }
         }
+
     }
     // Function untuk menapilkan Image dari server
     private fun showImage() {

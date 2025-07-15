@@ -1,5 +1,6 @@
 package com.example.personalfinancemobile.activity.Transaksi
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -33,7 +34,20 @@ class ExpenseFragment : Fragment() {
         val expenseList = allTransaction.filter { it.jenis == "pengeluaran" }
 
 
-        adapter = TransactionAdapter(expenseList, isIncome = false)
+        adapter = TransactionAdapter(expenseList, isIncome = false, object : TransactionAdapter.onTransactionActionListener{
+            override fun onEdit(transaction: TransactionModel) {
+                val intent =  Intent(requireContext(),  EditTransactionActivity::class.java)
+                intent.putExtra("transaction", transaction)
+                startActivity(intent)
+                Log.d("IncomeFragment", "Edit transaksi: ${transaction.descripsi}")
+            }
+
+            override fun onDelete(transaction: TransactionModel) {
+                // Tindakan saat user klik "Hapus"
+                Log.d("IncomeFragment", "Hapus transaksi: ${transaction.descripsi}")
+                // TODO: Tampilkan dialog konfirmasi hapus
+            }
+        })
         recyclerView.adapter = adapter
 
         Log.d("ExpenseFragment", "Menampilkan : ${expenseList.size} Transaction pengeluran")

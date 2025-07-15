@@ -16,6 +16,8 @@ import androidx.core.view.ViewCompat
 import java.text.SimpleDateFormat
 import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
+import com.example.personalfinancemobile.app.data.model.CategoryResponse
+import com.example.personalfinancemobile.app.data.model.ServerCategory
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
 import java.util.Calendar
@@ -29,6 +31,9 @@ import java.util.Locale
 
 class AddTransactionActivity : AppCompatActivity() {
     private var  selectedCategoryId: Int? = null
+    private var  serverCategories: List<ServerCategory> = emptyList()
+    private var isCategoryLoaded = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -57,10 +62,14 @@ class AddTransactionActivity : AppCompatActivity() {
             type.showDropDown()
         }
 
-        // Untuk masukkan Category Transaction
         categoryField.setOnClickListener {
-            showCategoryDialog()
+            if (isCategoryLoaded) {
+                showCategoryDialog()
+            } else {
+                Toast.makeText(this, "Mohon tunggu, kategori sedang dimuat...", Toast.LENGTH_SHORT).show()
+            }
         }
+
         // Untuk memasukkan Date Transcation
         val calender = Calendar.getInstance()
 
@@ -111,7 +120,7 @@ class AddTransactionActivity : AppCompatActivity() {
                     }else{
                         val errorBody = response.errorBody()?.string()
                         Log.e("TransactionError", "Transaction gagal dibuat: $errorBody")
-                        Log.d("DEBUG", "Category category yang dikirim: ${jenisString}")
+                        Log.d("DEBUG", "Category ID yang dikirim: $selectedCategoryId")
                         Toast.makeText(this@AddTransactionActivity, "Coba lagi", Toast.LENGTH_SHORT).show()
 
                         }
@@ -125,30 +134,60 @@ class AddTransactionActivity : AppCompatActivity() {
 
                 })
             }
-        }
-        private fun showCategoryDialog() {
-            val categories = CategoryProvider.getDefaultCategories()
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle("Choose Category")
 
-            val categoryViews = categories.map { category ->
-                "${category.name}"
-            }.toTypedArray()
+        val apiService = RetrofitInstance.getInstance(this).create(APIServices::class.java)
+        val token = SessionManager(this).fetchAuthToken()
 
-            builder.setItems(categoryViews) { dialog, which ->
-                val selectedCategory = categories[which]
-                findViewById<EditText>(R.id.id_category).setText(selectedCategory.name)
-
-                //Simpan juga ID kalau di butuhkan untuk di kirim ke serve nantinya
-                selectedCategoryId = selectedCategory.id
+        apiService.getCategories("Bearer $token").enqueue(object : Callback<CategoryResponse> {
+            override fun onResponse(call: Call<CategoryResponse>, response: Response<CategoryResponse>) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if (responseBody != null && responseBody.success) {
+                        serverCategories = responseBody.data
+                        isCategoryLoaded = true
+                        Log.d("CATEGORY", "Kategori berhasil dimuat: ${serverCategories.size} item")
+                    } else {
+                        Log.e("CATEGORY", "Response tidak sesuai: $responseBody")
+                    }
+                } else {
+                    Log.e("CATEGORY", "Gagal ambil kategori: ${response.code()} - ${response.errorBody()?.string()}")
+                }
             }
-            builder.setNegativeButton("Cancel", null)
-            builder.show()
+
+            override fun onFailure(call: Call<CategoryResponse>, t: Throwable) {
+                Log.e("CATEGORY", "Gagal koneksi: ${t.message}")
+            }
+        })
+
+
+
+    }
+    private fun showCategoryDialog() {
+        if (serverCategories.isEmpty()) {
+            Toast.makeText(this, "Kategori belum dimuat dari server", Toast.LENGTH_SHORT).show()
+            return
         }
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Pilih Kategori")
+
+        val categoryNames = serverCategories.map { it.name }.toTypedArray()
+
+        builder.setItems(categoryNames) { _, which ->
+            val selectedCategory = serverCategories[which]
+            findViewById<EditText>(R.id.id_category).setText(selectedCategory.name)
+            selectedCategoryId = selectedCategory.id // ID dikirim ke server
+        }
+
+        builder.setNegativeButton("Batal", null)
+        builder.show()
+    }
+
 
     private fun navigateToMainActivity(){
         val intent = Intent(this@AddTransactionActivity, MainActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
 }

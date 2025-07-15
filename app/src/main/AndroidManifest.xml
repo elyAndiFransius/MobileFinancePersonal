@@ -19,6 +19,15 @@
         android:theme="@style/Theme.PersonalFinanceMobile"
         tools:targetApi="31">
         <activity
+            android:name=".activity.Deposit.EditDepositActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.Deposit.DepoMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.Transaksi.EditTransactionActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.Transaksi.BerhasilCatatActivity"
             android:exported="false" />
 

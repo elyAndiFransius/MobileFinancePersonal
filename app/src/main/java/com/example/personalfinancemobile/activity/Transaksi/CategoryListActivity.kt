@@ -19,9 +19,6 @@ class CategoryListActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-//        val resultIntent = Intent()
-//        resultIntent.putExtra("selectCategory", selectedCategory.name)
-//        setResult(Activity.RESULT_OK, resultIntent)
-//        finish()
+
     }
 }
