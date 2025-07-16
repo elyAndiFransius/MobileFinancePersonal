@@ -8,8 +8,10 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -30,6 +32,7 @@ import com.example.personalfinancemobile.activity.target.AddProgresTargetActivit
 import com.github.mikephil.charting.data.Entry
 import com.example.personalfinancemobile.activity.target.MainTargetActivity
 import com.example.personalfinancemobile.app.data.model.Auth.GrafikCategori
+import com.example.personalfinancemobile.app.data.model.Auth.GrafikTarget
 import com.example.personalfinancemobile.app.data.model.BudgetingResponse
 import com.example.personalfinancemobile.app.data.model.TargetResponse
 import com.example.personalfinancemobile.app.data.model.UserResponseObject
@@ -78,6 +81,7 @@ class MainActivity : AppCompatActivity() {
 
         getUser()
         Buget()
+        grafikTarget()
         grafikCategori()
         Notifikasi()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -244,14 +248,29 @@ class MainActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful) {
                     val kategoriList = response.body() ?: emptyList()
-                    showPieChart(pieChart, kategoriList)
+
+                    val emptyLayout = findViewById<LinearLayout>(R.id.emptyBudgetLayout)
+
+                    if (response.isSuccessful && !kategoriList.isNullOrEmpty()) {
+                        Log.d("BUDGET", "Menampilkan grafik")
+                        emptyLayout.visibility = View.GONE
+                        pieChart.visibility = View.VISIBLE
+                        showPieChart(pieChart, kategoriList)
+                    } else {
+                        Log.d("BUDGET", "Data kosong atau target = 0")
+                        emptyLayout.visibility = View.VISIBLE
+                        pieChart.visibility = View.GONE
+                    }
                 }else {
-                    Toast.makeText(this@MainActivity, "Gagal ambil data", Toast.LENGTH_SHORT).show()
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("API_ERROR", "Gagal ambil data budget: $errorBody")
+                    Toast.makeText(this@MainActivity, "Gagal ambil data budget $errorBody", Toast.LENGTH_SHORT).show()
                 }
 
             }
             override fun onFailure(call: Call<List<GrafikCategori>>, t: Throwable) {
                 Toast.makeText(this@MainActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                Log.e("Fail", "coba lagi: ${t.message}")
             }
         })
 
@@ -264,13 +283,17 @@ class MainActivity : AppCompatActivity() {
         val iconMap = CategoryProvider.getDefaultCategories().associateBy { it.name.lowercase() }
 
         data.forEach {
-            val iconDrawable = iconMap[it.kategori.lowercase()]?.let { category ->
+            val originalDrawable = iconMap[it.kategori.lowercase()]?.let { category ->
                 ContextCompat.getDrawable(this, category.image)
-            } ?: ContextCompat.getDrawable(this, R.drawable.ic_miscellaneous) // icon default jika tidak ditemukan
+            } ?: ContextCompat.getDrawable(this, R.drawable.ic_miscellaneous)
 
-            val entry = PieEntry(it.jumlah.toFloat(), it.kategori, iconDrawable)
+            // Resize icon (misal: 48x48 px)
+            originalDrawable?.setBounds(0, 0, 5, 5)
+
+            val entry = PieEntry(it.jumlah.toFloat(), it.kategori, originalDrawable)
             entries.add(entry)
         }
+
 
         val dataSet = PieDataSet(entries, "")
         dataSet.colors = ColorTemplate.MATERIAL_COLORS.toList()
@@ -279,7 +302,8 @@ class MainActivity : AppCompatActivity() {
 
         // Aktifkan icon
         dataSet.setDrawIcons(true)
-        dataSet.iconsOffset = MPPointF(0f, -30f)
+        dataSet.iconsOffset = MPPointF(0f, 25f)
+
 
         val pieData = PieData(dataSet)
         pieData.setValueFormatter(PercentFormatter(pieChart))
@@ -306,6 +330,73 @@ class MainActivity : AppCompatActivity() {
 
             override fun onNothingSelected() {}
         })
+    }
+    private fun grafikTarget() {
+
+        val sessionManager = SessionManager(this)
+        val token = sessionManager.fetchAuthToken()
+        val apiService = RetrofitInstance.getInstance(this).create(APIServices::class.java)
+        apiService.getTargetData("Bearer $token").enqueue(object :  Callback<GrafikTarget> {
+            override fun onResponse(call: Call<GrafikTarget>, response: Response<GrafikTarget>) {
+
+                if (response.isSuccessful) {
+                    val targetData = response.body()
+
+                    val pieChart = findViewById<PieChart>(R.id.pieTarget)
+                    val emptyLayout = findViewById<LinearLayout>(R.id.emptyTargetLayout)
+
+
+                    if (targetData == null || targetData.targetAmount == 0) {
+                        Log.d("TARGET", "Data kosong atau target = 0")
+                        emptyLayout.visibility = View.VISIBLE
+                        pieChart.visibility = View.GONE
+                    } else {
+                        Log.d("TARGET", "Menampilkan grafik")
+                        emptyLayout.visibility = View.GONE
+                        pieChart.visibility = View.VISIBLE
+                        showPieChartTarget(pieChart, targetData)
+                    }
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("API_ERROR", "Gagal ambil data: $errorBody")
+                    Toast.makeText(this@MainActivity, "Gagal ambil data", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<GrafikTarget>, t: Throwable) {
+                Toast.makeText(this@MainActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+    }
+    private fun showPieChartTarget(pieChart: PieChart, data: GrafikTarget) {
+        val progress = data.currentAmount.toFloat()
+        val target = data.targetAmount.toFloat()
+        val remaining = target - progress
+
+        val entries = ArrayList<PieEntry>()
+        entries.add(PieEntry(progress, "Terkumpul"))
+        entries.add(PieEntry(remaining, "Sisa"))
+
+        val dataSet = PieDataSet(entries, "")
+        dataSet.colors = listOf(Color.parseColor("#4CAF50"), Color.LTGRAY)
+        dataSet.valueTextColor = Color.WHITE
+        dataSet.valueTextSize = 12f
+
+        val pieData = PieData(dataSet)
+        pieData.setValueFormatter(PercentFormatter(pieChart))
+
+        pieChart.data = pieData
+        pieChart.setUsePercentValues(true)
+        pieChart.description.isEnabled = false
+        pieChart.centerText = "${data.gol}\n${(progress / target * 100).toInt()}%"
+        pieChart.setCenterTextSize(16f)
+        pieChart.setEntryLabelColor(Color.BLACK)
+        pieChart.animateY(1000)
+        pieChart.legend.isEnabled = false
+        pieChart.invalidate()
+
+
     }
 
 

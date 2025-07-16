@@ -2,6 +2,7 @@ package com.example.personalfinancemobile.app.data.network
 
 import android.telecom.CallScreeningService.CallResponse
 import com.example.personalfinancemobile.app.data.model.Auth.GrafikCategori
+import com.example.personalfinancemobile.app.data.model.Auth.GrafikTarget
 import com.example.personalfinancemobile.app.data.model.BudgetingResponse
 import com.example.personalfinancemobile.app.data.model.Auth.loginRequest
 import com.example.personalfinancemobile.app.data.model.Auth.loginResponse
@@ -174,10 +175,16 @@ interface APIServices {
     ):  Call<CategoryResponse>
 
     // untuk menampilkak grafi
-    @GET("grafik")
+    @GET("grafik/kategori")
     fun getKategoriData(
         @Header("Authorization") token : String
     ):  Call<List<GrafikCategori>>
+
+    // untuk menampilkak grafi
+    @GET("grafik/target")
+    fun getTargetData(
+        @Header("Authorization") token : String
+    ):  Call<GrafikTarget>
 
 
 }

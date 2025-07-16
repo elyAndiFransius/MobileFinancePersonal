@@ -219,7 +219,8 @@ class InputTargetActivity : AppCompatActivity() {
         return result ?: "unknown_file"
     }
     private fun navigateToMainActivity() {
-        val intent = Intent(this@InputTargetActivity, HomeTargetActivity::class.java)
+        val intent = Intent(this@InputTargetActivity, BerhasilMencatatProgresActivity::class.java)
         startActivity(intent)
+        finish()
     }
 }

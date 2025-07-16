@@ -48,7 +48,7 @@
             android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="105dp"
+            android:layout_marginTop="80dp"
             android:layout_marginStart="101dp"
             android:text="Hello,"
             android:textColor="@color/white"
@@ -63,7 +63,7 @@
             android:layout_width="60dp"
             android:layout_height="80dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="109dp"
+            android:layout_marginTop="80dp"
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -147,10 +147,52 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <LinearLayout
+                android:id="@+id/kategori"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/text_buttom"
+                android:padding="20dp"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_marginTop="10dp"
+                android:id="@+id/TextBudget"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="1dp">
+
+                <TextView
+                    android:id="@+id/vwBudget"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:padding="1dp"
+                    android:text="Grafik Budget"
+                    android:textSize="12dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/vwSeeAllBuget"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:padding="1dp"
+                    android:layout_marginStart="230dp"
+                    android:text="lihat semuanya"
+                    android:textSize="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <!-- Pie Chart 1 -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/button_ripple_white"
                 android:orientation="vertical"
                 android:padding="16dp">
@@ -159,25 +201,112 @@
                     android:id="@+id/pieChart"
                     android:layout_width="match_parent"
                     android:layout_height="230dp"
-                    android:layout_margin="16dp"
-                    android:background="@color/text_buttom" />
+                    android:layout_margin="1dp"
+                    android:background="@drawable/button_ripple_primary" />
+
+                <LinearLayout
+                    android:id="@+id/emptyBudgetLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="20dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/imgNoBudget"
+                        android:layout_width="170dp"
+                        android:layout_height="170dp"
+                        android:layout_marginTop="40dp"
+                        android:src="@drawable/ic_buget" />
+                    <TextView
+                        android:id="@+id/tvNoBudget"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Belum ada Budget keuangan.\nYuk buat Budgetmu!"
+                        android:textAlignment="center"
+                        android:fontFamily="@font/poppins_medium"
+                        android:textColor="@color/buttom"
+                        android:textSize="16sp"
+                        android:layout_marginTop="-200dp" />
+
+                </LinearLayout>
             </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/TextTarget"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:padding="1dp">
+
+                <TextView
+                    android:id="@+id/vwTarget"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:padding="1dp"
+                    android:text="Grafik target"
+                    android:textSize="12dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/vwSeeAllTarget"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:padding="1dp"
+                    android:layout_marginStart="220dp"
+                    android:text="Lihat semuanya"
+                    android:textSize="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Pie Chart 2 -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/button_ripple_white"
                 android:layout_marginTop="10dp"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="1dp">
 
                 <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/pieChart2"
+                    android:id="@+id/pieTarget"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_height="230dp"
                     android:layout_margin="16dp"
-                    android:background="@color/text_buttom" />
+                    android:background="@drawable/button_ripple_primary" />
+                <LinearLayout
+                    android:id="@+id/emptyTargetLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="20dp"
+                    android:visibility="gone">
+
+
+                    <ImageView
+                        android:id="@+id/imgNoTarget"
+                        android:layout_width="190dp"
+                        android:layout_height="190dp"
+                        android:src="@drawable/ic_target" />
+                    <TextView
+                        android:id="@+id/tvNoTarget"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Belum ada target keuangan.\nYuk buat targetmu!"
+                        android:textAlignment="center"
+                        android:fontFamily="@font/poppins_medium"
+                        android:textColor="@color/buttom"
+                        android:textSize="16sp"
+                        android:layout_marginTop="-192dp" />
+
+                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>

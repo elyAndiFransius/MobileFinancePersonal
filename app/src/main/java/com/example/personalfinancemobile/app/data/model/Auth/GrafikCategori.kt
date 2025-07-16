@@ -5,3 +5,9 @@ data class GrafikCategori(
     val jumlah: Int,
     val pemasukkan: Int
 )
+
+data class GrafikTarget(
+    val gol: String,
+    val targetAmount: Int,
+    val currentAmount: Int
+)
