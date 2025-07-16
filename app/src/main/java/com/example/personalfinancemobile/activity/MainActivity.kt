@@ -8,6 +8,8 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -78,6 +80,41 @@ class MainActivity : AppCompatActivity() {
         val tx_spanding = findViewById<TextView>(R.id.tx_spending)
 
         val logOut = findViewById<ImageView>(R.id.btnLogOut)
+
+        val kategoriContainer = findViewById<LinearLayout>(R.id.kategori)
+        val categories = CategoryProvider.getDefaultCategories()
+
+        for (category in categories) {
+            val itemLayout = LinearLayout(this).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    setMargins(8, 0, 8, 0)
+                }
+                orientation = LinearLayout.HORIZONTAL
+                setPadding(16, 8, 16, 8)
+                background = ContextCompat.getDrawable(this@MainActivity, R.drawable.kategori_background)
+                gravity = Gravity.CENTER_VERTICAL
+            }
+
+            val icon = ImageView(this).apply {
+                setImageResource(category.image)
+                layoutParams = LinearLayout.LayoutParams(60, 60)
+            }
+
+            val text = TextView(this).apply {
+                text = category.name.split(" ").first() // Ambil kata pertama saja (optional)
+                setTextColor(Color.BLACK)
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+                setPadding(8, 0, 0, 0)
+            }
+
+            itemLayout.addView(icon)
+            itemLayout.addView(text)
+            kategoriContainer.addView(itemLayout)
+        }
+
 
         getUser()
         Buget()
@@ -302,7 +339,7 @@ class MainActivity : AppCompatActivity() {
 
         // Aktifkan icon
         dataSet.setDrawIcons(true)
-        dataSet.iconsOffset = MPPointF(0f, 25f)
+        dataSet.iconsOffset = MPPointF(0f, 0f)
 
 
         val pieData = PieData(dataSet)
@@ -389,7 +426,7 @@ class MainActivity : AppCompatActivity() {
         pieChart.data = pieData
         pieChart.setUsePercentValues(true)
         pieChart.description.isEnabled = false
-        pieChart.centerText = "${data.gol}\n${(progress / target * 100).toInt()}%"
+        pieChart.centerText = "${data.gol}\n${target.toInt()}"
         pieChart.setCenterTextSize(16f)
         pieChart.setEntryLabelColor(Color.BLACK)
         pieChart.animateY(1000)
