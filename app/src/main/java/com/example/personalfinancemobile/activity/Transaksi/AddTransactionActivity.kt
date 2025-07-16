@@ -18,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
 import com.example.personalfinancemobile.app.data.model.CategoryResponse
 import com.example.personalfinancemobile.app.data.model.ServerCategory
+import com.example.personalfinancemobile.app.data.model.TransactionModel
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
 import java.util.Calendar
@@ -50,6 +51,15 @@ class AddTransactionActivity : AppCompatActivity() {
         val date = findViewById<EditText>(R.id.id_Date)
         val desc = findViewById<EditText>(R.id.id_des)
         val btnSave = findViewById<AppCompatButton>(R.id.id_btn_save)
+
+        val mode = intent.getStringExtra("mode") // "edit" atau null
+        val transactionData = intent.getSerializableExtra("transaction") as? TransactionModel
+
+        if (mode == "edit" && transactionData != null) {
+            jumlah.setText(transactionData.jumlah.toString())
+            date.setText(transactionData.date.toString())
+            desc.setText(transactionData.descripsi.toString())
+        }
 
         // Untuk masukkan Type Transaction
         val types = listOf("Income", "Expense")
@@ -95,13 +105,17 @@ class AddTransactionActivity : AppCompatActivity() {
                 "Expense" -> "pengeluaran"
                 else -> ""
             }
-            val jumlahString  = jumlah.text.toString().trim()
+            val jumlahString = jumlah.text.toString().trim()
             val dateString = date.text.toString().trim()
             val descString = desc.text.toString().trim()
             val categoryId = selectedCategoryId
 
-            if (jenisString.isBlank()  ||  descString.isBlank()  || jumlahString.isBlank() ||  dateString.isBlank() ) {
-                Toast.makeText(this@AddTransactionActivity, "Mohon isi semua inputan", Toast.LENGTH_SHORT).show()
+            if (jenisString.isBlank() || descString.isBlank() || jumlahString.isBlank() || dateString.isBlank()) {
+                Toast.makeText(
+                    this@AddTransactionActivity,
+                    "Mohon isi semua inputan",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 
@@ -110,30 +124,99 @@ class AddTransactionActivity : AppCompatActivity() {
             val token = sessionManager.fetchAuthToken()
             val apiService = RetrofitInstance.getInstance(this).create(APIServices::class.java)
 
-            apiService.createTransaction(
-                categoryId.toString(), jenisString, descString,  jumlahString, dateString, "Bearer $token"
-            ).enqueue(object : Callback<ResponseBody> {
-                override fun onResponse( call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
-                    if(response.isSuccessful) {
-                        Toast.makeText(this@AddTransactionActivity, "Transaction Berhasil di Simpan", Toast.LENGTH_SHORT).show()
-                        navigateToMainActivity()
-                    }else{
-                        val errorBody = response.errorBody()?.string()
-                        Log.e("TransactionError", "Transaction gagal dibuat: $errorBody")
-                        Log.d("DEBUG", "Category ID yang dikirim: $selectedCategoryId")
-                        Toast.makeText(this@AddTransactionActivity, "Coba lagi", Toast.LENGTH_SHORT).show()
+            //  Gantilah sesuai endpoint edit deposit kamu
+            if (mode == "edit" && transactionData != null) {
+                apiService.updateTransaction(
+                    transactionData.id,
+                    categoryId.toString(),
+                    jenisString,
+                    descString,
+                    jumlahString,
+                    dateString,
+                    "Bearer $token"
+                ).enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(
+                        call: Call<ResponseBody?>,
+                        response: Response<ResponseBody?>
+                    ) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(
+                                this@AddTransactionActivity,
+                                "Transaction Berhasil di update",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            navigateToMainActivity()
+                        } else {
+                            val errorBody = response.errorBody()?.string()
+                            Log.e("TransactionError", "Transaction gagal dibuat: $errorBody")
+                            Log.d("DEBUG", "Category ID yang dikirim: $selectedCategoryId")
+                            Toast.makeText(
+                                this@AddTransactionActivity,
+                                "Coba lagi",
+                                Toast.LENGTH_SHORT
+                            ).show()
 
                         }
                     }
 
-                override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
-                    Toast.makeText(this@AddTransactionActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
-                    Log.e("TransactionError", "Throwable: ${t.message}")
+                    override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                        Toast.makeText(
+                            this@AddTransactionActivity,
+                            "Error: ${t.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        Log.e("TransactionError", "Throwable: ${t.message}")
+
+                    }
+
+                })
+            } else {
+
+                apiService.createTransaction(
+                    categoryId.toString(),
+                    jenisString,
+                    descString,
+                    jumlahString,
+                    dateString,
+                    "Bearer $token"
+                ).enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(
+                        call: Call<ResponseBody?>,
+                        response: Response<ResponseBody?>
+                    ) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(
+                                this@AddTransactionActivity,
+                                "Transaction Berhasil di Simpan",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            navigateToMainActivity()
+                        } else {
+                            val errorBody = response.errorBody()?.string()
+                            Log.e("TransactionError", "Transaction gagal dibuat: $errorBody")
+                            Log.d("DEBUG", "Category ID yang dikirim: $selectedCategoryId")
+                            Toast.makeText(
+                                this@AddTransactionActivity,
+                                "Coba lagi",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                        Toast.makeText(
+                            this@AddTransactionActivity,
+                            "Error: ${t.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        Log.e("TransactionError", "Throwable: ${t.message}")
 
                     }
 
                 })
             }
+        }
 
         val apiService = RetrofitInstance.getInstance(this).create(APIServices::class.java)
         val token = SessionManager(this).fetchAuthToken()

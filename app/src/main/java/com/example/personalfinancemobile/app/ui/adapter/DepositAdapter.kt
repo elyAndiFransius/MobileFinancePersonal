@@ -33,7 +33,7 @@ class DepositAdapter (
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
       val item = items[position]
-        Log.e("DepositAdapter", "Item deposite: ${item.date}, ${item.deposit}")
+
         holder.tvDate.text = item.date
         holder.tvAmount.text = item.deposit.toString()
 

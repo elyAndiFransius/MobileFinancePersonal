@@ -8,47 +8,39 @@
     android:background="@color/primary2"
     tools:context=".activity.MainActivity">
 
+<!--    HEADER -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_header_main"
+        android:paddingTop="10dp"
         android:paddingBottom="15dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- 4 Guideline untuk bagi rata -->
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.125" />
+        <ImageView
+            android:id="@+id/btnLogOut"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/ic_log_out"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guidelinee"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.265" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guidelineee"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.77" />
 
         <ImageView
             android:id="@+id/imageView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="70dp"
-            android:padding="5dp"
-            app:layout_constraintEnd_toEndOf="@+id/guideline"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="25dp"
+            android:scaleType="centerInside"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/logo_kecil" />
 
@@ -56,81 +48,116 @@
             android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="90dp"
-            android:layout_marginEnd="1dp"
-            android:fontFamily="@font/poppins_medium"
+            android:layout_marginTop="105dp"
+            android:layout_marginStart="101dp"
             android:text="Hello,"
             android:textColor="@color/white"
-            android:textSize="8sp"
-            app:layout_constraintEnd_toEndOf="@+id/guidelinee"
-            app:layout_constraintStart_toStartOf="@+id/guidelinee"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="13dp"
-
-            android:fontFamily="@font/poppins_semibold"
-            android:text="Ely Andi Fransius"
-            android:textColor="@color/text_buttom"
-            android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@+id/imageView7"
-            app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
         <ImageView
             android:id="@+id/account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
-            android:layout_marginEnd="30dp"
-            android:padding="1dp"
-            app:layout_constraintEnd_toEndOf="@+id/guidelineee"
-            app:layout_constraintStart_toStartOf="@+id/guidelineee"
+            android:layout_width="60dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="109dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_account" />
 
+        <!-- Balance Container -->
+
+        <TextView
+            android:id="@+id/vw_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="101dp"
+            android:layout_marginTop="1dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Elyandi Fransius"
+            android:textColor="@color/text_buttom"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/costarain1"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="80dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="100dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="50dp"
             android:background="@drawable/edit_text_bg_primary"
-            android:padding="7dp"
+            android:padding="6dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView12">
+            app:layout_constraintStart_toEndOf="@+id/account"
+            app:layout_constraintTop_toBottomOf="@+id/vw_name">
 
             <TextView
                 android:id="@+id/Rp"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="Rp."
+                android:layout_marginStart="10dp"
+                android:text="Rp "
                 android:textColor="@color/primary"
-                android:textSize="12sp"
+                android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/balance"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="1000"
+                android:text="3.540.999.00"
+                android:layout_marginStart="5dp"
                 android:textColor="@color/primary"
-                android:textSize="12sp"
+                android:textSize="15sp"
                 app:layout_constraintStart_toEndOf="@+id/Rp"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+<!--    Kontent-->
+
+    <ScrollView
+        android:id="@+id/scroll_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/foot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header">
+
+        <!-- ISI YANG BISA DI SCROLL -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- PieChart dan elemen lain di sini -->
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieChart"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_gravity="center" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!--    Footer -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/foot"
         android:layout_width="match_parent"
@@ -154,7 +181,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.375" />
+            app:layout_constraintGuide_percent="0.38442823" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"
@@ -264,15 +291,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
-        android:id="@+id/btnNotif"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="63dp"
-        android:text="Button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

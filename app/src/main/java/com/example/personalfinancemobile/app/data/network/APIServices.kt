@@ -14,6 +14,7 @@ import com.example.personalfinancemobile.app.data.model.Target
 import com.example.personalfinancemobile.app.data.model.TargetResponse
 import com.example.personalfinancemobile.app.data.model.TransactionModel
 import com.example.personalfinancemobile.app.data.model.TransactionResponse
+import com.example.personalfinancemobile.app.data.model.UserResponseObject
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import com.example.personalfinancemobile.app.data.model.Target as TargetModel
@@ -39,6 +40,11 @@ interface APIServices {
 
     @POST("login")
     fun login(@Body request: loginRequest): Call<loginResponse>
+
+    @GET("profile")
+    fun getUser(
+        @Header("Authorization") token: String
+    ): Call<UserResponseObject>
 
     // Budget
     @POST("budgets/create")
@@ -133,6 +139,27 @@ interface APIServices {
         @Field("date") dateString: String,
         @Header("Authorization") token: String
     ): Call<ResponseBody>
+
+    //Transaction
+    @FormUrlEncoded
+    @PUT("transaksi/update/{transaksi}")
+    fun updateTransaction(
+        @Path("transaksi") id: Int,
+        @Field("categories_id") categoryFieldString: String,
+        @Field("jenis") jenisString: String,
+        @Field("descripsi") descString: String,
+        @Field("jumlah") jumlahString: String,
+        @Field("date") dateString: String,
+        @Header("Authorization") token: String
+    ): Call<ResponseBody>
+
+
+    @DELETE("transaksi/delete/{transaksi}")
+    fun deleteTransaction(
+        @Path("transaksi") id: Int,
+        @Header("Authorization") token: String
+    ): Call<ResponseBody>
+
 
     @GET("transaksi")
     fun indexTransaction(

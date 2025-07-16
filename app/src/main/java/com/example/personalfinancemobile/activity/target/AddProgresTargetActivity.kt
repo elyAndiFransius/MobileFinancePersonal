@@ -115,7 +115,7 @@ class AddProgresTargetActivity : AppCompatActivity() {
             val apiServices = RetrofitInstance.getInstance(this).create(APIServices::class.java)
 
             if (mode == "edit" && depositData != null) {
-                // 🔧 Gantilah sesuai endpoint edit deposit kamu
+                //  Gantilah sesuai endpoint edit deposit kamu
                 apiServices.updateDeposit(
                     depositData.id,
                     dateString,
@@ -185,7 +185,6 @@ class AddProgresTargetActivity : AppCompatActivity() {
                             .error(R.drawable.ic_image_errror)
                             .into(imageView)
 
-                        Toast.makeText(this@AddProgresTargetActivity, "Gambar behasil di buat", Toast.LENGTH_SHORT).show()
                     } else{
                         Toast.makeText(this@AddProgresTargetActivity, "Gambar Kosong", Toast.LENGTH_SHORT).show()
                     }

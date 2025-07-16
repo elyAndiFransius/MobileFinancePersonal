@@ -77,6 +77,9 @@ dependencies {
 // OkHttp sebagai library jaringan (biasa digunakan di dalam Retrofit)
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
 
+    // MPAndroidChart
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
 
 
 }
