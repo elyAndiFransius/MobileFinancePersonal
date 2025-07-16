@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
@@ -25,17 +27,29 @@ import com.example.personalfinancemobile.activity.Auth.LoginActivity
 import com.example.personalfinancemobile.activity.Transaksi.MainActivity as Transaksi
 import com.example.personalfinancemobile.activity.Budget.MainBudgetingActivity
 import com.example.personalfinancemobile.activity.target.AddProgresTargetActivity
-import com.example.personalfinancemobile.activity.target.HomeTargetActivity
+import com.github.mikephil.charting.data.Entry
 import com.example.personalfinancemobile.activity.target.MainTargetActivity
+import com.example.personalfinancemobile.app.data.model.Auth.GrafikCategori
 import com.example.personalfinancemobile.app.data.model.BudgetingResponse
 import com.example.personalfinancemobile.app.data.model.TargetResponse
 import com.example.personalfinancemobile.app.data.model.UserResponseObject
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
+import com.example.personalfinancemobile.app.data.repository.CategoryProvider
 import com.example.personalfinancemobile.app.ui.utils.SessionManager
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.formatter.PercentFormatter
+import com.github.mikephil.charting.utils.ColorTemplate
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.utils.MPPointF
 
 
 class MainActivity : AppCompatActivity() {
@@ -64,6 +78,7 @@ class MainActivity : AppCompatActivity() {
 
         getUser()
         Buget()
+        grafikCategori()
         Notifikasi()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ActivityCompat.requestPermissions(
@@ -190,7 +205,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
-
     private  fun getUser() {
         val sessionManager= SessionManager(this)
         val token = sessionManager.fetchAuthToken()
@@ -218,4 +232,81 @@ class MainActivity : AppCompatActivity() {
 
         })
     }
+
+    private fun grafikCategori() {
+        val pieChart = findViewById<PieChart>(R.id.pieChart)
+
+        val sessionManager = SessionManager(this)
+        val token = sessionManager.fetchAuthToken()
+        val apiService = RetrofitInstance.getInstance(this).create(APIServices::class.java)
+        apiService.getKategoriData("Bearer $token").enqueue(object :  Callback<List<GrafikCategori>> {
+            override fun onResponse(call: Call<List<GrafikCategori>>, response: Response<List<GrafikCategori>>
+            ) {
+                if (response.isSuccessful) {
+                    val kategoriList = response.body() ?: emptyList()
+                    showPieChart(pieChart, kategoriList)
+                }else {
+                    Toast.makeText(this@MainActivity, "Gagal ambil data", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+            override fun onFailure(call: Call<List<GrafikCategori>>, t: Throwable) {
+                Toast.makeText(this@MainActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+    }
+    private fun showPieChart(pieChart: PieChart, data: List<GrafikCategori>) {
+        val entries = ArrayList<PieEntry>()
+        val totalPemasukkan = data.firstOrNull()?.pemasukkan ?: 0
+
+        // Ambil daftar kategori beserta icon dari CategoryProvider
+        val iconMap = CategoryProvider.getDefaultCategories().associateBy { it.name.lowercase() }
+
+        data.forEach {
+            val iconDrawable = iconMap[it.kategori.lowercase()]?.let { category ->
+                ContextCompat.getDrawable(this, category.image)
+            } ?: ContextCompat.getDrawable(this, R.drawable.ic_miscellaneous) // icon default jika tidak ditemukan
+
+            val entry = PieEntry(it.jumlah.toFloat(), it.kategori, iconDrawable)
+            entries.add(entry)
+        }
+
+        val dataSet = PieDataSet(entries, "")
+        dataSet.colors = ColorTemplate.MATERIAL_COLORS.toList()
+        dataSet.valueTextColor = Color.WHITE
+        dataSet.valueTextSize = 12f
+
+        // Aktifkan icon
+        dataSet.setDrawIcons(true)
+        dataSet.iconsOffset = MPPointF(0f, -30f)
+
+        val pieData = PieData(dataSet)
+        pieData.setValueFormatter(PercentFormatter(pieChart))
+
+        pieChart.data = pieData
+        pieChart.setUsePercentValues(true)
+        pieChart.description.isEnabled = false
+        pieChart.centerText = "Total:\nRp$totalPemasukkan"
+        pieChart.setCenterTextSize(16f)
+        pieChart.setEntryLabelColor(Color.BLACK)
+        pieChart.animateY(1000)
+        pieChart.legend.isEnabled = false // sembunyikan legenda
+        pieChart.invalidate()
+
+        pieChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+            override fun onValueSelected(e: Entry?, h: Highlight?) {
+                val pieEntry = e as? PieEntry
+                pieEntry?.let {
+                    val kategori = it.label
+                    val jumlah = it.value.toInt()
+                    Toast.makeText(this@MainActivity, "$kategori: Rp$jumlah", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onNothingSelected() {}
+        })
+    }
+
+
 }

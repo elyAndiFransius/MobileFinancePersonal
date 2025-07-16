@@ -128,34 +128,61 @@
 
 <!--    Kontent-->
 
+    <!-- Konten scrollable -->
     <ScrollView
         android:id="@+id/scroll_content"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
-        android:background="@color/white"
+        android:background="@color/primary2"
+        app:layout_constraintTop_toBottomOf="@+id/header"
         app:layout_constraintBottom_toTopOf="@+id/foot"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header">
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- ISI YANG BISA DI SCROLL -->
+        <!-- Parent LinearLayout (wajib 1 anak langsung dari ScrollView) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- PieChart dan elemen lain di sini -->
-            <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/pieChart"
+            <!-- Pie Chart 1 -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:layout_gravity="center" />
+                android:background="@drawable/button_ripple_white"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pieChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="230dp"
+                    android:layout_margin="16dp"
+                    android:background="@color/text_buttom" />
+            </LinearLayout>
+
+            <!-- Pie Chart 2 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/button_ripple_white"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pieChart2"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_margin="16dp"
+                    android:background="@color/text_buttom" />
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
+
 
     <!--    Footer -->
     <androidx.constraintlayout.widget.ConstraintLayout
