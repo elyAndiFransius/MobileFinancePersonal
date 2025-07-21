@@ -58,7 +58,7 @@ class otpRegisVerificationActivity : AppCompatActivity() {
                             val intent = Intent(this@otpRegisVerificationActivity, LoginActivity::class.java)
                             startActivity(intent)
                         } else {
-                            Toast.makeText(this@otpRegisVerificationActivity, "Gagal verifikasi", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@otpRegisVerificationActivity, "OTP Salah", Toast.LENGTH_SHORT).show()
                         }
                     }
 

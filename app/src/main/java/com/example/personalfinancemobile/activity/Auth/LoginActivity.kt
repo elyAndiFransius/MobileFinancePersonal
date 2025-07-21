@@ -3,7 +3,9 @@ package com.example.personalfinancemobile.activity.Auth
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
+import android.view.MotionEvent
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -25,6 +27,8 @@ import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var sessionManager: SessionManager
+    private var isPasswordVisible = false
+    private var isConfirmPasswordVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +47,7 @@ class LoginActivity : AppCompatActivity() {
             navigateToMainActivity()
             return
         }
+        setupPasswordToggle()
 
         // Setup UI components
         val login = findViewById<Button>(R.id.btn_login)
@@ -157,6 +162,34 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this@LoginActivity, MainActivity::class.java)
         startActivity(intent)
         finish() // Tutup LoginActivity agar user tidak bisa kembali dengan tombol back
+    }
+    private fun setupPasswordToggle() {
+        val passwordEditText = findViewById<EditText>(R.id.editTextPassword)
+        val confirmPasswordEditText = findViewById<EditText>(R.id.editTextConfirmPassword)
+
+        passwordEditText.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val drawableEnd = 2 // index for drawableEnd
+                val drawable = passwordEditText.compoundDrawables[drawableEnd]
+                if (drawable != null && event.rawX >= (passwordEditText.right - drawable.bounds.width())) {
+                    isPasswordVisible = !isPasswordVisible
+                    togglePasswordVisibility(passwordEditText, isPasswordVisible)
+                    return@setOnTouchListener true
+                }
+            }
+            false
+        }
+    }
+
+    private fun togglePasswordVisibility(editText: EditText, isVisible: Boolean) {
+        if (isVisible) {
+            editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            editText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_invisible, 0)
+        } else {
+            editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            editText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_invisible, 0)
+        }
+        editText.setSelection(editText.text.length) // cursor tetap di akhir teks
     }
 
     // Method untuk logout (panggil dari activity lain jika diperlukan)

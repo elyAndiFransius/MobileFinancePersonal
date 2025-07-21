@@ -28,7 +28,7 @@ class SplachScreenActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             delay(5000) // Tunda 5 detik (5000 ms)
-            startActivity(Intent(this@SplachScreenActivity, LoginActivity::class.java))
+            startActivity(Intent(this@SplachScreenActivity, LandingPageActivity::class.java))
             finish() // Tutup splash screen
         }
 

@@ -12,9 +12,13 @@ import com.example.personalfinancemobile.activity.Auth.LoginActivity
 import com.example.personalfinancemobile.activity.Auth.RegisterActivity
 import com.example.personalfinancemobile.activity.Budget.BudgedSchedulingActivity
 import com.example.personalfinancemobile.activity.Budget.CategoriActivity
+import com.example.personalfinancemobile.activity.MainActivity
 import com.example.personalfinancemobile.activity.target.InputTargetActivity
+import com.example.personalfinancemobile.app.ui.utils.SessionManager
 
 class LandingPageActivity : AppCompatActivity() {
+    private lateinit var sessionManager: SessionManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -25,11 +29,18 @@ class LandingPageActivity : AppCompatActivity() {
             insets
         }
 
+        // Inisialisasi SessionManager
+        sessionManager = SessionManager(this)
 
+        // Jika sudah login, langsung pindah ke MainActivity
+        if (sessionManager.isLoggedIn()) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+            return
+        }
 
-        val get_start = findViewById<Button>(R.id.btn_start)
-
-        get_start.setOnClickListener{
+        val getStart = findViewById<Button>(R.id.btn_start)
+        getStart.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }

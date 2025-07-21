@@ -8,32 +8,21 @@
     android:layout_height="match_parent"
     tools:context=".activity.Auth.otpResetVerificationActivity">
 
-    <!-- Tombol Kembali -->
-    <ImageView
-        android:id="@+id/id_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="30dp"
-        android:padding="4dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_back" />
 
     <TextView
         android:id="@+id/judul"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_bold"
-        android:text="OTP Verifikasi"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="100dp"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="OTP Verifikasi"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/id_back" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/desc"
@@ -153,7 +142,7 @@
         android:padding="12dp"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
-        android:text="Save"
+        android:text="Simpan"
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/descResent"

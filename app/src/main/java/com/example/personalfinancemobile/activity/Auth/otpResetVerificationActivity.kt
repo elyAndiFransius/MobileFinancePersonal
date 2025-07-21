@@ -39,7 +39,7 @@ class otpResetVerificationActivity : AppCompatActivity() {
 
         // INISIALISASI BINDING DULU
         binding = ActivityOtpResetVerificationBinding.inflate(layoutInflater)
-        setContentView(binding.root) // JANGAN pakai setContentView(R.layout....)
+        setContentView(binding.root)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
