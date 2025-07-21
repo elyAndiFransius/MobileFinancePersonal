@@ -116,7 +116,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="3.540.999.00"
+                android:text="0.00"
                 android:layout_marginStart="5dp"
                 android:textColor="@color/primary"
                 android:textSize="15sp"
@@ -210,6 +210,7 @@
                     android:layout_margin="1dp"
                     android:background="@drawable/button_ripple_primary" />
                 <View
+                    android:id="@+id/garis"
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
                     android:layout_marginTop="10dp"
@@ -306,7 +307,7 @@
                         android:textAlignment="center"
                         android:fontFamily="@font/poppins_medium"
                         android:textColor="@color/buttom"
-                        android:textSize="16sp"
+                        android:textSize="10sp"
                         android:layout_marginTop="-200dp" />
 
                 </LinearLayout>
@@ -360,6 +361,7 @@
                     android:background="@drawable/button_ripple_primary" />
 
                 <View
+                    android:id="@+id/view2"
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
                     android:layout_marginTop="10dp"

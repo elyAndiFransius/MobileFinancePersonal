@@ -9,6 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
 import com.example.personalfinancemobile.activity.MainActivity
+import com.example.personalfinancemobile.activity.Transaksi.MainActivity as main
 import com.example.personalfinancemobile.activity.target.BerhasilMencatatProgresActivity
 
 class BerhasilCatatActivity : AppCompatActivity() {
@@ -24,7 +25,7 @@ class BerhasilCatatActivity : AppCompatActivity() {
         val btnHome = findViewById<AppCompatButton>(R.id.btnHome)
 
         btnHome.setOnClickListener {
-            val intent = Intent(this@BerhasilCatatActivity, MainActivity::class.java)
+            val intent = Intent(this@BerhasilCatatActivity, main::class.java)
             startActivity(intent)
             finish()
         }

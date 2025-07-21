@@ -4,7 +4,6 @@ enum class Priode {
     Mingguan,
     Bulanan,
     Tahunan,
-    Custom
 }
 
 data class Budget(

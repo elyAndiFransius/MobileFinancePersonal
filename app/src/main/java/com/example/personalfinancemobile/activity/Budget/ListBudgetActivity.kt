@@ -118,6 +118,7 @@ class ListBudgetActivity : AppCompatActivity() {
                         val intent = Intent(this@ListBudgetActivity, BudgedSchedulingActivity::class.java)
                         startActivity(intent)
                         finish()
+
                     }else {
                         val errorBody = response.errorBody()?.string()
                         Log.e("deleteError", "Gagal mengahapus data budgeting: $errorBody")

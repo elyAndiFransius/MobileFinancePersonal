@@ -87,6 +87,7 @@ class BudgedSchedulingActivity : AppCompatActivity() {
 
         builder.setNegativeButton("Batal") { dialog, _ ->
             dialog.dismiss()
+
         }
 
         // Agar dialog tidak bisa di-dismiss dengan tap di luar

@@ -11,12 +11,19 @@ import com.example.personalfinancemobile.app.data.model.Budget
 import com.example.personalfinancemobile.app.data.model.BudgetRequest
 import com.example.personalfinancemobile.app.data.model.CategoryResponse
 import com.example.personalfinancemobile.app.data.model.DepositResponse
+import com.example.personalfinancemobile.app.data.model.OTPResponse
+import com.example.personalfinancemobile.app.data.model.ResetResponse
+import com.example.personalfinancemobile.app.data.model.SentOTPResponse
 import com.example.personalfinancemobile.app.data.model.ServerCategory
 import com.example.personalfinancemobile.app.data.model.Target
 import com.example.personalfinancemobile.app.data.model.TargetResponse
 import com.example.personalfinancemobile.app.data.model.TransactionModel
 import com.example.personalfinancemobile.app.data.model.TransactionResponse
 import com.example.personalfinancemobile.app.data.model.UserResponseObject
+import com.example.personalfinancemobile.app.data.model.Validasi
+import com.example.personalfinancemobile.app.data.model.resetPassword
+import com.example.personalfinancemobile.app.data.model.resetPasswordOpt
+import com.example.personalfinancemobile.app.data.model.sentOTP
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import com.example.personalfinancemobile.app.data.model.Target as TargetModel
@@ -39,6 +46,22 @@ interface APIServices {
     // Authentifikasi
     @POST("register")
     fun registerUser(@Body user: User): Call<User>
+
+    @POST("validationKodeOTP")
+    fun validasiOTP(@Body validasi: Validasi): Call<OTPResponse>
+
+    @POST("send-otp")
+    fun sendOTP(@Body sentOTP: sentOTP): Call<SentOTPResponse>
+
+    @POST("send-otp-for-reset")
+    fun sendOtpForReset(
+        @Body reset: resetPassword
+    ): Call<ResetResponse>
+
+    @POST("forgot-password")
+    fun verifyOtpForReset(
+        @Body reset:  resetPasswordOpt
+    ): Call<ResetResponse>
 
     @POST("login")
     fun login(@Body request: loginRequest): Call<loginResponse>

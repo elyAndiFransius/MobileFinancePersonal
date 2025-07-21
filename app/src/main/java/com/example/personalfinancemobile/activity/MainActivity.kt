@@ -19,6 +19,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -287,15 +288,31 @@ class MainActivity : AppCompatActivity() {
                     val kategoriList = response.body() ?: emptyList()
 
                     val emptyLayout = findViewById<LinearLayout>(R.id.emptyBudgetLayout)
+                    val jumlah = findViewById<TextView>(R.id.tvHarga)
+                    val priode = findViewById<TextView>(R.id.tvPeriode)
+                    val btnTransc = findViewById<AppCompatButton>(R.id.btnTransc)
+                    val tvPembatas = findViewById<TextView>(R.id.tvPembatas)
+                    val garis = findViewById<View>(R.id.garis)
+
 
                     if (response.isSuccessful && !kategoriList.isNullOrEmpty()) {
+                        val apiBudget = kategoriList[0]
+                        jumlah.text = apiBudget.pemasukkan.toString()
+                        priode.text = apiBudget.priode.toString()
                         Log.d("BUDGET", "Menampilkan grafik")
                         emptyLayout.visibility = View.GONE
+                        jumlah.visibility = View.VISIBLE
+                        priode.visibility = View.VISIBLE
                         pieChart.visibility = View.VISIBLE
                         showPieChart(pieChart, kategoriList)
                     } else {
                         Log.d("BUDGET", "Data kosong atau target = 0")
                         emptyLayout.visibility = View.VISIBLE
+                        jumlah.visibility = View.GONE
+                        priode.visibility = View.GONE
+                        btnTransc.visibility = View.GONE
+                        tvPembatas.visibility = View.GONE
+                        garis.visibility = View.GONE
                         pieChart.visibility = View.GONE
                     }
                 }else {
@@ -381,13 +398,25 @@ class MainActivity : AppCompatActivity() {
 
                     val pieChart = findViewById<PieChart>(R.id.pieTarget)
                     val emptyLayout = findViewById<LinearLayout>(R.id.emptyTargetLayout)
+                    val priode = findViewById<TextView>(R.id.tvPeriode1)
+                    val tvJumlah = findViewById<TextView>(R.id.tvJumlah)
+                    val btnDepsit = findViewById<AppCompatButton>(R.id.btnDepsit)
+                    val tvPembatas = findViewById<TextView>(R.id.tvPembatas1)
+                    val garis = findViewById<View>(R.id.view2)
+
 
 
                     if (targetData == null || targetData.targetAmount == 0) {
                         Log.d("TARGET", "Data kosong atau target = 0")
                         emptyLayout.visibility = View.VISIBLE
+                        priode.visibility = View.GONE
+                        btnDepsit.visibility = View.GONE
+                        tvPembatas.visibility = View.GONE
+                        tvJumlah.visibility = View.GONE
+                        garis.visibility = View.GONE
                         pieChart.visibility = View.GONE
                     } else {
+                        val apiTarget = targetData.gol
                         Log.d("TARGET", "Menampilkan grafik")
                         emptyLayout.visibility = View.GONE
                         pieChart.visibility = View.VISIBLE

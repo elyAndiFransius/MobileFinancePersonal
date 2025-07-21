@@ -100,18 +100,19 @@ class CategoryPersentasiActivity : AppCompatActivity() {
 
             container.addView(itemView)
 
+
             //  Untuk menggarakan dan menggirim Data kedalam activity TotalCategory
             btnSave.setOnClickListener {
                 val intent = Intent(this, CategoryTotalActivity::class.java)
                 intent.putExtra("Kategory", selectedCategories.toTypedArray())
-                intent.putExtra("priode", priode ?: "harian")
+                intent.putExtra("priode", priode ?: "Harian")
                 intent.putExtra("jumlah",totalBudget)
                 startActivity(intent)
             }
             btnReset.setOnClickListener {
                 val intent = Intent(this, CategoryResetActivity::class.java)
                 intent.putExtra("Kategory", selectedCategories.toTypedArray())
-                intent.putExtra("priode", priode ?: "harian")
+                intent.putExtra("priode", priode ?: "Harian")
                 intent.putExtra("jumlah",totalBudget)
                 startActivity(intent)
             }

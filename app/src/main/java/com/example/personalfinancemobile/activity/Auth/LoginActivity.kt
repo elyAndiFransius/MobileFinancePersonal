@@ -37,12 +37,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
         sessionManager = SessionManager(this)
-        // Cek apakah user sudah login sebelumnya
-        // val sharePref: SharedPreferences = getSharedPreferences(Constants.SHARED_PREF_NAME, MODE_PRIVATE)
-
-        // Gunakan key yang konsisten dan cek token yang valid
-        // val savedToken = sharePref.getString(Constants.TOKEN_KEY, null)
-        // val isLoggedIn = sharePref.getBoolean("isLoggedIn", false)
 
         // Jika user sudah login dan token tersedia, langsung ke main activity
         if (sessionManager.isLoggedIn()) {
@@ -53,6 +47,12 @@ class LoginActivity : AppCompatActivity() {
         // Setup UI components
         val login = findViewById<Button>(R.id.btn_login)
         val register = findViewById<TextView>(R.id.tv_sign_up)
+        val resetPassword = findViewById<TextView>(R.id.resetPassword)
+
+        resetPassword.setOnClickListener {
+            val intent = Intent(this@LoginActivity, ResetPasswordActivity::class.java)
+            startActivity(intent)
+        }
 
         register.setOnClickListener {
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
@@ -73,13 +73,13 @@ class LoginActivity : AppCompatActivity() {
 
         // Validasi input
         if (emailString.isEmpty() || passwordString.isEmpty()) {
-            Toast.makeText(this@LoginActivity, "Email dan Password tidak boleh kosong", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@LoginActivity, "Email dan Password tidak boleh kosong!", Toast.LENGTH_SHORT).show()
             return
         }
 
         // Validasi format email
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailString).matches()) {
-            Toast.makeText(this@LoginActivity, "Format email tidak valid", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@LoginActivity, "Format email tidak valid!", Toast.LENGTH_SHORT).show()
             return
         }
 

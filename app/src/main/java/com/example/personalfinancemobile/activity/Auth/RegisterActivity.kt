@@ -9,7 +9,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.personalfinancemobile.R
-import com.example.personalfinancemobile.activity.target.InputTargetActivity
 import com.example.personalfinancemobile.app.data.model.User
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
@@ -40,6 +39,8 @@ class RegisterActivity : AppCompatActivity() {
             val email = editTextEmail.text.toString()
             val password = editTextPassword.text.toString()
             val confirmPassword = editTextConfirmPassword.text.toString()
+
+
             // Optional: Validasi
             if (password != confirmPassword) {
                 Toast.makeText(this, "Password dan konfirmasi tidak sama", Toast.LENGTH_SHORT).show()
@@ -51,10 +52,10 @@ class RegisterActivity : AppCompatActivity() {
             userService.registerUser(user).enqueue(object : Callback<User> {
                 override fun onResponse(call: Call<User>, response: Response<User>) {
                     if (response.isSuccessful && response.body() != null) {
-                        Toast.makeText(this@RegisterActivity, "Register berhasil!", Toast.LENGTH_SHORT).show()
-
-                        val inten = Intent(this@RegisterActivity, LoginActivity::class.java)
-                        startActivity(inten)
+                        val intent = Intent(this@RegisterActivity, otpRegisVerificationActivity::class.java)
+                        Toast.makeText(this@RegisterActivity, "Berhasil", Toast.LENGTH_LONG).show()
+                        intent.putExtra("email", email) // kirim email yang baru didaftarkan
+                        startActivity(intent)
                         finish()
                     } else {
                         val errorBody = response.errorBody()?.string()
@@ -62,7 +63,6 @@ class RegisterActivity : AppCompatActivity() {
                         Toast.makeText(this@RegisterActivity, "Gagal Register: $errorBody", Toast.LENGTH_LONG).show()
                     }
                 }
-
                 override fun onFailure(call: Call<User>, t: Throwable) {
                     Toast.makeText(this@RegisterActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
                     Log.e("RegisterError", "Throwable: ${t.message}")

@@ -2,6 +2,9 @@
     <string name="app_name">PersonalFinanceMobile</string>
     <string name="sign_up_html"><u>Sign-up</u></string>
     <string name="sign_in_html"><u>Sign-in</u></string>
+    <string name="lupa_password_html"><u>Lupa kata sandi?</u></string>
+    <string name="Kirim_ulang_html"><u>Kirim ulang</u></string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- Strings used for fragments for navigation -->

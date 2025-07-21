@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat
 import java.text.SimpleDateFormat
 import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
+import com.example.personalfinancemobile.activity.target.BerhasilMencatatProgresActivity
 import com.example.personalfinancemobile.app.data.model.CategoryResponse
 import com.example.personalfinancemobile.app.data.model.ServerCategory
 import com.example.personalfinancemobile.app.data.model.TransactionModel
@@ -268,7 +269,7 @@ class AddTransactionActivity : AppCompatActivity() {
 
 
     private fun navigateToMainActivity(){
-        val intent = Intent(this@AddTransactionActivity, MainActivity::class.java)
+        val intent = Intent(this@AddTransactionActivity, BerhasilMencatatProgresActivity::class.java)
         startActivity(intent)
         finish()
     }

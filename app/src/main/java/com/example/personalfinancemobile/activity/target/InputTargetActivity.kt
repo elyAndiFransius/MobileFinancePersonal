@@ -4,8 +4,10 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.util.Log
 import android.widget.Button
@@ -27,6 +29,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -143,10 +146,16 @@ class InputTargetActivity : AppCompatActivity() {
                         return@setOnClickListener
                     }
 
+                    val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
 
+                    // Resize bitmap, misal max width = 1024
+                    val resizedBitmap = resizeBitmap(bitmap, 379, 263)
 
-                    val inputStream = contentResolver.openInputStream(uri)
-                    val fileBytes = inputStream?.readBytes()
+                    // Kompres ke JPEG dengan kualitas 80%
+                    val byteArrayOutputStream = ByteArrayOutputStream()
+                    resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream)
+                    val fileBytes = byteArrayOutputStream.toByteArray()
+
                     val fileName = getFileNameFromUri(this, uri)
 
                     val requestFile = fileBytes?.toRequestBody(
@@ -223,4 +232,20 @@ class InputTargetActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+    private fun resizeBitmap(bitmap: Bitmap, maxWidth: Int, maxHeight: Int): Bitmap {
+        val width = bitmap.width
+        val height = bitmap.height
+
+        val widthRatio = maxWidth.toFloat() / width
+        val heightRatio = maxHeight.toFloat() / height
+        val ratio = minOf(widthRatio, heightRatio)
+
+        // Hitung ukuran baru dengan menjaga aspek rasio
+        val newWidth = (width * ratio).toInt()
+        val newHeight = (height * ratio).toInt()
+
+        return Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true)
+    }
+
+
 }

@@ -26,8 +26,8 @@
         android:id="@+id/form_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="40dp"
-        android:layout_marginTop="45dp"
+        android:padding="45dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/rounded_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.529"
@@ -84,20 +84,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/editTextEmail" />
 
-        <!-- Confirm Password -->
-
-        <!-- Button -->
-
-        <!-- Already have account? -->
-
-        <!-- Sign-up with underline -->
+        <TextView
+            android:id="@+id/resetPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/lupa_password_html"
+            android:textColor="@color/blue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
 
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_login"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="60dp"
             android:background="@drawable/button_ripple_dark"
             android:padding="20dp"
             android:text="Next"
@@ -113,22 +117,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="Create new Account?"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_login" />
 
         <TextView
             android:id="@+id/tv_sign_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="1dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/blue"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/sign_up_html"
             app:layout_constraintStart_toEndOf="@+id/textView3"
-            app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_login" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

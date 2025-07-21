@@ -48,15 +48,7 @@ class SplachScreenActivity : AppCompatActivity() {
             this, 20, 0, 102,
             "Malam Hari", "Jangan lupa catat transaksi Malam ini!"
         )
-        // Fungsi test dipanggil dengan 1 menit dan 2 menit untuk notification
-//        scheduleTestNotification(
-//            this, 1, 111,
-//            "Tes Notifikasi", "Ini notifikasi test 1 menit dari sekarang"
-//        )
-//        scheduleTestNotification(
-//            this, 2, 112,
-//            "Tes Notifikasi", "Ini notifikasi test 2 menit dari sekarang"
-//        )
+
     }
     private fun scheduleDailyNotification(context: Context, jam: Int, menit: Int, requestCode: Int, title: String, message: String) {
         val intent = Intent(context, NotificationReceiver::class.java).apply {
@@ -90,32 +82,4 @@ class SplachScreenActivity : AppCompatActivity() {
         )
 
     }
-    // Function ini khusus untuk test karna menggunakan alaram bukan kalender
-//    fun scheduleTestNotification(context: Context, delayInMinutes: Int, requestCode: Int, title: String, message: String) {
-//        val intent = Intent(context, NotificationReceiver::class.java).apply {
-//            putExtra("title", title)
-//            putExtra("message", message)
-//        }
-//
-//        val pendingIntent = PendingIntent.getBroadcast(
-//            context,
-//            requestCode,
-//            intent,
-//            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-//        )
-//
-//        val triggerTime = System.currentTimeMillis() + delayInMinutes * 60 * 1000
-//
-//        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-//        if (alarmManager.canScheduleExactAlarms()) {
-//            alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
-//        } else {
-//            Toast.makeText(context, "Aplikasi belum diizinkan menjadwalkan alarm tepat.", Toast.LENGTH_LONG).show()
-//
-//            // Arahkan user ke pengaturan untuk mengizinkan
-//            val settingsIntent = Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
-//            settingsIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//            context.startActivity(settingsIntent)
-//        }
-//    }
 }

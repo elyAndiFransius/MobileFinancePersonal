@@ -2,6 +2,7 @@ package com.example.personalfinancemobile.activity.Budget
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.EditText
@@ -18,6 +19,7 @@ import com.example.personalfinancemobile.R
 import com.example.personalfinancemobile.app.data.model.BudgetRequest
 import com.example.personalfinancemobile.app.ui.adapter.Category
 import com.example.personalfinancemobile.app.data.model.CategoryRequest
+import com.example.personalfinancemobile.app.data.model.Priode
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
 import com.example.personalfinancemobile.app.data.repository.CategoryProvider
@@ -37,11 +39,15 @@ class CategoryResetActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val priode = intent.getStringExtra("priode") ?: "harian"
         val parcelableArray = intent.getParcelableArrayExtra("Kategory")
         val selectedCategories = parcelableArray?.filterIsInstance<Category>()
         val recommended = CategoryProvider.getRecomendedAllocation()
         val pemasukkan = intent.getIntExtra("jumlah", 0)
+        val priode = (intent.getSerializableExtra("priode") as? Priode)?.name ?: ""
+
+
+
+
 
         // Pisakan ketegori berdasarkan apakah list rekomendasi
         val (recommendedCategories, userDefindCategories) = selectedCategories.orEmpty().partition {

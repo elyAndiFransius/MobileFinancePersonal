@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
 import com.example.personalfinancemobile.app.data.model.BudgetRequest
 import com.example.personalfinancemobile.app.data.model.CategoryRequest
+import com.example.personalfinancemobile.app.data.model.Priode
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
 import com.example.personalfinancemobile.app.data.repository.CategoryProvider
@@ -37,11 +38,12 @@ class CategoryTotalActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val priode = intent.getStringExtra("priode") ?: "harian"
+        val priode = (intent.getSerializableExtra("priode") as? Priode)?.name ?: ""
         val parcelableArray = intent.getParcelableArrayExtra("Kategory")
         val selectedCategories = parcelableArray?.filterIsInstance<Category>()
         val recommended = CategoryProvider.getRecomendedAllocation()
         val pemasukkan = intent.getIntExtra("jumlah", 0)
+
 
 
         // pisahakan kategori berdasarlakan rekomeded dan inputan user
@@ -120,14 +122,16 @@ class CategoryTotalActivity : AppCompatActivity() {
         }
         val sessionManager = SessionManager(this)
         val token = sessionManager.fetchAuthToken()
-        // Untuk menampung Request yang di inputkan user
-        val budgetToSend = BudgetRequest(
-            pemasukkan = pemasukkan,
-            priode = priode,
-            categories = categoryRequests
-        )
+
         // Untuk Memasukan semua data yang ada di dalam list BudgetTosend
         btnSave.setOnClickListener {
+            // Untuk menampung Request yang di inputkan user
+            val budgetToSend = BudgetRequest(
+                pemasukkan = pemasukkan,
+                priode = priode,
+                categories = categoryRequests
+            )
+
             val BudgetService = RetrofitInstance.getInstance(this).create(APIServices::class.java)
             BudgetService.createBudgetRequest(budgetToSend, "Bearer $token").enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {

@@ -25,5 +25,25 @@ data class showUser(
     val token_code : String,
     val verification: Int
 )
+data class Validasi (
+    val email: String,
+    val code_verification: String
+)
+
+data class sentOTP (
+    val email: String
+)
+
+data class resetPassword (
+    val email: String,
+    val password: String,
+)
+
+data class resetPasswordOpt (
+    val email: String,
+    val code_verification: String,
+)
+
+
 
 

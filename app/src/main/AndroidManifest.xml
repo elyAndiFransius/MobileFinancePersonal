@@ -19,7 +19,13 @@
         android:theme="@style/Theme.PersonalFinanceMobile"
         tools:targetApi="31">
         <activity
-            android:name=".activity.Deposit.EditDepositActivity"
+            android:name=".activity.Auth.ResetPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.Auth.otpRegisVerificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.Auth.otpResetVerificationActivity"
             android:exported="false" />
         <activity
             android:name=".activity.Deposit.DepoMainActivity"
