@@ -51,7 +51,7 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="14dp"
             android:fontFamily="@font/poppins_bold"
             android:text="Target Pengeluran"
             android:textSize="24sp"
@@ -237,15 +237,30 @@
 
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnHistori"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/button_ripple_dark"
+            android:padding="12dp"
+            android:text="Riwayat deposit"
+            android:textAllCaps="false"
+            android:textColor="@color/primary2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnRecord" />
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnRecord"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/button_ripple_dark"
             android:padding="12dp"
             android:text="Catat rencana pengeluaran"
             android:textAllCaps="false"
-            android:textColor="@color/white"
+            android:textColor="@color/primary2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.492"
             app:layout_constraintStart_toStartOf="parent"
@@ -256,17 +271,16 @@
             android:id="@+id/btnReset"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/button_ripple_white"
             android:padding="12dp"
             android:text="Hapus Target"
             android:textAllCaps="false"
             android:textColor="@color/primary"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.492"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnRecord"
-            tools:layout_editor_absoluteY="406dp" />
+            app:layout_constraintTop_toBottomOf="@id/btnHistori" />
         <!-- Bottom  -->
 
 

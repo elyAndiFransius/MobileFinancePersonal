@@ -118,6 +118,8 @@ class CategoryResetActivity : AppCompatActivity() {
         btnSave.setOnClickListener {
             val categoryRequests = mutableListOf<CategoryRequest>()
 
+            var totalKategori = 0
+
             inputFields.forEach { (name, editText) ->
                 val inputText = editText.text.toString()
                 val jumlah = if (inputText.isNotEmpty()) {
@@ -125,8 +127,20 @@ class CategoryResetActivity : AppCompatActivity() {
                 } else {
                     editText.hint.toString().toIntOrNull() ?: 0
                 }
+
+                totalKategori += jumlah
                 categoryRequests.add(CategoryRequest(name, jumlah))
             }
+
+            if (totalKategori > pemasukkan) {
+                Toast.makeText(
+                    this,
+                    "Total jumlah kategori (${totalKategori}) melebihi pemasukkan (${pemasukkan})",
+                    Toast.LENGTH_LONG
+                ).show()
+                return@setOnClickListener // batalkan request
+            }
+
             val budgetToSend = BudgetRequest(
                 pemasukkan = pemasukkan,
                 priode = priode,

@@ -60,16 +60,8 @@ class AddProgresTargetActivity : AppCompatActivity() {
             deposit.setText(depositData.deposit.toString())
         }
 
-
         val btnSave = findViewById<AppCompatButton>(R.id.btnSave)
         val btnBack = findViewById<AppCompatButton>(R.id.btnBack)
-        val depo = findViewById<TextView>(R.id.textView2)
-
-        depo.setOnClickListener {
-            val intent = Intent(this@AddProgresTargetActivity, DepoMainActivity::class.java)
-            startActivity(intent)
-        }
-
 
         // Kembali ke activy sebelumnya
         btnBack.setOnClickListener {
@@ -116,6 +108,10 @@ class AddProgresTargetActivity : AppCompatActivity() {
             val apiServices = RetrofitInstance.getInstance(this).create(APIServices::class.java)
 
             if (mode == "edit" && depositData != null) {
+                if (dateString.isEmpty() || depositString.isEmpty()) {
+                    Toast.makeText(this@AddProgresTargetActivity, "Deposit dan tanggal tidak boleh kosong!", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
                 //  Gantilah sesuai endpoint edit deposit kamu
                 apiServices.updateDeposit(
                     depositData.id,
@@ -140,6 +136,10 @@ class AddProgresTargetActivity : AppCompatActivity() {
                 })
 
             } else {
+                if (dateString.isEmpty() || depositString.isEmpty()) {
+                    Toast.makeText(this@AddProgresTargetActivity, "Deposit dan tanggal tidak boleh kosong!", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
                 // ✅ Tambah data (logika asli)
                 apiServices.createDeposit(
                     datePart, depositPart, "Bearer $token"
@@ -175,7 +175,8 @@ class AddProgresTargetActivity : AppCompatActivity() {
                 if(response.isSuccessful) {
                     val targets = response.body()?.data
 
-                    if(!targets.isNullOrEmpty()) {
+
+                    if (!targets.isNullOrEmpty()) {
                         val target = targets[0]
                         // Menganti Gmbar deflaut menjadi gambar yang diambil dari serve
                         val imageView = findViewById<ImageView>(R.id.textViewUrl)

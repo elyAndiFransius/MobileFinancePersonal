@@ -21,6 +21,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
+import com.example.personalfinancemobile.app.ui.utils.NumberFormat
 import com.example.personalfinancemobile.app.ui.utils.SessionManager
 import com.example.personalfinancemobile.app.ui.utils.setupBackButton
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -69,6 +70,11 @@ class InputTargetActivity : AppCompatActivity() {
         fileEditText = findViewById(R.id.id_file)
         val backButton = findViewById<ImageView>(R.id.id_back)
         setupBackButton(this, backButton)
+        val belanceEditText = findViewById<EditText>(R.id.id_belance)
+        belanceEditText.addTextChangedListener(NumberFormat(belanceEditText))
+
+        val AmountEditText = findViewById<EditText>(R.id.id_amount)
+        AmountEditText.addTextChangedListener(NumberFormat(AmountEditText))
 
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
@@ -137,6 +143,7 @@ class InputTargetActivity : AppCompatActivity() {
                 val startDatePart = createPartFromString(startDateString)
                 val endDatePart = createPartFromString(endDateString)
 
+
                 var filePart: MultipartBody.Part? = null
 
                 selectedFileUri?.let { uri ->
@@ -157,7 +164,7 @@ class InputTargetActivity : AppCompatActivity() {
 
                     // Kompres ke JPEG dengan kualitas 80%
                     val byteArrayOutputStream = ByteArrayOutputStream()
-                    resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream)
+                    resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
                     val fileBytes = byteArrayOutputStream.toByteArray()
 
                     val fileName = getFileNameFromUri(this, uri)

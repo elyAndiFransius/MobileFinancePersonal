@@ -14,11 +14,14 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.personalfinancemobile.R
+import com.example.personalfinancemobile.activity.Deposit.DepoMainActivity
+import com.example.personalfinancemobile.activity.target.AddProgresTargetActivity
 import com.example.personalfinancemobile.app.data.model.TargetResponse
 import com.example.personalfinancemobile.app.data.model.TargetResponseId
 import com.example.personalfinancemobile.app.data.model.TransactionResponse
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
+import com.example.personalfinancemobile.app.ui.utils.NumberFormatText
 import com.example.personalfinancemobile.app.ui.utils.SessionManager
 import okhttp3.ResponseBody
 import okhttp3.internal.concurrent.Task
@@ -65,6 +68,12 @@ class HomeTargetActivity : AppCompatActivity() {
                 Toast.makeText(this@HomeTargetActivity, "Tidak ada target untuk dihapus", Toast.LENGTH_SHORT).show()
             }
         }
+        val depo = findViewById<AppCompatButton>(R.id.btnHistori)
+
+        depo.setOnClickListener {
+            val intent = Intent(this@HomeTargetActivity, DepoMainActivity::class.java)
+            startActivity(intent)
+        }
 
     }
     private fun formatDate (inputDate: Date): String {
@@ -96,8 +105,8 @@ class HomeTargetActivity : AppCompatActivity() {
                             .into(imageView)
 
                         findViewById<TextView>(R.id.name_gol).text = target.gol
-                        findViewById<TextView>(R.id.count_target_amount).text = "Rp ${target.targetAmount}"
-                        findViewById<TextView>(R.id.id_current_now).text = "Rp ${target.currentAmount}"
+                        findViewById<TextView>(R.id.count_target_amount).text = "Rp ${NumberFormatText(target.targetAmount.toLong())}"
+                        findViewById<TextView>(R.id.id_current_now).text = "Rp ${NumberFormatText(target.currentAmount.toLong())}"
                         findViewById<TextView>(R.id.start).text = formatDate(target.startDate)
                         findViewById<TextView>(R.id.end).text = formatDate(target.endDate)
 

@@ -11,7 +11,6 @@ import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -21,12 +20,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.bumptech.glide.Glide
 import com.example.personalfinancemobile.R
 import com.example.personalfinancemobile.activity.Auth.LoginActivity
 import com.example.personalfinancemobile.activity.Transaksi.MainActivity as Transaksi
@@ -42,6 +38,7 @@ import com.example.personalfinancemobile.app.data.model.UserResponseObject
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
 import com.example.personalfinancemobile.app.data.repository.CategoryProvider
+import com.example.personalfinancemobile.app.ui.utils.NumberFormatText
 import com.example.personalfinancemobile.app.ui.utils.SessionManager
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
@@ -85,6 +82,8 @@ class MainActivity : AppCompatActivity() {
         val kategoriContainer = findViewById<LinearLayout>(R.id.kategori)
         val categories = CategoryProvider.getDefaultCategories()
 
+        refreshData()
+
         for (category in categories) {
             val itemLayout = LinearLayout(this).apply {
                 layoutParams = LinearLayout.LayoutParams(
@@ -117,11 +116,6 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        getUser()
-        Buget()
-        grafikTarget()
-        grafikCategori()
-        Notifikasi()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ActivityCompat.requestPermissions(
                 this,
@@ -129,8 +123,6 @@ class MainActivity : AppCompatActivity() {
                 101
             )
         }
-
-
 
         logOut.setOnClickListener {
             showLogoutConfirmationDialog()
@@ -158,6 +150,14 @@ class MainActivity : AppCompatActivity() {
             spanding()
         }
 
+    }
+    private fun refreshData() {
+        getUser()
+        Buget()
+        grafikTarget()
+        grafikCategori()
+        Notifikasi()
+        grafikCategori()
     }
     private fun budget(){
         val intent= Intent(this@MainActivity, MainBudgetingActivity::class.java)
@@ -233,7 +233,7 @@ class MainActivity : AppCompatActivity() {
                         val budget = budgets[0]
                         // Menganti Gmbar deflaut menjadi gambar yang diambil dari serve
                         val balance = findViewById<TextView>(R.id.balance)
-                        balance.text = budget.pemasukkan.toString()
+                        balance.text = NumberFormatText(budget.pemasukkan.toLong())
                     } else {
                         Toast.makeText(this@MainActivity, "Budget Kosong", Toast.LENGTH_SHORT)
                             .show()
@@ -277,36 +277,50 @@ class MainActivity : AppCompatActivity() {
 
     private fun grafikCategori() {
         val pieChart = findViewById<PieChart>(R.id.pieChart)
+        val emptyLayout = findViewById<LinearLayout>(R.id.emptyBudgetLayout)
+        val jumlah = findViewById<TextView>(R.id.tvHarga)
+        val priode = findViewById<TextView>(R.id.tvPeriode)
+        val btnTransc = findViewById<AppCompatButton>(R.id.btnTransc)
+        val tvPembatas = findViewById<TextView>(R.id.tvPembatas)
+        val garis = findViewById<View>(R.id.garis)
 
         val sessionManager = SessionManager(this)
         val token = sessionManager.fetchAuthToken()
         val apiService = RetrofitInstance.getInstance(this).create(APIServices::class.java)
-        apiService.getKategoriData("Bearer $token").enqueue(object :  Callback<List<GrafikCategori>> {
-            override fun onResponse(call: Call<List<GrafikCategori>>, response: Response<List<GrafikCategori>>
+
+        apiService.getKategoriData("Bearer $token").enqueue(object : Callback<List<GrafikCategori>> {
+            override fun onResponse(
+                call: Call<List<GrafikCategori>>,
+                response: Response<List<GrafikCategori>>
             ) {
                 if (response.isSuccessful) {
                     val kategoriList = response.body() ?: emptyList()
 
-                    val emptyLayout = findViewById<LinearLayout>(R.id.emptyBudgetLayout)
-                    val jumlah = findViewById<TextView>(R.id.tvHarga)
-                    val priode = findViewById<TextView>(R.id.tvPeriode)
-                    val btnTransc = findViewById<AppCompatButton>(R.id.btnTransc)
-                    val tvPembatas = findViewById<TextView>(R.id.tvPembatas)
-                    val garis = findViewById<View>(R.id.garis)
-
-
-                    if (response.isSuccessful && !kategoriList.isNullOrEmpty()) {
+                    if (kategoriList.isNotEmpty()) {
                         val apiBudget = kategoriList[0]
-                        jumlah.text = apiBudget.pemasukkan.toString()
+                        jumlah.text = NumberFormatText(apiBudget.pemasukkan.toLong())
                         priode.text = apiBudget.priode.toString()
+
                         Log.d("BUDGET", "Menampilkan grafik")
+
+                        // Tampilkan elemen
                         emptyLayout.visibility = View.GONE
                         jumlah.visibility = View.VISIBLE
                         priode.visibility = View.VISIBLE
+                        btnTransc.visibility = View.VISIBLE
+                        tvPembatas.visibility = View.VISIBLE
+                        garis.visibility = View.VISIBLE
                         pieChart.visibility = View.VISIBLE
+
                         showPieChart(pieChart, kategoriList)
                     } else {
-                        Log.d("BUDGET", "Data kosong atau target = 0")
+                        Log.d("BUDGET", "Data kosong")
+
+                        // Kosongkan pieChart jika data kosong
+                        pieChart.clear()
+                        pieChart.invalidate()
+
+                        // Sembunyikan elemen dan tampilkan layout kosong
                         emptyLayout.visibility = View.VISIBLE
                         jumlah.visibility = View.GONE
                         priode.visibility = View.GONE
@@ -315,19 +329,25 @@ class MainActivity : AppCompatActivity() {
                         garis.visibility = View.GONE
                         pieChart.visibility = View.GONE
                     }
-                }else {
+
+                } else {
                     val errorBody = response.errorBody()?.string()
                     Log.e("API_ERROR", "Gagal ambil data budget: $errorBody")
                     Toast.makeText(this@MainActivity, "Gagal ambil data budget $errorBody", Toast.LENGTH_SHORT).show()
                 }
-
             }
+
             override fun onFailure(call: Call<List<GrafikCategori>>, t: Throwable) {
                 Toast.makeText(this@MainActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
                 Log.e("Fail", "coba lagi: ${t.message}")
             }
         })
 
+        // Button listener tetap aktif meskipun sebelum data datang
+        btnTransc.setOnClickListener {
+            val intent = Intent(this@MainActivity, Transaksi::class.java)
+            startActivity(intent)
+        }
     }
     private fun showPieChart(pieChart: PieChart, data: List<GrafikCategori>) {
         val entries = ArrayList<PieEntry>()
@@ -386,55 +406,75 @@ class MainActivity : AppCompatActivity() {
         })
     }
     private fun grafikTarget() {
-
         val sessionManager = SessionManager(this)
         val token = sessionManager.fetchAuthToken()
         val apiService = RetrofitInstance.getInstance(this).create(APIServices::class.java)
-        apiService.getTargetData("Bearer $token").enqueue(object :  Callback<GrafikTarget> {
-            override fun onResponse(call: Call<GrafikTarget>, response: Response<GrafikTarget>) {
 
+        val pieChart = findViewById<PieChart>(R.id.pieTarget)
+        val emptyLayout = findViewById<LinearLayout>(R.id.emptyTargetLayout)
+        val priode = findViewById<TextView>(R.id.tvPeriode1)
+        val tvJumlah = findViewById<TextView>(R.id.tvJumlah)
+        val btnDeposit = findViewById<AppCompatButton>(R.id.btnDepsit)
+        val tvPembatas = findViewById<TextView>(R.id.tvPembatas1)
+        val garis = findViewById<View>(R.id.view2)
+
+        btnDeposit.setOnClickListener {
+            val intent = Intent(this@MainActivity, MainTargetActivity::class.java)
+            startActivity(intent)
+        }
+
+        apiService.getTargetData("Bearer $token").enqueue(object : Callback<GrafikTarget> {
+            override fun onResponse(call: Call<GrafikTarget>, response: Response<GrafikTarget>) {
                 if (response.isSuccessful) {
                     val targetData = response.body()
-
-                    val pieChart = findViewById<PieChart>(R.id.pieTarget)
-                    val emptyLayout = findViewById<LinearLayout>(R.id.emptyTargetLayout)
-                    val priode = findViewById<TextView>(R.id.tvPeriode1)
-                    val tvJumlah = findViewById<TextView>(R.id.tvJumlah)
-                    val btnDepsit = findViewById<AppCompatButton>(R.id.btnDepsit)
-                    val tvPembatas = findViewById<TextView>(R.id.tvPembatas1)
-                    val garis = findViewById<View>(R.id.view2)
-
-
 
                     if (targetData == null || targetData.targetAmount == 0) {
                         Log.d("TARGET", "Data kosong atau target = 0")
                         emptyLayout.visibility = View.VISIBLE
                         priode.visibility = View.GONE
-                        btnDepsit.visibility = View.GONE
-                        tvPembatas.visibility = View.GONE
                         tvJumlah.visibility = View.GONE
-                        garis.visibility = View.GONE
                         pieChart.visibility = View.GONE
+                        btnDeposit.visibility = View.GONE
+                        tvPembatas.visibility = View.GONE
+                        garis.visibility = View.GONE
+
+                        // Tambahkan ini agar PieChart dibersihkan
+                        pieChart.clear()
+                        pieChart.invalidate()
                     } else {
-                        val apiTarget = targetData.gol
                         Log.d("TARGET", "Menampilkan grafik")
+
                         emptyLayout.visibility = View.GONE
+                        tvPembatas.visibility = View.VISIBLE
+                        tvJumlah.visibility = View.VISIBLE
                         pieChart.visibility = View.VISIBLE
+                        garis.visibility = View.VISIBLE
+                        priode.visibility = View.VISIBLE
+                        btnDeposit.visibility = View.VISIBLE
+
+                        // Menampilkan jumlah target dengan format rupiah
+                        tvJumlah.text = "Rp ${NumberFormatText(targetData.targetAmount.toLong())}"
+
+                        // Tambahkan ini agar PieChart dibersihkan
+                        pieChart.clear()
+                        pieChart.invalidate()
+                        // Tampilkan chart
                         showPieChartTarget(pieChart, targetData)
                     }
                 } else {
                     val errorBody = response.errorBody()?.string()
                     Log.e("API_ERROR", "Gagal ambil data: $errorBody")
-                    Toast.makeText(this@MainActivity, "Gagal ambil data", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, "Gagal ambil data target", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<GrafikTarget>, t: Throwable) {
-                Toast.makeText(this@MainActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                Log.e("API_FAIL", "Network error: ${t.message}")
+                Toast.makeText(this@MainActivity, "Error jaringan: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
-
     }
+
     private fun showPieChartTarget(pieChart: PieChart, data: GrafikTarget) {
         val progress = data.currentAmount.toFloat()
         val target = data.targetAmount.toFloat()
@@ -455,7 +495,7 @@ class MainActivity : AppCompatActivity() {
         pieChart.data = pieData
         pieChart.setUsePercentValues(true)
         pieChart.description.isEnabled = false
-        pieChart.centerText = "${data.gol}\n${target.toInt()}"
+        pieChart.centerText = "${data.gol}\n${progress.toInt()}"
         pieChart.setCenterTextSize(16f)
         pieChart.setEntryLabelColor(Color.BLACK)
         pieChart.animateY(1000)
@@ -464,6 +504,7 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
 
 
 }

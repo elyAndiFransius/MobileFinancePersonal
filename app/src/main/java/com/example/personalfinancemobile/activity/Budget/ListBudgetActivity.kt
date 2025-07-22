@@ -28,6 +28,8 @@ class ListBudgetActivity : AppCompatActivity() {
     companion object {
         var allBudget: List<BudgetResponse> = emptyList()
     }
+    private var dialog: androidx.appcompat.app.AlertDialog? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,7 +105,7 @@ class ListBudgetActivity : AppCompatActivity() {
             .create()
 
         // Tampilkan dialog kedalam layar
-        dialog.show()
+        dialog?.show()
 
 
         // Untuk mengghapus data budeting
@@ -119,6 +121,7 @@ class ListBudgetActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
                         Toast.makeText(this@ListBudgetActivity, "Data berhasil di hapus", Toast.LENGTH_SHORT).show()
+                        dialog?.dismiss()
                         val intent = Intent(this@ListBudgetActivity, BudgedSchedulingActivity::class.java)
                         startActivity(intent)
                         finish()
