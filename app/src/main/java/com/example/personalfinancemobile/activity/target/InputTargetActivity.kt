@@ -177,6 +177,12 @@ class InputTargetActivity : AppCompatActivity() {
                     }
 
                     filePart = MultipartBody.Part.createFormData("file", fileName, requestFile)
+
+                    Log.d("InputCheck", "imageUri: $filePart")
+                    Log.d("InputCheck", "targetAmount: ${targetAmount.text}")
+                    Log.d("InputCheck", "currentAmount: ${currentAmount.text}")
+                    Log.d("InputCheck", "startDate: ${startDate.text}")
+                    Log.d("InputCheck", "endDate: ${endDate.text}")
                 }
                 val sessionManager = SessionManager(this)
                 val apiService = RetrofitInstance.getInstance(this).create(APIServices::class.java)
@@ -201,6 +207,7 @@ class InputTargetActivity : AppCompatActivity() {
                     }
                 })
             } else {
+
                 Toast.makeText(this@InputTargetActivity, "Mohon isi semua inputan!", Toast.LENGTH_SHORT).show()
             }
         }

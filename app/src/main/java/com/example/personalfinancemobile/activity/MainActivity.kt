@@ -14,6 +14,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.os.Handler
+import android.os.Looper
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
@@ -59,7 +62,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val CHANNEL_ID = "channel_id"
     }
-
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -76,13 +79,16 @@ class MainActivity : AppCompatActivity() {
         val tx_budget = findViewById<TextView>(R.id.tx_budget)
         val tx_record = findViewById<TextView>(R.id.tx_record)
         val tx_spanding = findViewById<TextView>(R.id.tx_spending)
+        swipeRefreshLayout = findViewById(R.id.swipeRefresh)
+        swipeRefreshLayout.setOnRefreshListener {
+            refreshData()
+        }
+        refreshData()
 
         val logOut = findViewById<ImageView>(R.id.btnLogOut)
 
         val kategoriContainer = findViewById<LinearLayout>(R.id.kategori)
         val categories = CategoryProvider.getDefaultCategories()
-
-        refreshData()
 
         for (category in categories) {
             val itemLayout = LinearLayout(this).apply {
@@ -150,14 +156,6 @@ class MainActivity : AppCompatActivity() {
             spanding()
         }
 
-    }
-    private fun refreshData() {
-        getUser()
-        Buget()
-        grafikTarget()
-        grafikCategori()
-        Notifikasi()
-        grafikCategori()
     }
     private fun budget(){
         val intent= Intent(this@MainActivity, MainBudgetingActivity::class.java)
@@ -473,6 +471,22 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity, "Error jaringan: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun refreshData() {
+        swipeRefreshLayout.isRefreshing = true // tampilkan animasi refresh
+
+        // Contoh: ambil data dari API atau database terbaru
+        getUser()
+        Buget()
+        grafikTarget()
+        grafikCategori()
+        Notifikasi()
+
+        // Tunggu sebentar sebelum menutup refresh jika perlu (misal ada delay network)
+        Handler(Looper.getMainLooper()).postDelayed({
+            swipeRefreshLayout.isRefreshing = false
+        }, 1000) // tunggu 1 detik
     }
 
     private fun showPieChartTarget(pieChart: PieChart, data: GrafikTarget) {

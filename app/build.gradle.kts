@@ -82,6 +82,8 @@ dependencies {
 
     // dependensi Material
     implementation ("com.google.android.material:material:1.10.0")
+    // untuk refresh
+    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
 
 

@@ -126,349 +126,356 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--    Kontent-->
+    <!--    Kontent-->
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <!-- Konten scrollable -->
-    <ScrollView
-        android:id="@+id/scroll_content"
-        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:fillViewport="true"
         android:background="@color/primary2"
-        app:layout_constraintTop_toBottomOf="@+id/header"
         app:layout_constraintBottom_toTopOf="@+id/foot"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/header">
 
-        <!-- Parent LinearLayout (wajib 1 anak langsung dari ScrollView) -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+        <!-- Konten scrollable -->
+        <ScrollView
+            android:id="@+id/scroll_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/primary2"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toTopOf="@+id/foot"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/header">
 
-            <HorizontalScrollView
+            <!-- Parent LinearLayout (wajib 1 anak langsung dari ScrollView) -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:scrollbars="none">
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <LinearLayout
-                    android:id="@+id/kategori"
-                    android:layout_width="wrap_content"
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:id="@+id/kategori"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal" />
+                </HorizontalScrollView>
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/TextBudget"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:id="@+id/vwBudget"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_regular"
+                        android:padding="1dp"
+                        android:text="Grafik Budget"
+                        android:textSize="12dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/vwSeeAllBuget"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="230dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:padding="1dp"
+                        android:text="lihat semuanya"
+                        android:textSize="12dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- Pie Chart 1 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_ripple_white"
+                    android:orientation="vertical"
+                    android:padding="26dp">
+
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/pieChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="230dp"
+                        android:layout_margin="1dp"
+                        android:background="@drawable/button_ripple_primary" />
+
+                    <View
+                        android:id="@+id/garis"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="#000000" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="8dp">
+
+                        <!-- Tombol Apply -->
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btnTransc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:background="@drawable/button_ripple_dark"
+                            android:text="Transaksi"
+                            android:textAllCaps="false"
+                            android:textColor="@color/text_buttom"
+                            android:textSize="10sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <!-- Harga -->
+                        <TextView
+                            android:id="@+id/tvHarga"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="2dp"
+                            android:layout_marginBottom="6dp"
+                            android:text="0"
+                            android:textColor="#000000"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/tvPembatas" />
+
+                        <!-- Periode -->
+                        <TextView
+                            android:id="@+id/tvPembatas"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="6dp"
+                            android:text="/"
+                            android:textColor="#000000"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/tvPeriode" />
+
+                        <!-- Periode -->
+                        <TextView
+                            android:id="@+id/tvPeriode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="6dp"
+                            android:text="Minggunan"
+                            android:textColor="#000000"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/emptyBudgetLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="20dp"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:id="@+id/imgNoBudget"
+                            android:layout_width="170dp"
+                            android:layout_height="170dp"
+                            android:layout_marginTop="40dp"
+                            android:src="@drawable/ic_buget" />
+
+                        <TextView
+                            android:id="@+id/tvNoBudget"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="-200dp"
+                            android:fontFamily="@font/poppins_medium"
+                            android:text="Belum ada Budget keuangan.\nYuk buat Budgetmu!"
+                            android:textAlignment="center"
+                            android:textColor="@color/buttom"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/TextTarget"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
                     android:orientation="horizontal"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center_vertical"/>
-            </HorizontalScrollView>
+                    android:padding="1dp">
 
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_marginTop="20dp"
-                android:id="@+id/TextBudget"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="1dp">
-
-                <TextView
-                    android:id="@+id/vwBudget"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_regular"
-                    android:padding="1dp"
-                    android:text="Grafik Budget"
-                    android:textSize="12dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/vwSeeAllBuget"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_regular"
-                    android:padding="1dp"
-                    android:layout_marginStart="230dp"
-                    android:text="lihat semuanya"
-                    android:textSize="12dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <!-- Pie Chart 1 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_ripple_white"
-                android:orientation="vertical"
-                android:padding="26dp">
-
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/pieChart"
-                    android:layout_width="match_parent"
-                    android:layout_height="230dp"
-                    android:layout_margin="1dp"
-                    android:background="@drawable/button_ripple_primary" />
-                <View
-                    android:id="@+id/garis"
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:background="#000000" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="8dp">
-
-                    <!-- Tombol Apply -->
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnTransc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:background="@drawable/button_ripple_dark"
-                        android:text="Transaksi"
-                        android:textAllCaps="false"
-                        android:textColor="@color/text_buttom"
-                        android:textStyle="bold"
-                        android:textSize="10sp"
+                    <TextView
+                        android:id="@+id/vwTarget"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_regular"
+                        android:padding="1dp"
+                        android:text="Grafik target"
+                        android:textSize="12dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                    <!-- Harga -->
                     <TextView
-                        android:id="@+id/tvHarga"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/vwSeeAllTarget"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="6dp"
-                        android:text="0"
-                        android:textColor="#000000"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        app:layout_constraintEnd_toStartOf="@+id/tvPembatas"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginEnd="2dp" />
-
-                    <!-- Periode -->
-                    <TextView
-                        android:id="@+id/tvPembatas"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="/"
-                        android:layout_marginBottom="6dp"
-                        android:textColor="#000000"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
+                        android:layout_marginStart="220dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:padding="1dp"
+                        android:text="Lihat semuanya"
+                        android:textSize="12dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/tvPeriode"
-                        app:layout_constraintBottom_toBottomOf="parent" />
-
-                    <!-- Periode -->
-                    <TextView
-                        android:id="@+id/tvPeriode"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Minggunan"
-                        android:layout_marginBottom="6dp"
-                        android:textColor="#000000"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent" />
-
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
+                <!-- Pie Chart 2 -->
                 <LinearLayout
-                    android:id="@+id/emptyBudgetLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/button_ripple_white"
                     android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="20dp"
-                    android:visibility="gone">
+                    android:padding="20dp">
 
-                    <ImageView
-                        android:id="@+id/imgNoBudget"
-                        android:layout_width="170dp"
-                        android:layout_height="170dp"
-                        android:layout_marginTop="40dp"
-                        android:src="@drawable/ic_buget" />
-                    <TextView
-                        android:id="@+id/tvNoBudget"
-                        android:layout_width="wrap_content"
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/pieTarget"
+                        android:layout_width="match_parent"
+                        android:layout_height="230dp"
+                        android:layout_margin="1dp"
+                        android:background="@drawable/button_ripple_primary" />
+
+                    <View
+                        android:id="@+id/view2"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="#000000" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Belum ada Budget keuangan.\nYuk buat Budgetmu!"
-                        android:textAlignment="center"
-                        android:fontFamily="@font/poppins_medium"
-                        android:textColor="@color/buttom"
-                        android:textSize="12sp"
-                        android:layout_marginTop="-200dp" />
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="8dp">
 
+                        <!-- Tombol Apply -->
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btnDepsit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:background="@drawable/button_ripple_dark"
+                            android:text="Target"
+                            android:textAllCaps="false"
+                            android:textColor="@color/text_buttom"
+                            android:textSize="10sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <!-- Harga -->
+                        <TextView
+                            android:id="@+id/tvJumlah"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="2dp"
+                            android:layout_marginBottom="6dp"
+                            android:text="0"
+                            android:textColor="#000000"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/tvPembatas1" />
+
+                        <!-- Periode -->
+                        <TextView
+                            android:id="@+id/tvPembatas1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="6dp"
+                            android:text="|"
+                            android:textColor="#000000"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/tvPeriode1" />
+
+                        <!-- Periode -->
+                        <TextView
+                            android:id="@+id/tvPeriode1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="6dp"
+                            android:text="2030-Jan-02"
+                            android:textColor="#000000"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/emptyTargetLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="20dp"
+                        android:visibility="gone">
+
+
+                        <ImageView
+                            android:id="@+id/imgNoTarget"
+                            android:layout_width="190dp"
+                            android:layout_height="190dp"
+                            android:src="@drawable/ic_target" />
+
+                        <TextView
+                            android:id="@+id/tvNoTarget"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="-192dp"
+                            android:fontFamily="@font/poppins_medium"
+                            android:text="Belum ada target keuangan.\nYuk buat targetmu!"
+                            android:textAlignment="center"
+                            android:textColor="@color/buttom"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
                 </LinearLayout>
+
             </LinearLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/TextTarget"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="30dp"
-                android:padding="1dp">
-
-                <TextView
-                    android:id="@+id/vwTarget"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_regular"
-                    android:padding="1dp"
-                    android:text="Grafik target"
-                    android:textSize="12dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/vwSeeAllTarget"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_regular"
-                    android:padding="1dp"
-                    android:layout_marginStart="220dp"
-                    android:text="Lihat semuanya"
-                    android:textSize="12dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <!-- Pie Chart 2 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_ripple_white"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/pieTarget"
-                    android:layout_width="match_parent"
-                    android:layout_height="230dp"
-                    android:layout_margin="1dp"
-                    android:background="@drawable/button_ripple_primary" />
-
-                <View
-                    android:id="@+id/view2"
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:background="#000000" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="8dp">
-
-                    <!-- Tombol Apply -->
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnDepsit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:background="@drawable/button_ripple_dark"
-                        android:text="Target"
-                        android:textAllCaps="false"
-                        android:textColor="@color/text_buttom"
-                        android:textStyle="bold"
-                        android:textSize="10sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent" />
-
-                    <!-- Harga -->
-                    <TextView
-                        android:id="@+id/tvJumlah"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:layout_marginBottom="6dp"
-                        android:textColor="#000000"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        app:layout_constraintEnd_toStartOf="@+id/tvPembatas1"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginEnd="2dp" />
-
-                    <!-- Periode -->
-                    <TextView
-                        android:id="@+id/tvPembatas1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="|"
-                        android:layout_marginBottom="6dp"
-                        android:textColor="#000000"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/tvPeriode1"
-                        app:layout_constraintBottom_toBottomOf="parent" />
-
-                    <!-- Periode -->
-                    <TextView
-                        android:id="@+id/tvPeriode1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2030-Jan-02"
-                        android:textColor="#000000"
-                        android:layout_marginBottom="6dp"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                <LinearLayout
-                    android:id="@+id/emptyTargetLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="20dp"
-                    android:visibility="gone">
-
-
-                    <ImageView
-                        android:id="@+id/imgNoTarget"
-                        android:layout_width="190dp"
-                        android:layout_height="190dp"
-                        android:src="@drawable/ic_target" />
-                    <TextView
-                        android:id="@+id/tvNoTarget"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Belum ada target keuangan.\nYuk buat targetmu!"
-                        android:textAlignment="center"
-                        android:fontFamily="@font/poppins_medium"
-                        android:textColor="@color/buttom"
-                        android:textSize="12sp"
-                        android:layout_marginTop="-192dp" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-        </LinearLayout>
-    </ScrollView>
+        </ScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
