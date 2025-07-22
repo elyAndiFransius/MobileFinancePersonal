@@ -12,6 +12,7 @@ import android.provider.OpenableColumns
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +22,7 @@ import com.example.personalfinancemobile.R
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
 import com.example.personalfinancemobile.app.ui.utils.SessionManager
+import com.example.personalfinancemobile.app.ui.utils.setupBackButton
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -65,6 +67,8 @@ class InputTargetActivity : AppCompatActivity() {
         startDate = findViewById(R.id.id_start)
         endDate = findViewById(R.id.id_end)
         fileEditText = findViewById(R.id.id_file)
+        val backButton = findViewById<ImageView>(R.id.id_back)
+        setupBackButton(this, backButton)
 
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 

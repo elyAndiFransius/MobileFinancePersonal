@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -21,9 +22,10 @@ import com.example.personalfinancemobile.app.data.model.Priode
 import com.example.personalfinancemobile.app.ui.adapter.Category
 import com.example.personalfinancemobile.app.ui.adapter.CategoryAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.personalfinancemobile.activity.Budget.BudgedSchedulingActivity
 import com.example.personalfinancemobile.app.data.repository.CategoryProvider
 import com.example.personalfinancemobile.app.data.repository.CategoryProvider.getDefaultCategories
-
+import com.example.personalfinancemobile.app.ui.utils.setupBackButton
 
 
 class CategoriActivity : AppCompatActivity() {
@@ -51,9 +53,11 @@ class CategoriActivity : AppCompatActivity() {
 
         pemasukkan = intent.getIntExtra("pemasukkan", 0)
         priode = intent.getSerializableExtra("priode") as? Priode
-
         recyclerView = findViewById(R.id.recyclerView)
         val btnSave = findViewById<Button>(R.id.id_btnSave)
+
+        val backButton = findViewById<ImageView>(R.id.id_back)
+        setupBackButton(this, backButton)
 
         addCategoryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
@@ -80,6 +84,11 @@ class CategoriActivity : AppCompatActivity() {
 
         btnSave.setOnClickListener {
             val selected = adapter.getSelectedCategories()
+
+            if (selected.isEmpty()) {
+                Toast.makeText(this@CategoriActivity, "Anggaran tidak boleh kosong!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             if (selected.isNotEmpty()) {
                 showSelectionCategories(selected)

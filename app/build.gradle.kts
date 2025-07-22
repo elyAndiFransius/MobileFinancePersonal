@@ -80,6 +80,9 @@ dependencies {
     // MPAndroidChart
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
+    // dependensi Material
+    implementation ("com.google.android.material:material:1.10.0")
+
 
 
 }

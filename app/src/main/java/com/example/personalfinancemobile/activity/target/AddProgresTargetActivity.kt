@@ -21,6 +21,7 @@ import com.example.personalfinancemobile.app.data.model.ServerDeposit
 import com.example.personalfinancemobile.app.data.model.TargetResponse
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
+import com.example.personalfinancemobile.app.ui.utils.NumberFormat
 import com.example.personalfinancemobile.app.ui.utils.SessionManager
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -48,6 +49,8 @@ class AddProgresTargetActivity : AppCompatActivity() {
         }
         val date = findViewById<EditText>(R.id.id_date)
         val deposit = findViewById<EditText>(R.id.id_deposit)
+        val belanceEditText = findViewById<EditText>(R.id.id_deposit)
+        belanceEditText.addTextChangedListener(NumberFormat(belanceEditText))
 
         val mode = intent.getStringExtra("mode") // "edit" atau null
         val depositData = intent.getSerializableExtra("deposit") as? ServerDeposit
@@ -95,12 +98,10 @@ class AddProgresTargetActivity : AppCompatActivity() {
             ).show()
         }
 
-
-
         // Simpan progres target
         btnSave.setOnClickListener {
             val dateString =  date.text.toString()
-            val depositString = deposit.text.toString()
+            val depositString = deposit.text.toString().replace(".", "").replace(",", "")
             val depositInt = depositString.toIntOrNull() ?: 0
 
             fun createPartFormString(value: String): RequestBody {

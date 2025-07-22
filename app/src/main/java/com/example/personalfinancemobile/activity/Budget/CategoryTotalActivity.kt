@@ -22,6 +22,7 @@ import com.example.personalfinancemobile.app.data.network.RetrofitInstance
 import com.example.personalfinancemobile.app.data.repository.CategoryProvider
 import com.example.personalfinancemobile.app.ui.adapter.Category
 import com.example.personalfinancemobile.app.ui.utils.SessionManager
+import com.example.personalfinancemobile.app.ui.utils.setupBackButton
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -43,6 +44,8 @@ class CategoryTotalActivity : AppCompatActivity() {
         val selectedCategories = parcelableArray?.filterIsInstance<Category>()
         val recommended = CategoryProvider.getRecomendedAllocation()
         val pemasukkan = intent.getIntExtra("jumlah", 0)
+        val backButton = findViewById<ImageView>(R.id.id_back)
+        setupBackButton(this, backButton)
 
 
 

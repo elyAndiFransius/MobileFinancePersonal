@@ -2,6 +2,7 @@ package com.example.personalfinancemobile.activity.Deposit
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,7 @@ import com.example.personalfinancemobile.app.data.model.TransactionModel
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
 import com.example.personalfinancemobile.app.ui.utils.SessionManager
+import com.example.personalfinancemobile.app.ui.utils.setupBackButton
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Call
@@ -29,6 +31,8 @@ class DepoMainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_depo_main)
+        val backButton = findViewById<ImageView>(R.id.id_back)
+        setupBackButton(this, backButton)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

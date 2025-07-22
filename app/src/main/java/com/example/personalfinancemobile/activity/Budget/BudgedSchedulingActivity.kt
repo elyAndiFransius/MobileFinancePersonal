@@ -18,6 +18,9 @@ import com.example.personalfinancemobile.activity.Auth.LoginActivity
 import com.example.personalfinancemobile.app.data.model.Budget
 import com.example.personalfinancemobile.app.data.model.Category
 import com.example.personalfinancemobile.app.data.model.Priode
+import com.example.personalfinancemobile.app.ui.utils.NumberFormat
+import com.example.personalfinancemobile.app.ui.utils.setupBackButton
+
 
 class BudgedSchedulingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,17 +36,21 @@ class BudgedSchedulingActivity : AppCompatActivity() {
         val jumlah = findViewById<EditText>(R.id.id_belance)
         val priodeOptions = listOf("Harian", "Mingguan", "Bulanan", "Tahunan")
         val autoComplate = findViewById<AutoCompleteTextView>(R.id.id_priode)
-        val id_back = findViewById<ImageView>(R.id.id_back)
-
-        id_back.setOnClickListener {
-            showLogoutConfirmationDialog()
-        }
+        val backButton = findViewById<ImageView>(R.id.id_back)
+        setupBackButton(this, backButton)
+        val belanceEditText = findViewById<EditText>(R.id.id_belance)
+        belanceEditText.addTextChangedListener(NumberFormat(belanceEditText))
 
 
         btnNext.setOnClickListener {
-            val pemasukkanStr = jumlah.text.toString()
+
+            val pemasukkanStr = jumlah.text.toString().replace(".", "").replace(",", "")
             val priodeStr = autoComplate.text.toString()
 
+            if (pemasukkanStr.isEmpty() || priodeStr.isEmpty()) {
+                Toast.makeText(this@BudgedSchedulingActivity, "Anggaran dan priode tidak boleh kosong!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             if (pemasukkanStr.isNotEmpty() && priodeStr.isNotEmpty()) {
                 val pemasukkan = pemasukkanStr.toInt()
 

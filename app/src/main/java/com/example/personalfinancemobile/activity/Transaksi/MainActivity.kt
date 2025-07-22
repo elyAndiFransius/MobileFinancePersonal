@@ -8,6 +8,7 @@ import android.icu.util.Calendar
 import android.os.Bundle
 import android.os.Message
 import android.util.Log
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +23,7 @@ import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
 import com.example.personalfinancemobile.app.ui.utils.NotificationHelper
 import com.example.personalfinancemobile.app.ui.utils.SessionManager
+import com.example.personalfinancemobile.app.ui.utils.setupBackButton
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Call
@@ -46,6 +48,8 @@ class MainActivity : AppCompatActivity() {
         val btnIncome = findViewById<AppCompatButton>(R.id.btnIncome)
         val btnExpense = findViewById<AppCompatButton>(R.id.btnExpense)
         val btnAddTrans = findViewById<AppCompatButton>(R.id.btnAddTransc)
+        val backButton = findViewById<ImageView>(R.id.id_back)
+        setupBackButton(this, backButton)
 
         // Panggil langsung
         IndexTransaction()

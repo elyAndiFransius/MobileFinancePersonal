@@ -25,7 +25,7 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="128dp"
         android:fontFamily="@font/poppins_bold"
-        android:text="Your current budget."
+        android:text="Anggaran Anda saat ini."
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,7 +37,7 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="4dp"
         android:fontFamily="@font/poppins_medium"
-        android:text="Hopefully, it can be realized this way. \n"
+        android:text="emoga bisa tercapai dengan perencanaan \nini."
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView1" />

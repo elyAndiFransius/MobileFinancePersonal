@@ -18,6 +18,7 @@ import com.example.personalfinancemobile.R
 import com.example.personalfinancemobile.app.data.model.Priode
 import com.example.personalfinancemobile.app.data.repository.CategoryProvider
 import com.example.personalfinancemobile.app.ui.adapter.Category
+import com.example.personalfinancemobile.app.ui.utils.setupBackButton
 
 class CategoryPersentasiActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +30,8 @@ class CategoryPersentasiActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        val backButton = findViewById<ImageView>(R.id.id_back)
+        setupBackButton(this, backButton)
         // Ambil data dari activy Category
         val pemasukkan = intent.getIntExtra("pemasukkan", 0)
         val priode = intent.getSerializableExtra("priode") as? Priode
@@ -37,7 +40,7 @@ class CategoryPersentasiActivity : AppCompatActivity() {
         val textView2 = findViewById<TextView>(R.id.textView2)
         priode?.let {
             val pemasulanJumalah = "Rp %,d".format(pemasukkan).replace(',', '.')
-            val text = "This is a relevant presentation of <br> he <b>${it.name}</b> budget, which amounts <br> to <b>$pemasulanJumalah</b>."
+            val text = "Ini adalah tampilan yang relevan dari anggaran<br> he <b>${it.name}</b> dengan jumlah sebesar<br> to <b>$pemasulanJumalah</b>."
             textView2.text = Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY)
         }
 

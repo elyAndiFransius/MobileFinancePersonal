@@ -5,6 +5,7 @@ import android.os.Bundle
 import retrofit2.Call
 import android.util.Log
 import android.view.LayoutInflater
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,7 @@ import com.example.personalfinancemobile.app.data.model.BudgetingResponse
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
 import com.example.personalfinancemobile.app.ui.utils.SessionManager
+import com.example.personalfinancemobile.app.ui.utils.setupBackButton
 import okhttp3.ResponseBody
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,6 +41,8 @@ class ListBudgetActivity : AppCompatActivity() {
         IndexBudget()
         val btnBack = findViewById<AppCompatButton>(R.id.btnBack)
         val btnReset = findViewById<AppCompatButton>(R.id.btnReset)
+        val backButton = findViewById<ImageView>(R.id.id_back)
+        setupBackButton(this, backButton)
 
         btnBack.setOnClickListener {
             Home()
