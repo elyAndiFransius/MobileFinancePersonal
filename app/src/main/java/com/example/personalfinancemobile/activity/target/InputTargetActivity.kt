@@ -113,8 +113,8 @@ class InputTargetActivity : AppCompatActivity() {
 
         btn_save.setOnClickListener {
             val golString = gol.text.toString()
-            val targetAmountString = targetAmount.text.toString()
-            val currentAmountString = currentAmount.text.toString()
+            val targetAmountString = targetAmount.text.toString().trim().replace(".", "").replace(",", "")
+            val currentAmountString = currentAmount.text.toString().trim().replace(".", "").replace(",", "")
             val startDateString = startDate.text.toString()
             val endDateString = endDate.text.toString()
             val targetAmountInt = targetAmountString.toIntOrNull()
@@ -207,7 +207,6 @@ class InputTargetActivity : AppCompatActivity() {
                     }
                 })
             } else {
-
                 Toast.makeText(this@InputTargetActivity, "Mohon isi semua inputan!", Toast.LENGTH_SHORT).show()
             }
         }

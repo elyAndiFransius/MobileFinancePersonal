@@ -82,7 +82,7 @@ class otpResetVerificationActivity : AppCompatActivity() {
                     } else {
                         val errorBody = response.errorBody()?.string()
                         Log.e("otpResetError", "Gagal Reset Password: $errorBody")
-                        Toast.makeText(this@otpResetVerificationActivity, "Gagal", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@otpResetVerificationActivity, "Kode OTP salah", Toast.LENGTH_SHORT).show()
                     }
                 }
 
