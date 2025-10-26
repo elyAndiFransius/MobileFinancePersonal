@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
@@ -13,6 +14,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import java.text.SimpleDateFormat
 import androidx.core.view.WindowInsetsCompat
@@ -41,6 +43,13 @@ class AddTransactionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        // 🔹 Atur warna navigation bar sesuai warna form
+        val formColor = ContextCompat.getColor(this, R.color.primary2)
+        window.navigationBarColor = formColor
+
+        // 🔹 Supaya ikon navigation bar tetap terlihat jelas (misalnya hitam di atas warna terang)
+        window.decorView.systemUiVisibility =
+            window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
         setContentView(R.layout.activity_add_transaction)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

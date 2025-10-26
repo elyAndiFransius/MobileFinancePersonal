@@ -7,7 +7,7 @@ import com.example.personalfinancemobile.app.ui.utils.NotificationHelper
 
 class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
-        val title = intent?.getStringExtra("title") ?: "Pengingat"
+        val title = intent?.getStringExtra("title") ?: "Penggingat"
         val message = intent?.getStringExtra("message") ?: "Ayo buat transaksi"
 
         NotificationHelper.createNotificationChannel(context)

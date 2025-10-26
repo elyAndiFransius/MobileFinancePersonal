@@ -9,8 +9,14 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import android.text.InputType
+import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
+import com.example.personalfinancemobile.activity.Auth.LoginActivity
 import com.example.personalfinancemobile.app.data.model.User
 import com.example.personalfinancemobile.app.data.network.APIServices
 import com.example.personalfinancemobile.app.data.network.RetrofitInstance
@@ -23,7 +29,23 @@ class RegisterActivity : AppCompatActivity() {
     private var isConfirmPasswordVisible = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_register)
+
+        // 🔹 Atur warna navigation bar sesuai warna form
+        val formColor = ContextCompat.getColor(this, R.color.primary2)
+        window.navigationBarColor = formColor
+
+        // 🔹 Supaya ikon navigation bar tetap terlihat jelas (misalnya hitam di atas warna terang)
+        window.decorView.systemUiVisibility =
+            window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+
+        // 🔹 Terapkan padding agar tidak bentrok dengan status bar & navigation bar
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         val editTextName = findViewById<EditText>(R.id.editTextName)
         val editTextEmail = findViewById<EditText>(R.id.editTextEmail)
@@ -44,6 +66,11 @@ class RegisterActivity : AppCompatActivity() {
             val email = editTextEmail.text.toString()
             val password = editTextPassword.text.toString()
             val confirmPassword = editTextConfirmPassword.text.toString()
+
+            if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() ) {
+                Toast.makeText(this@RegisterActivity, "Kolom inputan tidak boleh kosong!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
 
             // Optional: Validasi

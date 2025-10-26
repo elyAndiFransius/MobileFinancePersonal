@@ -10,12 +10,14 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
@@ -53,6 +55,14 @@ class InputTargetActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        // 🔹 Atur warna navigation bar sesuai warna form
+        val formColor = ContextCompat.getColor(this, R.color.primary2)
+        window.navigationBarColor = formColor
+
+        // 🔹 Supaya ikon navigation bar tetap terlihat jelas (misalnya hitam di atas warna terang)
+        window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+
         setContentView(R.layout.activity_input_target)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -119,6 +129,15 @@ class InputTargetActivity : AppCompatActivity() {
             val endDateString = endDate.text.toString()
             val targetAmountInt = targetAmountString.toIntOrNull()
             val currentAmountInt = currentAmountString.toIntOrNull()
+
+            if (golString.isEmpty() ||
+                targetAmountString.isEmpty() ||
+                currentAmountString.isEmpty() ||
+                startDateString.isEmpty() ||
+                endDateString.isEmpty() ) {
+                Toast.makeText(this@InputTargetActivity, "Mohon isi semua inputan", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             val startDateParsed = try {
                 dateFormat.parse(startDateString)

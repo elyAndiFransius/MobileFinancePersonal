@@ -1,15 +1,18 @@
 package com.example.personalfinancemobile.activity.target
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
@@ -44,7 +47,20 @@ class HomeTargetActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+
         setContentView(R.layout.activity_home_target)
+//        atur warna navigation bar sesui warna form
+        val formColor = ContextCompat.getColor(this, R.color.primary2)
+        window.navigationBarColor = formColor
+
+        // agar font navigatio tidak bentrok
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
 
         btnRecord = findViewById(R.id.btnRecord)
         btnReset = findViewById(R.id.btnReset)
@@ -68,7 +84,7 @@ class HomeTargetActivity : AppCompatActivity() {
                 Toast.makeText(this@HomeTargetActivity, "Tidak ada target untuk dihapus", Toast.LENGTH_SHORT).show()
             }
         }
-        val depo = findViewById<AppCompatButton>(R.id.btnHistori)
+        val depo = findViewById<ImageButton>(R.id.btnHistori)
 
         depo.setOnClickListener {
             val intent = Intent(this@HomeTargetActivity, DepoMainActivity::class.java)

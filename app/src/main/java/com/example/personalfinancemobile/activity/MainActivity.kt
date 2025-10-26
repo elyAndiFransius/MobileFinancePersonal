@@ -31,6 +31,7 @@ import com.example.personalfinancemobile.activity.Auth.LoginActivity
 import com.example.personalfinancemobile.activity.Transaksi.MainActivity as Transaksi
 import com.example.personalfinancemobile.activity.Budget.MainBudgetingActivity
 import com.example.personalfinancemobile.activity.target.AddProgresTargetActivity
+import com.example.personalfinancemobile.activity.target.HomeTargetActivity
 import com.github.mikephil.charting.data.Entry
 import com.example.personalfinancemobile.activity.target.MainTargetActivity
 import com.example.personalfinancemobile.app.data.model.Auth.GrafikCategori
@@ -66,6 +67,16 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        val navigationBar = ContextCompat.getColor(this, R.color.primary)
+        window.navigationBarColor = navigationBar
+        window.statusBarColor = navigationBar
+        window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+
+        window.decorView.systemUiVisibility =
+            window.decorView.systemUiVisibility or
+                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or
+                    View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+
         setContentView(R.layout.activity_main2)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -79,11 +90,24 @@ class MainActivity : AppCompatActivity() {
         val tx_budget = findViewById<TextView>(R.id.tx_budget)
         val tx_record = findViewById<TextView>(R.id.tx_record)
         val tx_spanding = findViewById<TextView>(R.id.tx_spending)
+        val vwSeeAllBuget = findViewById<TextView>(R.id.vwSeeAllBuget)
+        val vwSeeAllTarget = findViewById<TextView>(R.id.vwSeeAllTarget)
+
         swipeRefreshLayout = findViewById(R.id.swipeRefresh)
         swipeRefreshLayout.setOnRefreshListener {
             refreshData()
         }
         refreshData()
+
+        vwSeeAllBuget.setOnClickListener {
+            val intent = Intent(this@MainActivity, MainBudgetingActivity::class.java)
+            startActivity(intent)
+        }
+
+        vwSeeAllTarget.setOnClickListener {
+            val intent = Intent(this@MainActivity, HomeTargetActivity::class.java)
+            startActivity(intent)
+        }
 
         val logOut = findViewById<ImageView>(R.id.btnLogOut)
 
@@ -310,6 +334,8 @@ class MainActivity : AppCompatActivity() {
                         garis.visibility = View.VISIBLE
                         pieChart.visibility = View.VISIBLE
 
+
+
                         showPieChart(pieChart, kategoriList)
                     } else {
                         Log.d("BUDGET", "Data kosong")
@@ -346,10 +372,12 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, Transaksi::class.java)
             startActivity(intent)
         }
+
     }
     private fun showPieChart(pieChart: PieChart, data: List<GrafikCategori>) {
         val entries = ArrayList<PieEntry>()
         val totalPemasukkan = data.firstOrNull()?.pemasukkan ?: 0
+        val formatPemasukkan = "${NumberFormatText(totalPemasukkan.toLong())}"
 
         // Ambil daftar kategori beserta icon dari CategoryProvider
         val iconMap = CategoryProvider.getDefaultCategories().associateBy { it.name.lowercase() }
@@ -383,10 +411,10 @@ class MainActivity : AppCompatActivity() {
         pieChart.data = pieData
         pieChart.setUsePercentValues(true)
         pieChart.description.isEnabled = false
-        pieChart.centerText = "Total:\nRp$totalPemasukkan"
+        pieChart.centerText = "Budget \nRp $formatPemasukkan"
         pieChart.setCenterTextSize(16f)
-        pieChart.setEntryLabelColor(Color.BLACK)
-        pieChart.animateY(1000)
+        pieChart.setEntryLabelColor(Color.GRAY)
+        pieChart.setEntryLabelTextSize(10f)
         pieChart.legend.isEnabled = false // sembunyikan legenda
         pieChart.invalidate()
 
@@ -453,6 +481,8 @@ class MainActivity : AppCompatActivity() {
                         // Menampilkan jumlah target dengan format rupiah
                         tvJumlah.text = "Rp ${NumberFormatText(targetData.targetAmount.toLong())}"
 
+
+
                         // Tambahkan ini agar PieChart dibersihkan
                         pieChart.clear()
                         pieChart.invalidate()
@@ -491,7 +521,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun showPieChartTarget(pieChart: PieChart, data: GrafikTarget) {
         val progress = data.currentAmount.toFloat()
+        val formatProgres = "Rp ${NumberFormatText(progress.toLong())}"
         val target = data.targetAmount.toFloat()
+        val formattedTarget = "Rp ${NumberFormatText(target.toLong())}"
         val remaining = target - progress
 
         val entries = ArrayList<PieEntry>()
@@ -509,16 +541,11 @@ class MainActivity : AppCompatActivity() {
         pieChart.data = pieData
         pieChart.setUsePercentValues(true)
         pieChart.description.isEnabled = false
-        pieChart.centerText = "${data.gol}\n${progress.toInt()}"
+        pieChart.centerText = "${data.gol}\n${formatProgres}"
         pieChart.setCenterTextSize(16f)
         pieChart.setEntryLabelColor(Color.BLACK)
         pieChart.animateY(1000)
         pieChart.legend.isEnabled = false
         pieChart.invalidate()
-
-
     }
-
-
-
 }

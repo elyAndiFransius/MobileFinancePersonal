@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.personalfinancemobile.R
 import com.example.personalfinancemobile.app.data.model.ServerDeposit
+import com.example.personalfinancemobile.app.ui.utils.NumberFormatText
 
 class DepositAdapter (
         private val items: List<ServerDeposit>,
@@ -35,7 +36,8 @@ class DepositAdapter (
       val item = items[position]
 
         holder.tvDate.text = item.date
-        holder.tvAmount.text = item.deposit.toString()
+        holder.tvAmount.text = "Rp ${NumberFormatText(item.deposit.toLong())}"
+
 
         holder.itemView.setOnClickListener {
             val contex = holder.itemView.context

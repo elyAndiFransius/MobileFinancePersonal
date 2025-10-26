@@ -6,12 +6,14 @@ import android.os.Bundle
 import android.text.InputType
 import android.util.Log
 import android.view.MotionEvent
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.personalfinancemobile.R
@@ -34,12 +36,20 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
+        // 🔹 Atur warna navigation bar sesuai warna form
+        val formColor = ContextCompat.getColor(this, R.color.primary2)
+        window.navigationBarColor = formColor
+
+        // 🔹 Supaya ikon navigation bar tetap terlihat jelas (misalnya hitam di atas warna terang)
+        window.decorView.systemUiVisibility =
+            window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+
+        // 🔹 Terapkan padding agar tidak bentrok dengan status bar & navigation bar
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
         sessionManager = SessionManager(this)
 
         // Jika user sudah login dan token tersedia, langsung ke main activity

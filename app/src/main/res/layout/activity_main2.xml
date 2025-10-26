@@ -26,7 +26,7 @@
             android:id="@+id/btnLogOut"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="30dp"
             android:layout_marginStart="20dp"
             android:src="@drawable/ic_log_out"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +38,7 @@
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:layout_marginStart="45dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="20dp"
             android:scaleType="centerInside"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -80,7 +80,7 @@
             android:fontFamily="@font/poppins_semibold"
             android:text="Elyandi Fransius"
             android:textColor="@color/text_buttom"
-            android:textSize="13sp"
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -420,7 +420,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="6dp"
-                            android:text="|"
+                            android:text=""
                             android:textColor="#000000"
                             android:textSize="14sp"
                             android:textStyle="bold"
@@ -434,7 +434,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="6dp"
-                            android:text="2030-Jan-02"
+                            android:text=""
                             android:textColor="#000000"
                             android:textSize="14sp"
                             android:textStyle="bold"
@@ -524,92 +524,92 @@
             android:id="@+id/ic_home"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/tx_home"
-            app:layout_constraintStart_toStartOf="@+id/guideline1"
             app:layout_constraintEnd_toEndOf="@+id/guideline1"
+            app:layout_constraintStart_toStartOf="@+id/guideline1"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_home" />
 
         <TextView
             android:id="@+id/tx_home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Beranda"
-            android:textSize="12sp"
-            android:textColor="@color/primary2"
             android:fontFamily="@font/poppins_regular"
-            app:layout_constraintTop_toBottomOf="@+id/ic_home"
+            android:text="Beranda"
+            android:textColor="@color/primary2"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/ic_home"
             app:layout_constraintStart_toStartOf="@+id/ic_home"
-            app:layout_constraintEnd_toEndOf="@+id/ic_home" />
+            app:layout_constraintTop_toBottomOf="@+id/ic_home" />
 
         <!-- Budget -->
         <ImageView
             android:id="@+id/ic_budget"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/tx_budget"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintEnd_toEndOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_budget" />
 
         <TextView
             android:id="@+id/tx_budget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Anggaran"
-            android:textSize="12sp"
-            android:textColor="@color/primary2"
             android:fontFamily="@font/poppins_regular"
-            app:layout_constraintTop_toBottomOf="@+id/ic_budget"
+            android:text="Anggaran"
+            android:textColor="@color/primary2"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/ic_budget"
             app:layout_constraintStart_toStartOf="@+id/ic_budget"
-            app:layout_constraintEnd_toEndOf="@+id/ic_budget" />
+            app:layout_constraintTop_toBottomOf="@+id/ic_budget" />
 
         <!-- Records -->
         <ImageView
             android:id="@+id/ic_record"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/tx_record"
-            app:layout_constraintStart_toStartOf="@+id/guideline3"
             app:layout_constraintEnd_toEndOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_records" />
 
         <TextView
             android:id="@+id/tx_record"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Catatan"
-            android:textSize="12sp"
-            android:textColor="@color/primary2"
             android:fontFamily="@font/poppins_regular"
-            app:layout_constraintTop_toBottomOf="@+id/ic_record"
+            android:text="Catatan"
+            android:textColor="@color/primary2"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/ic_record"
             app:layout_constraintStart_toStartOf="@+id/ic_record"
-            app:layout_constraintEnd_toEndOf="@+id/ic_record" />
+            app:layout_constraintTop_toBottomOf="@+id/ic_record" />
 
         <!-- Spending -->
         <ImageView
             android:id="@+id/ic_spending"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/tx_spending"
-            app:layout_constraintStart_toStartOf="@+id/guideline4"
             app:layout_constraintEnd_toEndOf="@+id/guideline4"
+            app:layout_constraintStart_toStartOf="@+id/guideline4"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_spanding" />
 
         <TextView
             android:id="@+id/tx_spending"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pengeluaran"
-            android:textSize="12sp"
-            android:textColor="@color/primary2"
             android:fontFamily="@font/poppins_regular"
-            app:layout_constraintTop_toBottomOf="@+id/ic_spending"
+            android:text="Pengeluaran"
+            android:textColor="@color/primary2"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/ic_spending"
             app:layout_constraintStart_toStartOf="@+id/ic_spending"
-            app:layout_constraintEnd_toEndOf="@+id/ic_spending" />
+            app:layout_constraintTop_toBottomOf="@+id/ic_spending" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
